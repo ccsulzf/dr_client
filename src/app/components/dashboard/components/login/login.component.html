@@ -1,0 +1,10 @@
+<main>
+  <h2>DailyRecord-记录点滴生活</h2>
+  <form>
+    <label for="nameOrEmali">用户名或邮箱</label>
+    <input id="nameOrEmali" type="text" name="nameOrEmali" [(ngModel)]="nameOrEmali">
+    <label for="pwd">密码</label>
+    <input id="pwd" type="password" name="password" [(ngModel)]="password">
+    <button (click)="login()">登 录</button>
+  </form>
+</main>
