@@ -7,6 +7,7 @@ import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './dashboard.component';
 
 import { LoginService } from './services';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   imports: [
@@ -18,6 +19,6 @@ import { LoginService } from './services';
   providers: [
     LoginService
   ],
-  declarations: [LoginComponent, DashboardComponent]
+  declarations: [LoginComponent, DashboardComponent, HomeComponent]
 })
 export class DashboardModule { }

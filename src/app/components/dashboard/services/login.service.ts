@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
-import { HttpClientService } from '../../../core/providers';
+import { HttpClientService, SystemService } from '../../../core/providers';
 @Injectable()
 export class LoginService {
     constructor(
-        public http: HttpClientService
+        public http: HttpClientService,
+        public system: SystemService
     ) { }
 
     async login(nameOrEmali, password) {
-        return await this.http.post('/DR/login', { nameOrEmali: nameOrEmali, password: password });
+        let user = await this.http.post('/DR/login', { nameOrEmali: nameOrEmali, password: password });
+
+        if (user) {
+            this.system.user = user;
+            return true;
+        }
+        return false;
     }
 }

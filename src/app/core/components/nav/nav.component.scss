@@ -1,0 +1,10 @@
+main {
+  width: 160px;
+  height: 100%;
+  border: 1px solid red;
+
+  li,
+  button {
+    cursor: pointer;
+  }
+}
