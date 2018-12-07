@@ -8,7 +8,7 @@ export class LoginService {
     ) { }
 
     async login(nameOrEmali, password) {
-        let user = await this.http.post('/DR/login', { nameOrEmali: nameOrEmali, password: password });
+        const user = await this.http.post('/DR/login', { nameOrEmali: nameOrEmali, password: password });
 
         if (user) {
             this.system.user = user;

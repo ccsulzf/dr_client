@@ -1,0 +1,23 @@
+<main>
+  <p>添加支出账本</p>
+  <form>
+    <div>
+      <label>
+        账本名:
+      </label>
+      <input type="text" name="name" [(ngModel)]="name">
+    </div>
+
+    <div>
+      <label>
+        备注:
+      </label>
+      <textarea name="memo" [(ngModel)]="memo"></textarea>
+    </div>
+
+    <div class="btn-group">
+      <button (click)="add()">添加</button>
+      <button>取消</button>
+    </div>
+  </form>
+</main>

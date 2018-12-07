@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from '../../services';
+import { BaseDataService } from '../../../../core/providers';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -11,16 +12,19 @@ export class LoginComponent implements OnInit {
   public password;
   constructor(
     public loginService: LoginService,
-    public router: Router
+    public router: Router,
+    public baseData: BaseDataService
   ) { }
 
   ngOnInit() {
+
   }
 
   async login() {
-    let flag = await this.loginService.login(this.nameOrEmali, this.password);
+    const flag = await this.loginService.login(this.nameOrEmali, this.password);
     if (flag) {
-      this.router.navigateByUrl('/dashboard/home')
+      this.baseData.getAllBaseData();
+      this.router.navigateByUrl('/dashboard/home');
     }
   }
 

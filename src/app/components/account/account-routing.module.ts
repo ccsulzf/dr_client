@@ -8,10 +8,11 @@ const routes: Routes = [
     path: '', component: AccountComponent, children: [
       { path: '', redirectTo: 'expense', pathMatch: 'full' },
       {
-        path: 'expense', component: ExpenseComponent, children: [
-          { path: '', redirectTo: 'list', pathMatch: 'full' },
-          { path: 'list', component: ExpenseListComponent },
-        ]
+        path: 'expense', component: ExpenseComponent,
+        //  children: [
+        //   { path: '', redirectTo: 'list', pathMatch: 'full' },
+        //   { path: 'list', component: ExpenseListComponent },
+        // ]
       }
     ]
   }

@@ -20,7 +20,7 @@ export class NavComponent implements OnInit {
   toAccount() {
     this.router.navigateByUrl('/account');
   }
-  
+
   logout() {
     this.router.navigateByUrl('/dashboard');
     this.system.deleteUser();

@@ -1,4 +1,10 @@
 main {
   display: flex;
   height: 100%;
+
+  .dynamic-component {
+    width: 220px;
+    border: 1px solid;
+    height: 100%;
+  }
 }
