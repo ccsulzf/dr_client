@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { CoreModule } from '../../core/core.module';
 import { AccountRoutingModule } from './account-routing.module';
 import { AccountComponent } from './account.component';
@@ -12,7 +13,8 @@ import { AccountService } from './services';
   imports: [
     CommonModule,
     CoreModule,
-    AccountRoutingModule
+    AccountRoutingModule,
+    FormsModule
   ],
   declarations: [AccountComponent, ExpenseComponent, ExpenseAddEditComponent, ExpenseListComponent, ExpenseDetailComponent],
   entryComponents: [

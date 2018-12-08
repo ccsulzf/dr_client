@@ -36,6 +36,23 @@ main {
       flex-direction: column;
     }
 
+    .address {
+      position: relative;
+
+      ul {
+        position: absolute;
+        top: 43px;
+        width: 100%;
+        background: #efefef;
+        border: 1px solid;
+        z-index: 9999;
+
+        li {
+          cursor: pointer;
+        }
+      }
+    }
+
     .detail {
       grid-column: span 2;
       grid-row: span 3;

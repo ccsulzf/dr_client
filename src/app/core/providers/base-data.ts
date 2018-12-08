@@ -1,3 +1,4 @@
 export const BaseData = {
-    expenseBookList: []
+    expenseBookList: [],
+    addressList: []
 };

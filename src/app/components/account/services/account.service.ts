@@ -1,6 +1,5 @@
 import { Injectable, Component } from '@angular/core';
 import { Subject } from 'rxjs';
-import { BaseDataService } from '../../../core/providers/baseData.service';
 @Injectable()
 export class AccountService {
 
@@ -10,11 +9,7 @@ export class AccountService {
     public rootComponent: any = {
         component: ''
     };
-    constructor(
-        public base: BaseDataService
-    ) {
-        console.info(this.base.getExpenseBookList());
-    }
+    constructor() { }
 
     changeComponent(value: string) {
         this.changeComponentEvent.next(value);

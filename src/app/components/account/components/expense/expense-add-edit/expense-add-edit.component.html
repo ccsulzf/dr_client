@@ -1,14 +1,7 @@
 <main>
   <div class="expense-book">
     <ul>
-      <li>一日三餐</li>
-      <li>生活其他</li>
-      <li>家居装修</li>
-      <li>医疗健康</li>
-      <li>医疗健康</li>
-      <li>电脑办公</li>
-      <li>电脑办公</li>
-      <li>衣着</li>
+      <li *ngFor="let item of baseData?.expenseBookList">{{item?.name}}</li>
     </ul>
     <button (click)="addExpenseBook()">添加账本</button>
   </div>
@@ -18,9 +11,16 @@
       <input type="date" id="time">
     </div>
 
-    <div>
+    <div class="address">
       <label for="address">地点:</label>
-      <input type="text" id="address">
+
+      <input type="text" id="address" name="address" [(ngModel)]="address" (focus)="isAddressShow=true" (blur)="blur('isAddressShow')">
+      <ul *ngIf="isAddressShow">
+        <li *ngFor="let item of baseData?.addressList" (click)="setAddress(item)">
+          {{item?.province}}|{{item?.city}}|{{item?.district}}
+        </li>
+        <li (click)="addAddress()">添加地点</li>
+      </ul>
     </div>
 
     <div>

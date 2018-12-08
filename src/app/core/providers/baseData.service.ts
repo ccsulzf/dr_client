@@ -15,9 +15,32 @@ export class BaseDataService {
 
     async getAllBaseData() {
         this.http.get('/DR/ExpenseBook?userId=' + this.system.user.id).then((value: any) => {
-            console.info(value);
             BaseData.expenseBookList = value;
         });
+
+        this.http.get('/DR/Address?userId=' + this.system.user.id).then((value: any) => {
+            BaseData.addressList = value;
+        });
+    }
+
+    getAddressList() {
+        return BaseData.addressList;
+    }
+
+    getAddress(id) {
+
+    }
+
+    addAddress(item) {
+        BaseData.addressList.push(item);
+    }
+
+    updateAddress() {
+
+    }
+
+    delAddress() {
+
     }
 
     getExpenseBookList() {
@@ -28,8 +51,8 @@ export class BaseDataService {
 
     }
 
-    addExpenseBook() {
-
+    addExpenseBook(item) {
+        BaseData.expenseBookList.push(item);
     }
 
     updateExpenseBook() {

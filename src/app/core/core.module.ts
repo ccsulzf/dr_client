@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ElectronService } from './providers/electron.service';
@@ -14,7 +15,8 @@ import { ExpenseBookAddEditComponent } from './components/expenseBook/expense-bo
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   declarations: [NavComponent, DynamicComponentDirective, AddressAddEditComponent, ExpenseBookAddEditComponent],
   exports: [

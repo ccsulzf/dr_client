@@ -46,7 +46,7 @@
     "no-arg": true,
     "no-bitwise": true,
     "no-console": [
-      true,
+      false,
       "debug",
       "info",
       "time",
@@ -117,7 +117,7 @@
       "check-type"
     ],
     "component-selector": [
-      true,
+      false,
       "element",
       "app",
       "kebab-case"
