@@ -1,7 +1,11 @@
 import { Component, OnInit, ViewChild, ComponentFactoryResolver, OnDestroy, AfterViewInit } from '@angular/core';
 import { DynamicComponentDirective } from '../../../../core/directives';
 import { SystemService } from '../../../../core/providers';
-import { AddressAddEditComponent, ExpenseBookAddEditComponent } from '../../../../core/components';
+import {
+  AddressAddEditComponent, ExpenseBookAddEditComponent,
+  ExpenseCategoryAddEditComponent, FundPartyAddEditComponent,
+  FundWayAddEditComponent, FundAccountAddEditComponent
+} from '../../../../core/components';
 import { ExpenseListComponent } from '../expense/expense-list';
 import { AccountService } from '../../services';
 @Component({
@@ -23,13 +27,25 @@ export class ExpenseComponent implements OnInit, OnDestroy, AfterViewInit {
     this.done = this.system.doneEvent.subscribe(() => {
       this.dynamicLoad(this.accountService.rootComponent.component, this.accountService.rootComponent.data);
     });
-    this.changeComponent = this.accountService.changeComponentEvent.subscribe((value) => {
-      switch (value) {
+    this.changeComponent = this.accountService.changeComponentEvent.subscribe((value: any) => {
+      switch (value.component) {
         case 'expenseBook-add-edit':
           this.dynamicLoad(ExpenseBookAddEditComponent);
           break;
         case 'address-add-edit':
           this.dynamicLoad(AddressAddEditComponent);
+          break;
+        case 'expenseCategory-add-edit':
+          this.dynamicLoad(ExpenseCategoryAddEditComponent, value.data);
+          break;
+        case 'fundParty-add-edit':
+          this.dynamicLoad(FundPartyAddEditComponent, value.data);
+          break;
+        case 'fundWay-add-edit':
+          this.dynamicLoad(FundWayAddEditComponent);
+          break;
+        case 'fundAccount-add-edit':
+          this.dynamicLoad(FundAccountAddEditComponent, value.data);
           break;
         default:
           break;
@@ -42,8 +58,6 @@ export class ExpenseComponent implements OnInit, OnDestroy, AfterViewInit {
     this.accountService.rootComponent.data = '';
     this.dynamicLoad(ExpenseListComponent);
   }
-
-
 
   dynamicLoad(component?, data?) {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);

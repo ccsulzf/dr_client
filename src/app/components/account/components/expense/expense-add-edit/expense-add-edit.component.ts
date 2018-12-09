@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../../../services';
+import { BaseDataService } from '../../../../../core/providers';
 import { BaseData } from '../../../../../core/providers/base-data';
 import { HttpClientService } from '../../../../../core/providers';
 @Component({
@@ -11,7 +12,11 @@ export class ExpenseAddEditComponent implements OnInit {
   public baseData;
   public isAddressShow = false;
   public isExpenseCategory = false;
-  public selectExpenseBook;
+  public isFundParty = false;
+  public isFundWay = false;
+  public isFundAccount = false;
+
+  public expenseBook;
 
   public address;
   public addressItem;
@@ -19,30 +24,63 @@ export class ExpenseAddEditComponent implements OnInit {
   public expenseCategory;
   public expenseCategoryItem;
 
-  public expenseCategoryList: any = [];
+  public fundParty;
+  public fundPartyItem;
+
+  public fundWay;
+  public fundWayItem;
+
+  public fundAccount;
+  public fundAccountItem;
   constructor(
     public accountService: AccountService,
-    public http: HttpClientService
+    public http: HttpClientService,
+    public baseDataService: BaseDataService
   ) {
     this.baseData = BaseData;
-    this.selectExpenseBook = this.baseData.expenseBookList[0];
+    this.expenseBook = this.baseData.expenseBookList[0];
   }
 
-  async ngOnInit() {
-    if (this.selectExpenseBook) {
-      this.expenseCategoryList = await this.http.get('/DR/ExpenseCategory?expenseBookId=' + this.selectExpenseBook.id);
+  ngOnInit() {
+    this.getExpenseCategoryList();
+  }
+
+
+  selectExpenseBook(item) {
+    this.expenseBook = item;
+    this.getExpenseCategoryList();
+  }
+
+  async getExpenseCategoryList() {
+    if (this.expenseBook) {
+      this.baseData.expenseCategoryList = await this.http.get('/DR/ExpenseCategory?expenseBookId=' + this.expenseBook.id);
     }
   }
 
   blur(value) {
     setTimeout(() => {
       this[value] = false;
-    }, 300);
+    }, 100);
+  }
+
+  setFundAccount(item) {
+    this.fundAccountItem = item;
+    this.fundAccount = item.name;
+  }
+
+  setFundWay(item) {
+    this.fundWayItem = item;
+    this.fundWay = item.name;
+  }
+
+  setFundParty(item) {
+    this.fundPartyItem = item;
+    this.fundParty = item.name;
   }
 
   setAddress(item) {
     this.addressItem = item;
-    this.address = item.province + '/' + item.city + '/' + item.district;
+    this.address = item.province + '/' + item.city + '/' + item.area;
   }
 
   setExpenseCategory(item) {
@@ -51,16 +89,37 @@ export class ExpenseAddEditComponent implements OnInit {
   }
 
   addExpenseBook() {
-    this.accountService.changeComponent('expenseBook-add-edit');
+    this.accountService.changeComponent({ component: 'expenseBook-add-edit' });
   }
 
   addAddress() {
     this.address = '';
-    this.accountService.changeComponent('address-add-edit');
+    this.accountService.changeComponent({ component: 'address-add-edit' });
   }
 
-  addExpenseCategory(){
+  addExpenseCategory() {
     this.expenseCategory = '';
-    this.accountService.changeComponent('expenseCategory-add-edit');
+    this.expenseCategoryItem = null;
+    this.accountService.changeComponent({ component: 'expenseCategory-add-edit', data: this.expenseBook });
+  }
+
+  addFundParty() {
+    this.fundParty = '';
+    this.fundPartyItem = null;
+    this.accountService.changeComponent({ component: 'fundParty-add-edit', data: 1 });
+  }
+
+  addFundWay() {
+    this.fundWay = '';
+    this.fundWayItem = null;
+    this.accountService.changeComponent({ component: 'fundWay-add-edit' });
+  }
+
+  addFundAccount() {
+    this.fundAccount = '';
+    this.fundAccountItem = null;
+    if (this.fundWay && this.fundWayItem) {
+      this.accountService.changeComponent({ component: 'fundAccount-add-edit', data: this.fundWayItem });
+    }
   }
 }

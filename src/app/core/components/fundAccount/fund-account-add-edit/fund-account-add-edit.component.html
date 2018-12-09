@@ -1,0 +1,66 @@
+<main>
+  <p>添加资金账户</p>
+  <form>
+    <div>
+      <label>
+        资金来往方式:
+      </label>
+      <input disabled [value]="fundWay?.name">
+    </div>
+
+    <div>
+      <label>
+        资金账户:
+      </label>
+      <input type="text" name="name" [(ngModel)]="fundAccount.name">
+    </div>
+
+    <div>
+      <label>
+        账户余额:
+      </label>
+      <input type="number" [disabled]="fundAccount.isCredit" name="amount" [(ngModel)]="fundAccountAmount">
+    </div>
+
+    <div style="flex-direction: row;">
+      <input type="checkbox" name="isCredit" [ngModel]="fundAccount.isCredit" (ngModelChange)="setIsCredit($event)">
+      <label>账户是否信贷</label>
+    </div>
+
+    <fieldset *ngIf="fundAccount.isCredit">
+      <legend>信贷数据</legend>
+      <div>
+        <label>
+          信用额度:
+        </label>
+        <input type="number" name="creditAmount" [(ngModel)]="creditAccount.creditAmount">
+      </div>
+
+      <div>
+        <label>
+          已使用额度:
+        </label>
+        <input type="number" name="usedAmount" [ngModel]="creditAccount.usedAmount" (ngModelChange)="setUsedAmount($event)">
+      </div>
+
+      <div>
+        <label>
+          账单日:
+        </label>
+        <input type="date" name="billDay" [(ngModel)]="creditAccount.billDay">
+      </div>
+
+      <div>
+        <label>
+          还款日:
+        </label>
+        <input type="date" name="repaymentDay" [(ngModel)]="creditAccount.repaymentDay">
+      </div>
+    </fieldset>
+
+    <div class="btn-group">
+      <button (click)="add()">添加</button>
+      <button (click)="cancel()">取消</button>
+    </div>
+  </form>
+</main>

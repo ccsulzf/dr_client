@@ -1,0 +1,32 @@
+<main>
+  <p>添加资金来往方式</p>
+  <form>
+    <div>
+      <label>
+        资金来往方式:
+      </label>
+      <input type="text" name="name" [(ngModel)]="name">
+    </div>
+
+    <div>
+      <label>类别</label>
+      <select name="type" [(ngModel)]="type">
+        <option value="">请选择支付类别</option>
+        <option value="1">现金支付</option>
+        <option value="2">电子支付</option>
+      </select>
+    </div>
+
+    <div>
+      <label>
+        备注:
+      </label>
+      <textarea name="memo" [(ngModel)]="memo"></textarea>
+    </div>
+
+    <div class="btn-group">
+      <button (click)="add()">添加</button>
+      <button (click)="cancel()">取消</button>
+    </div>
+  </form>
+</main>

@@ -1,7 +1,7 @@
 <main>
   <div class="expense-book">
     <ul>
-      <li [style.border]="" *ngFor="let item of baseData?.expenseBookList">{{item?.name}}</li>
+      <li (click)="selectExpenseBook(item)" [style.border]="expenseBook?.id == item?.id ?'1px solid':''" *ngFor="let item of baseData?.expenseBookList">{{item?.name}}</li>
     </ul>
     <button (click)="addExpenseBook()">添加账本</button>
   </div>
@@ -24,30 +24,49 @@
     </div>
 
     <div class="address">
-      <label for="address">支出类别:</label>
+      <label for="catehory">支出类别:</label>
       <input type="text" id="catehory" name="expenseCategory" [(ngModel)]="expenseCategory" (focus)="isExpenseCategory=true"
         (blur)="blur('isExpenseCategory')">
       <ul *ngIf="isExpenseCategory">
-        <li *ngFor="let item of expenseCategoryList" (click)="setExpenseCategory(item)">
+        <li *ngFor="let item of baseData?.expenseCategoryList" (click)="setExpenseCategory(item)">
           {{item.name}}
         </li>
         <li (click)="addExpenseCategory()">添加支出类别</li>
       </ul>
     </div>
 
-    <div>
-      <label for="address">商家:</label>
-      <input type="text" id="catehory">
+    <div class="address">
+      <label for="fundParty">支出收款方:</label>
+      <input type="text" id="fundParty" name="fundParty" [(ngModel)]="fundParty" (focus)="isFundParty=true" (blur)="blur('isFundParty')">
+      <ul *ngIf="isFundParty">
+        <li *ngFor="let item of (baseData?.fundPartyList | filterMap:'type':1 )" (click)="setFundParty(item)">
+          {{item?.name}}
+        </li>
+        <li (click)="addFundParty()">添加支出收款方</li>
+      </ul>
     </div>
 
-    <div>
-      <label for="address">付款方式:</label>
-      <input type="text" id="catehory">
+    <div class="address">
+      <label for="fundWay">付款方式:</label>
+      <input type="text" id="fundWay" name="fundWay" [(ngModel)]="fundWay" (focus)="isFundWay=true" (blur)="blur('isFundWay')">
+      <ul *ngIf="isFundWay">
+        <li *ngFor="let item of baseData?.fundWayList" (click)="setFundWay(item)">
+          {{item?.name}}
+        </li>
+        <li (click)="addFundWay()">添加支出付款方式</li>
+      </ul>
     </div>
 
-    <div>
-      <label for="address">付款账户:</label>
-      <input type="text" id="catehory">
+    <div class="address">
+      <label for="fundAccount">付款账户:</label>
+      <input type="text" id="fundAccount" name="fundAccount" [(ngModel)]="fundAccount" (focus)="isFundAccount=true"
+        (blur)="blur('isFundAccount')">
+      <ul *ngIf="isFundAccount">
+        <li *ngFor="let item of (baseData?.fundAccountList | filterMap:'fundWayId':fundWayItem?.id)" (click)="setFundAccount(item)">
+          {{item?.name}}
+        </li>
+        <li (click)="addFundAccount()">添加付款账户</li>
+      </ul>
     </div>
 
     <div class="detail">

@@ -8,9 +8,9 @@ import * as _ from 'lodash';
   styleUrls: ['./address-add-edit.component.scss']
 })
 export class AddressAddEditComponent implements OnInit {
-  public province = "";
-  public city = "";
-  public area = "";
+  public province = '';
+  public city = '';
+  public area = '';
   public isCurrenLive = 0;
   public memo;
 
@@ -33,7 +33,7 @@ export class AddressAddEditComponent implements OnInit {
 
   selectProvince(data) {
     this.province = data;
-    let temp = _.find(this.data, (item) => {
+    const temp = _.find(this.data, (item) => {
       return item.name === data;
     });
     this.cityList = temp.cityList;
@@ -41,14 +41,18 @@ export class AddressAddEditComponent implements OnInit {
 
   selectCity(data) {
     this.city = data;
-    let temp = _.find(this.cityList, (item) => {
+    const temp = _.find(this.cityList, (item) => {
       return item.name === data;
     });
     this.areaList = temp.areaList;
   }
 
   async add() {
-    const address = await this.http.post('/DR/Address', { province: this.province, city: this.city, area: this.area, memo: this.memo, isCurrenLive: this.isCurrenLive, userId: this.system.user.id });
+    const address = await this.http.post('/DR/Address',
+      {
+        province: this.province, city: this.city,
+        area: this.area, memo: this.memo, isCurrenLive: this.isCurrenLive, userId: this.system.user.id
+      });
     if (address) {
       this.baseData.addAddress(address);
       this.system.done();
