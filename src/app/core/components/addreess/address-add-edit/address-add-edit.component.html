@@ -10,21 +10,21 @@
     </div>
     <div>
       <label>市/直辖市</label>
-      <select name="province" [ngModel]="city" (ngModelChange)="selectCity($event)">
+      <select name="city" [ngModel]="city" (ngModelChange)="selectCity($event)">
         <option value="">--请选择市或直辖市--</option>
         <option *ngFor="let item of cityList" [value]="item.name">{{item?.name}}</option>
       </select>
     </div>
     <div>
       <label>区/县级市/县</label>
-      <select name="province" [(ngModel)]="area">
+      <select name="area" [(ngModel)]="area">
         <option value="">--请选择区或县级市或县--</option>
         <option *ngFor="let item of areaList" [value]="item.name">{{item?.name}}</option>
       </select>
     </div>
 
     <div style="flex-direction: row;">
-      <input type="checkbox" [(ngModel)]="isCurrenLive">
+      <input type="checkbox" name="isCurrenLive" [(ngModel)]="isCurrenLive">
       <label>是否当前居住地</label>
     </div>
 

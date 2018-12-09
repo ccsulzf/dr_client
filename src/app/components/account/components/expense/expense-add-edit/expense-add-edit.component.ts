@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../../../services';
 import { BaseData } from '../../../../../core/providers/base-data';
+import { HttpClientService } from '../../../../../core/providers';
 @Component({
   selector: 'expense-add-edit',
   templateUrl: './expense-add-edit.component.html',
@@ -9,15 +10,28 @@ import { BaseData } from '../../../../../core/providers/base-data';
 export class ExpenseAddEditComponent implements OnInit {
   public baseData;
   public isAddressShow = false;
+  public isExpenseCategory = false;
+  public selectExpenseBook;
 
   public address;
+  public addressItem;
+
+  public expenseCategory;
+  public expenseCategoryItem;
+
+  public expenseCategoryList: any = [];
   constructor(
     public accountService: AccountService,
+    public http: HttpClientService
   ) {
     this.baseData = BaseData;
+    this.selectExpenseBook = this.baseData.expenseBookList[0];
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    if (this.selectExpenseBook) {
+      this.expenseCategoryList = await this.http.get('/DR/ExpenseCategory?expenseBookId=' + this.selectExpenseBook.id);
+    }
   }
 
   blur(value) {
@@ -27,7 +41,13 @@ export class ExpenseAddEditComponent implements OnInit {
   }
 
   setAddress(item) {
+    this.addressItem = item;
     this.address = item.province + '/' + item.city + '/' + item.district;
+  }
+
+  setExpenseCategory(item) {
+    this.expenseCategoryItem = item;
+    this.expenseCategory = item.name;
   }
 
   addExpenseBook() {
@@ -37,5 +57,10 @@ export class ExpenseAddEditComponent implements OnInit {
   addAddress() {
     this.address = '';
     this.accountService.changeComponent('address-add-edit');
+  }
+
+  addExpenseCategory(){
+    this.expenseCategory = '';
+    this.accountService.changeComponent('expenseCategory-add-edit');
   }
 }

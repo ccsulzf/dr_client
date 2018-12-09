@@ -1,7 +1,7 @@
 <main>
   <div class="expense-book">
     <ul>
-      <li *ngFor="let item of baseData?.expenseBookList">{{item?.name}}</li>
+      <li [style.border]="" *ngFor="let item of baseData?.expenseBookList">{{item?.name}}</li>
     </ul>
     <button (click)="addExpenseBook()">添加账本</button>
   </div>
@@ -17,15 +17,22 @@
       <input type="text" id="address" name="address" [(ngModel)]="address" (focus)="isAddressShow=true" (blur)="blur('isAddressShow')">
       <ul *ngIf="isAddressShow">
         <li *ngFor="let item of baseData?.addressList" (click)="setAddress(item)">
-          {{item?.province}}|{{item?.city}}|{{item?.district}}
+          {{item?.province}}|{{item?.city}}|{{item?.area}}
         </li>
         <li (click)="addAddress()">添加地点</li>
       </ul>
     </div>
 
-    <div>
+    <div class="address">
       <label for="address">支出类别:</label>
-      <input type="text" id="catehory">
+      <input type="text" id="catehory" name="expenseCategory" [(ngModel)]="expenseCategory" (focus)="isExpenseCategory=true"
+        (blur)="blur('isExpenseCategory')">
+      <ul *ngIf="isExpenseCategory">
+        <li *ngFor="let item of expenseCategoryList" (click)="setExpenseCategory(item)">
+          {{item.name}}
+        </li>
+        <li (click)="addExpenseCategory()">添加支出类别</li>
+      </ul>
     </div>
 
     <div>

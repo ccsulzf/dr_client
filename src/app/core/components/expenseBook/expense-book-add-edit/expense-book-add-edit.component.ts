@@ -24,7 +24,6 @@ export class ExpenseBookAddEditComponent implements OnInit {
       console.info(expenseBook);
       this.baseData.addExpenseBook(expenseBook);
       this.system.done();
-
     }
   }
 

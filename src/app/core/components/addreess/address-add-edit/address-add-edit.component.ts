@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SystemService, HttpClientService, BaseDataService } from '../../../providers';
 import { HttpClient } from '@angular/common/http';
 import * as _ from 'lodash';
 @Component({
@@ -17,17 +18,21 @@ export class AddressAddEditComponent implements OnInit {
   public areaList = [];
   public data;
   constructor(
-    private http: HttpClient
+    private httpClient: HttpClient,
+    private system: SystemService,
+    private http: HttpClientService,
+    public baseData: BaseDataService
   ) { }
 
   ngOnInit() {
-    this.http.get('assets/province.json')
+    this.httpClient.get('assets/province.json')
       .subscribe((data) => {
         this.data = data;
       });
   }
 
   selectProvince(data) {
+    this.province = data;
     let temp = _.find(this.data, (item) => {
       return item.name === data;
     });
@@ -35,9 +40,23 @@ export class AddressAddEditComponent implements OnInit {
   }
 
   selectCity(data) {
+    this.city = data;
     let temp = _.find(this.cityList, (item) => {
       return item.name === data;
     });
     this.areaList = temp.areaList;
   }
+
+  async add() {
+    const address = await this.http.post('/DR/Address', { province: this.province, city: this.city, area: this.area, memo: this.memo, isCurrenLive: this.isCurrenLive, userId: this.system.user.id });
+    if (address) {
+      this.baseData.addAddress(address);
+      this.system.done();
+    }
+  }
+
+  cancel() {
+    this.system.done();
+  }
+
 }

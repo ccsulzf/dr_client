@@ -12,13 +12,14 @@ import { NavComponent } from './components/nav/nav.component';
 import { DynamicComponentDirective } from './directives/dynamic-component.directive';
 import { AddressAddEditComponent } from './components/addreess/address-add-edit/address-add-edit.component';
 import { ExpenseBookAddEditComponent } from './components/expenseBook/expense-book-add-edit/expense-book-add-edit.component';
+import { ExpenseCategoryComponent } from './components/expense-category/expense-category.component';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     HttpClientModule
   ],
-  declarations: [NavComponent, DynamicComponentDirective, AddressAddEditComponent, ExpenseBookAddEditComponent],
+  declarations: [NavComponent, DynamicComponentDirective, AddressAddEditComponent, ExpenseBookAddEditComponent, ExpenseCategoryComponent],
   exports: [
     NavComponent,
     DynamicComponentDirective
