@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { HttpClientService, BaseDataService, SystemService } from '../../../providers';
+import { HttpClientService, BaseDataService, SystemService, BaseData } from '../../../providers';
 
 @Component({
   selector: 'app-fund-account-add-edit',
@@ -15,7 +15,8 @@ export class FundAccountAddEditComponent implements OnInit {
     fundWayId: '',
     name: '',
     amount: this.fundAccountAmount,
-    isCredit: false
+    isCredit: false,
+    userId: ''
   };
 
   public creditAccount = {
@@ -34,6 +35,7 @@ export class FundAccountAddEditComponent implements OnInit {
   ngOnInit() {
     this.fundWay = this.data;
     this.fundAccount.fundWayId = this.fundWay.id;
+    this.fundAccount.userId = this.system.user.id;
   }
 
   setUsedAmount(data) {
@@ -52,6 +54,18 @@ export class FundAccountAddEditComponent implements OnInit {
         repaymentDay: ''
       };
     }
+  }
+
+  async add() {
+    const fundcount = await this.http.post('/DR/addFundCount', { fundAccount: this.fundAccount, creditAccount: this.creditAccount });
+    if (fundcount) {
+      BaseData.fundAccountList.push(fundcount);
+      this.system.done();
+    }
+  }
+
+  cancel() {
+    this.system.done();
   }
 
 }
