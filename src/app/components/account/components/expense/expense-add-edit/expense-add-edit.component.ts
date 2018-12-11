@@ -32,6 +32,12 @@ export class ExpenseAddEditComponent implements OnInit {
 
   public fundAccount;
   public fundAccountItem;
+
+  public expenseDetaillist = [
+    '内容', '参与人', '标签', '备注'
+  ];
+
+  public expenseDetail = this.expenseDetaillist[0];
   constructor(
     public accountService: AccountService,
     public http: HttpClientService,
@@ -121,5 +127,9 @@ export class ExpenseAddEditComponent implements OnInit {
     if (this.fundWay && this.fundWayItem) {
       this.accountService.changeComponent({ component: 'fundAccount-add-edit', data: this.fundWayItem });
     }
+  }
+
+  selec(item) {
+    this.expenseDetail = item;
   }
 }

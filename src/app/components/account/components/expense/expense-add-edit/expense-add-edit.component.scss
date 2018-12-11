@@ -57,6 +57,29 @@ main {
       grid-column: span 2;
       grid-row: span 3;
       border: 1px solid;
+
+      ul {
+        display: inline-flex;
+        width: 100%;
+        margin: 4px 0;
+
+        li {
+          margin: 0 10px;
+          cursor: pointer;
+          padding: 5px;
+        }
+      }
+
+      .content {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+
+        div {
+          display: flex;
+          flex-direction: row;
+        }
+      }
     }
   }
 }

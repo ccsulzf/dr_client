@@ -68,9 +68,37 @@
         <li (click)="addFundAccount()">添加付款账户</li>
       </ul>
     </div>
-
     <div class="detail">
+      <ul>
+        <li [style.border]="expenseDetail == item ? '1px solid':''" *ngFor="let item of expenseDetaillist" (click)="selec(item)">{{item}}</li>
 
+      </ul>
+      <div class="content" *ngIf="expenseDetail == '内容'">
+        <div>
+          <label>支出内容:</label>
+          <input type="text">
+        </div>
+
+        <div>
+          <label>金额:</label>
+          <input type="number">
+          <span>元</span>
+        </div>
+      </div>
+
+      <div class="participan" *ngIf="expenseDetail == '参与人'">
+
+      </div>
+
+      <div class="label" *ngIf="expenseDetail == '标签'">
+
+      </div>
+
+      <div class="memo" *ngIf="expenseDetail == '备注'">
+        <textarea>
+
+        </textarea>
+      </div>
     </div>
   </form>
 </main>
