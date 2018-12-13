@@ -87,6 +87,25 @@
       </div>
 
       <div class="participan" *ngIf="expenseDetail == '参与人'">
+        <span>
+          测试
+          <i>×</i>
+        </span>
+
+        <span *ngIf="!isPrticipanInputShow" (click)="isPrticipanInputShow=!isPrticipanInputShows">+ 添加参与者</span>
+
+        <div class="input" *ngIf="isPrticipanInputShow">
+          <div>
+            <input autofocus placeholder="添加参与者" (blur)="blur('isPrticipanInputShow')">
+            <i>√</i>
+          </div>
+          <ul *ngIf="isPrticipanInputShow">
+            <li *ngFor="let item of (baseData?.fundAccountList | filterMap:'fundWayId':fundWayItem?.id)" (click)="setFundAccount(item)">
+              {{item?.name}}
+            </li>
+            <li (click)="addFundAccount()">添加付款账户</li>
+          </ul>
+        </div>
 
       </div>
 

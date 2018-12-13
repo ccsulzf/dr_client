@@ -37,6 +37,8 @@ export class ExpenseAddEditComponent implements OnInit {
     '内容', '参与人', '标签', '备注'
   ];
 
+  public isPrticipanInputShow = false;
+
   public expenseDetail = this.expenseDetaillist[0];
   constructor(
     public accountService: AccountService,

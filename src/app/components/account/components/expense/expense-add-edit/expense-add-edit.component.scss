@@ -80,6 +80,92 @@ main {
           flex-direction: row;
         }
       }
+
+      .participan {
+        display: flex;
+        flex-direction: row;
+        padding: 0 10px;
+
+        span {
+          margin: 0 4px;
+          border: 1px dashed #dedede;
+          padding: 5px;
+          cursor: pointer;
+          position: relative;
+
+          &:hover {
+            i {
+              display: inline-flex;
+            }
+          }
+
+          i {
+            display: none;
+            position: absolute;
+            right: -5px;
+            top: -10px;
+            font-size: 16px;
+            background: red;
+            border-radius: 50%;
+            width: 15px;
+            height: 15px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+          }
+
+        }
+
+        .input {
+          display: flex;
+          flex-direction: column;
+          position: relative;
+
+          div {
+            display: flex;
+            flex-direction: row;
+            height: 100%;
+            input {
+              border: none;
+              border-bottom: 1px solid;
+              width: 100px;
+
+              &:focus {
+                outline: none;
+              }
+            }
+
+            i {
+              display: inline-flex;
+              align-items: center;
+              width: 30px;
+              justify-content: center;
+              background: #efefef;
+              position: relative;
+              cursor: pointer;
+            }
+          }
+
+          ul {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 26px;
+            width: 100%;
+            background: #efefef;
+            border: 1px solid;
+            z-index: 9999;
+
+            li {
+              cursor: pointer;
+            }
+          }
+
+        }
+
+      }
+
+
     }
   }
 }
