@@ -5,4 +5,5 @@ export const BaseData = {
     fundPartyList: [],
     fundWayList: [],
     fundAccountList: [],
+    participantList: []
 };

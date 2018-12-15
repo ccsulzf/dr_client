@@ -120,32 +120,16 @@ main {
           display: flex;
           flex-direction: column;
           position: relative;
-
-          div {
-            display: flex;
-            flex-direction: row;
+          input {
+            border: none;
+            border-bottom: 1px solid;
+            width: 150px;
             height: 100%;
-            input {
-              border: none;
-              border-bottom: 1px solid;
-              width: 100px;
-
-              &:focus {
-                outline: none;
-              }
-            }
-
-            i {
-              display: inline-flex;
-              align-items: center;
-              width: 30px;
-              justify-content: center;
-              background: #efefef;
-              position: relative;
-              cursor: pointer;
+            &:focus {
+              outline: none;
             }
           }
-
+        
           ul {
             display: flex;
             flex-direction: column;

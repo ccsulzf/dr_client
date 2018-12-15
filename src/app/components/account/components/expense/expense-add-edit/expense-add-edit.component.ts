@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../../../services';
-import { BaseDataService } from '../../../../../core/providers';
+import { BaseDataService, SystemService } from '../../../../../core/providers';
 import { BaseData } from '../../../../../core/providers/base-data';
 import { HttpClientService } from '../../../../../core/providers';
+import * as _ from 'lodash';
 @Component({
   selector: 'expense-add-edit',
   templateUrl: './expense-add-edit.component.html',
@@ -33,6 +34,11 @@ export class ExpenseAddEditComponent implements OnInit {
   public fundAccount;
   public fundAccountItem;
 
+  public participant;
+  public participantItem;
+
+  public participantList = [];
+
   public expenseDetaillist = [
     '内容', '参与人', '标签', '备注'
   ];
@@ -43,10 +49,12 @@ export class ExpenseAddEditComponent implements OnInit {
   constructor(
     public accountService: AccountService,
     public http: HttpClientService,
-    public baseDataService: BaseDataService
+    public baseDataService: BaseDataService,
+    public system: SystemService
   ) {
     this.baseData = BaseData;
     this.expenseBook = this.baseData.expenseBookList[0];
+    this.participantList.push(this.system.user);
   }
 
   ngOnInit() {
@@ -69,6 +77,17 @@ export class ExpenseAddEditComponent implements OnInit {
     setTimeout(() => {
       this[value] = false;
     }, 100);
+  }
+
+  setParticipantItem(item) {
+    this.participantList.push(item);
+    this.participantItem = item;
+    this.participant = item.name;
+    this.isPrticipanInputShow = false;
+  }
+
+  deleteParticipant(item) {
+    _.remove(this.participantList, item);
   }
 
   setFundAccount(item) {
@@ -94,6 +113,10 @@ export class ExpenseAddEditComponent implements OnInit {
   setExpenseCategory(item) {
     this.expenseCategoryItem = item;
     this.expenseCategory = item.name;
+  }
+
+  addParticipant() {
+    this.accountService.changeComponent({ component: 'participant-add-edit' });
   }
 
   addExpenseBook() {

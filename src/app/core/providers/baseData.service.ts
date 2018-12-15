@@ -31,6 +31,14 @@ export class BaseDataService {
         this.http.get('/DR/getFundCount?userId=' + this.system.user.id).then((value: any) => {
             BaseData.fundAccountList = value;
         });
+        this.http.get('/DR/Participant?userId=' + this.system.user.id).then((value: any) => {
+            BaseData.participantList = value;
+            BaseData.participantList.push(this.system.user);
+        })
+    }
+
+    public addParticipant(item) {
+        BaseData.participantList.push(item);
     }
 
     public addFundAccount(item) {

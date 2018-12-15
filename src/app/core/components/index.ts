@@ -5,4 +5,4 @@ export * from './expense-category';
 export * from './fund-party';
 export * from './fund-way';
 export * from './fundAccount';
-
+export * from './participant';

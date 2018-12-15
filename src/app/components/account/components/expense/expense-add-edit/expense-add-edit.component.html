@@ -71,7 +71,6 @@
     <div class="detail">
       <ul>
         <li [style.border]="expenseDetail == item ? '1px solid':''" *ngFor="let item of expenseDetaillist" (click)="selec(item)">{{item}}</li>
-
       </ul>
       <div class="content" *ngIf="expenseDetail == '内容'">
         <div>
@@ -87,26 +86,25 @@
       </div>
 
       <div class="participan" *ngIf="expenseDetail == '参与人'">
-        <span>
-          测试
-          <i>×</i>
-        </span>
+        <ng-container *ngFor="let item of participantList">
+          <span>
+            {{item.name}}
+            <i (click)="deleteParticipant(item)">×</i>
+          </span>
+        </ng-container>
 
         <span *ngIf="!isPrticipanInputShow" (click)="isPrticipanInputShow=!isPrticipanInputShows">+ 添加参与者</span>
 
-        <div class="input" *ngIf="isPrticipanInputShow">
-          <div>
-            <input autofocus placeholder="添加参与者" (blur)="blur('isPrticipanInputShow')">
-            <i>√</i>
-          </div>
+        <div class="input" *ngIf="isPrticipanInputShow ">
+          <input (focus)="isPrticipanInputShow=true" placeholder="添加参与者" (blur)="blur('isPrticipanInputShow')">
+
           <ul *ngIf="isPrticipanInputShow">
-            <li *ngFor="let item of (baseData?.fundAccountList | filterMap:'fundWayId':fundWayItem?.id)" (click)="setFundAccount(item)">
+            <li *ngFor="let item of (baseData?.participantList | filterList:'list':participantList)" (click)="setParticipantItem(item)">
               {{item?.name}}
             </li>
-            <li (click)="addFundAccount()">添加付款账户</li>
+            <li (click)="addParticipant()">添加参与者</li>
           </ul>
         </div>
-
       </div>
 
       <div class="label" *ngIf="expenseDetail == '标签'">

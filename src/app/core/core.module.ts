@@ -14,9 +14,10 @@ import { AddressAddEditComponent } from './components/addreess/address-add-edit/
 import { ExpenseBookAddEditComponent } from './components/expenseBook/expense-book-add-edit/expense-book-add-edit.component';
 import { ExpenseCategoryAddEditComponent } from './components/expense-category/expenseCategory-add-edit/expenseCategory-add-edit.component';
 import { FundPartyAddEditComponent } from './components/fund-party/fund-party-add-edit/fund-party-add-edit.component';
-import { FilterPipe } from './pipes';
+import { FilterPipe, FilterListPipe } from './pipes';
 import { FundWayAddEditComponent } from './components/fund-way/fund-way-add-edit/fund-way-add-edit.component';
 import { FundAccountAddEditComponent } from './components/fundAccount/fund-account-add-edit/fund-account-add-edit.component';
+import { ParticipantAddEditComponent } from './components/participant/participant-add-edit/participant-add-edit.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -26,11 +27,12 @@ import { FundAccountAddEditComponent } from './components/fundAccount/fund-accou
   declarations: [NavComponent, DynamicComponentDirective,
     AddressAddEditComponent, ExpenseBookAddEditComponent,
     ExpenseCategoryAddEditComponent, FundPartyAddEditComponent,
-    FilterPipe, FundWayAddEditComponent, FundAccountAddEditComponent],
+    FilterPipe, FilterListPipe, FundWayAddEditComponent, FundAccountAddEditComponent, ParticipantAddEditComponent],
   exports: [
     NavComponent,
     DynamicComponentDirective,
-    FilterPipe
+    FilterPipe,
+    FilterListPipe
   ],
   providers: [
     ElectronService,
@@ -45,7 +47,8 @@ import { FundAccountAddEditComponent } from './components/fundAccount/fund-accou
     ExpenseCategoryAddEditComponent,
     FundPartyAddEditComponent,
     FundWayAddEditComponent,
-    FundAccountAddEditComponent
+    FundAccountAddEditComponent,
+    ParticipantAddEditComponent
   ]
 })
 export class CoreModule { }
