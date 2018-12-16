@@ -120,16 +120,18 @@ main {
           display: flex;
           flex-direction: column;
           position: relative;
+
           input {
             border: none;
             border-bottom: 1px solid;
             width: 150px;
             height: 100%;
+
             &:focus {
               outline: none;
             }
           }
-        
+
           ul {
             display: flex;
             flex-direction: column;
@@ -149,7 +151,109 @@ main {
 
       }
 
+      .label {
+        display: flex;
+        flex-direction: row;
+        padding: 0 10px;
 
+        span {
+          margin: 0 4px;
+          border: 1px dashed #dedede;
+          padding: 5px;
+          cursor: pointer;
+          position: relative;
+
+          &:hover {
+            i {
+              display: inline-flex;
+            }
+          }
+
+          i {
+            display: none;
+            position: absolute;
+            right: -5px;
+            top: -10px;
+            font-size: 16px;
+            background: red;
+            border-radius: 50%;
+            width: 15px;
+            height: 15px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+          }
+
+        }
+
+        .input {
+          display: flex;
+          flex-direction: column;
+          position: relative;
+
+          div {
+            flex-direction: row;
+            height: 100%;
+            align-items: center;
+            position: relative;
+
+            input {
+              border: none;
+              border-bottom: 1px solid;
+              width: 120px;
+              height: 100%;
+              padding: 0;
+              padding-right: 30px;
+
+              &:focus {
+                outline: none;
+              }
+            }
+
+            i {
+              width: 30px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              right: 30px;
+              position: relative;
+              cursor: pointer;
+              height: 100%;
+              background: #efefef;
+              top: 0px;
+            }
+          }
+
+          ul {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 30px;
+            width: 100%;
+            background: #efefef;
+            border: 1px solid;
+            z-index: 9999;
+
+            li {
+              cursor: pointer;
+            }
+          }
+
+        }
+
+      }
+
+    }
+  }
+
+  .btn-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+
+    button {
+      margin: 0 20px;
     }
   }
 }

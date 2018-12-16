@@ -1,0 +1,100 @@
+main {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: #fff;
+  }
+  
+  main>ul {
+    flex-grow: 1;
+    border: 1px solid #dedede;
+    border-radius: 0px 0 3px 3px;
+    border-top: none;
+  }
+  
+  :host ::ng-deep .ant-badge {
+    margin-bottom: 3px;
+  }
+  
+  
+  .day-expense {
+    height: 44px;
+    display: flex;
+    background: #40a9ff;
+    border-radius: 4px 4px 0px 0;
+    border: 1px solid #40a9ff;
+    color: #fff;
+    font-size: 15px;
+    font-weight: bolder;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 7px;
+  }
+  
+  .day-expense span:first-of-type {
+    cursor: pointer;
+  }
+  
+  .expense-detail-list>li {
+    display: flex;
+    align-items: center;
+    border: 1px solid #dedede;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+  }
+  
+  .expense-category {
+    padding: 0 10px;
+    width: 60px;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .expense-detail {
+    flex-grow: 1;
+  }
+  
+  .expense-detail-item {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #dedede;
+    border-top: none;
+    padding: 2px 10px;
+    border-right: none;
+    cursor: pointer;
+  }
+  
+  .expense-detail-item:hover {
+    background: #dedede;
+  }
+  
+  .expense-detail li:last-of-type {
+    border-bottom: none;
+  }
+  
+  .expense-detail li div {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+    width: 100%;
+  }
+  
+  .expense-detail li div span {
+    flex-grow: 1;
+  }
+  
+  
+  // .expense-detail li div span:nth-of-type(2) {
+  //   flex-grow: 0;
+  // }
+  
+  .expense-detail li div span:first-of-type {
+    width: 40%
+  }
+  
+  .expense-detail li div span:last-of-type {
+    text-align: right;
+    width: 40%
+  }
+  

@@ -108,6 +108,26 @@
       </div>
 
       <div class="label" *ngIf="expenseDetail == '标签'">
+        <ng-container>
+          <span *ngFor="let item of laelList">
+            {{item.name}}
+            <i (click)="deleteLabel(item)">×</i>
+          </span>
+        </ng-container>
+
+        <span (click)="isLabelInputShow=true" *ngIf="!isLabelInputShow">+新增标签</span>
+        <div class="input" *ngIf="isLabelInputShow">
+          <div>
+            <input name="label" (focus)="isLabelInputShow=true" (blur)="blur('isLabelInputShow')" [(ngModel)]="label"
+              placeholder="添加标签">
+            <i>+</i>
+          </div>
+          <ul>
+            <li (click)="selecLabel(item)" *ngFor="let item of (baseData?.labelList | filterName:'name':label)">
+              {{item?.name}}
+            </li>
+          </ul>
+        </div>
 
       </div>
 
@@ -118,4 +138,9 @@
       </div>
     </div>
   </form>
+
+  <div class="btn-group">
+    <button>添加支出</button>
+    <button>重置</button>
+  </div>
 </main>

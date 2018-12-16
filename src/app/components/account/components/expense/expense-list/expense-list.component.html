@@ -1,5 +1,29 @@
 <main>
-  <p>
-    expense-list works!
-  </p>
+  <div class="day-expense">
+    <span>
+      今日支出
+    </span>
+    <span>
+      总计:-358.00元
+    </span>
+  </div>
+  <ul>
+    <li (click)="toDetailList()">
+      <span>
+        一日三餐
+      </span>
+      <span>
+        -112.00元
+      </span>
+    </li>
+
+    <li (click)="toDetailList()">
+      <span>
+        生活用品
+      </span>
+      <span>
+        -168.00元
+      </span>
+    </li>
+  </ul>
 </main>

@@ -32,16 +32,24 @@ export class FilterListPipe implements PipeTransform {
             return list;
         }
         const maps = _.differenceBy(list, value, 'name');
-        console.info(list);
-        console.info(prop)
-        console.info(value);
         return maps;
-
-        // const maps = [];
-        // for (const item of list) {
-        //     if (item[prop] === value) {
-        //         maps.push(item);
-        //     }
-        // }
     }
 }
+
+
+@Pipe({ name: 'filterName' })
+export class FilterNamePipe implements PipeTransform {
+    transform(list, prop, value) {
+        if (!prop || !value) {
+            return list;
+        }
+        const tets = _.filter(list, (item) => {
+            return item[prop].indexOf(value) > -1;
+        });
+        return tets;
+        // const maps = _.differenceBy(list, value, 'name');
+        // return maps;
+    }
+}
+
+

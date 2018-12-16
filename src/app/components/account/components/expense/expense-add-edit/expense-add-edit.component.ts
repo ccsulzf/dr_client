@@ -17,6 +17,9 @@ export class ExpenseAddEditComponent implements OnInit {
   public isFundWay = false;
   public isFundAccount = false;
 
+  public isLabelInputShow = false;
+  public isPrticipanInputShow = false;
+
   public expenseBook;
 
   public address;
@@ -36,14 +39,17 @@ export class ExpenseAddEditComponent implements OnInit {
 
   public participant;
   public participantItem;
-
   public participantList = [];
+
+  public label;
+  public labelItem;
+  public laelList = [];
 
   public expenseDetaillist = [
     '内容', '参与人', '标签', '备注'
   ];
 
-  public isPrticipanInputShow = false;
+
 
   public expenseDetail = this.expenseDetaillist[0];
   constructor(
@@ -77,6 +83,16 @@ export class ExpenseAddEditComponent implements OnInit {
     setTimeout(() => {
       this[value] = false;
     }, 100);
+  }
+
+  deleteLabel(item) {
+    _.remove(this.laelList, item);
+    this.baseDataService.addLable(item);
+  }
+
+  selecLabel(item) {
+    this.laelList.push(item);
+    this.baseDataService.deleteLabel(item);
   }
 
   setParticipantItem(item) {

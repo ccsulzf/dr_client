@@ -34,7 +34,15 @@ export class BaseDataService {
         this.http.get('/DR/Participant?userId=' + this.system.user.id).then((value: any) => {
             BaseData.participantList = value;
             BaseData.participantList.push(this.system.user);
-        })
+        });
+    }
+
+    public addLable(item) {
+        BaseData.labelList.push(item);
+    }
+
+    public deleteLabel(item) {
+        _.remove(BaseData.labelList, item);
     }
 
     public addParticipant(item) {
