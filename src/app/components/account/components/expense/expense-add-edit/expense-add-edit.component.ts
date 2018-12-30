@@ -3,6 +3,7 @@ import { AccountService } from '../../../services';
 import { BaseDataService, SystemService } from '../../../../../core/providers';
 import { BaseData } from '../../../../../core/providers/base-data';
 import { HttpClientService } from '../../../../../core/providers';
+import { ExpenseService } from '../../../services';
 import * as _ from 'lodash';
 @Component({
   selector: 'expense-add-edit',
@@ -19,6 +20,8 @@ export class ExpenseAddEditComponent implements OnInit {
 
   public isLabelInputShow = false;
   public isPrticipanInputShow = false;
+
+  public expenseDate;
 
   public expenseBook;
 
@@ -43,20 +46,23 @@ export class ExpenseAddEditComponent implements OnInit {
 
   public label;
   public labelItem;
-  public laelList = [];
+  public labelList = [];
 
-  public expenseDetaillist = [
+  public content;
+  public amount;
+  public memo;
+
+  public expenseDetailList = [
     '内容', '参与人', '标签', '备注'
   ];
 
-
-
-  public expenseDetail = this.expenseDetaillist[0];
+  public expenseDetail = this.expenseDetailList[0];
   constructor(
     public accountService: AccountService,
     public http: HttpClientService,
     public baseDataService: BaseDataService,
-    public system: SystemService
+    public system: SystemService,
+    public expenseService: ExpenseService
   ) {
     this.baseData = BaseData;
     this.expenseBook = this.baseData.expenseBookList[0];
@@ -82,17 +88,18 @@ export class ExpenseAddEditComponent implements OnInit {
   blur(value) {
     setTimeout(() => {
       this[value] = false;
-    }, 100);
+    }, 300);
   }
 
   deleteLabel(item) {
-    _.remove(this.laelList, item);
+    _.remove(this.labelList, item);
     this.baseDataService.addLable(item);
   }
 
   selecLabel(item) {
-    this.laelList.push(item);
+    this.labelList.push(item);
     this.baseDataService.deleteLabel(item);
+    this.isLabelInputShow = false;
   }
 
   setParticipantItem(item) {
@@ -129,6 +136,24 @@ export class ExpenseAddEditComponent implements OnInit {
   setExpenseCategory(item) {
     this.expenseCategoryItem = item;
     this.expenseCategory = item.name;
+  }
+
+  addLabel() {
+    this.http.post('/DR/label', {
+      type: 1,
+      name: this.label,
+      userId: this.system.user.id
+    }).then((value: any) => {
+      this.labelList.push(value);
+      this.isLabelInputShow = false;
+      this.baseDataService.addLable(value);
+      this.label = '';
+    })
+  }
+
+  cancel() {
+    this.label = '';
+    this.isLabelInputShow = false;
   }
 
   addParticipant() {
@@ -172,5 +197,29 @@ export class ExpenseAddEditComponent implements OnInit {
 
   selec(item) {
     this.expenseDetail = item;
+  }
+
+  addExpense() {
+    try {
+      this.expenseService.expense = {
+        expenseDate: this.expenseDate,
+        userId: this.system.user.id,
+        expenseBookId: this.expenseBook.id,
+        addressId: this.addressItem.id,
+        expenseCategoryId: this.expenseCategoryItem.id,
+        fundPartyId: this.fundPartyItem.id,
+        fundWayId: this.fundWayItem.id,
+        fundAccountId: this.fundAccountItem.id
+      };
+      this.expenseService.expenseDetail = {
+        content: this.content,
+        amount: this.amount,
+        memo: this.memo
+      };
+      this.expenseService.addExpense(this.participantList, this.labelList);
+    } catch (error) {
+      alert('添加账目失败：' + error);
+    }
+
   }
 }

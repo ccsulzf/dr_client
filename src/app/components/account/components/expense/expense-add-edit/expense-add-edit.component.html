@@ -8,7 +8,7 @@
   <form>
     <div>
       <label for="time">日期:</label>
-      <input type="date" id="time">
+      <input type="date" id="time" name="expenseDate" [(ngModel)]="expenseDate">
     </div>
 
     <div class="address">
@@ -70,17 +70,17 @@
     </div>
     <div class="detail">
       <ul>
-        <li [style.border]="expenseDetail == item ? '1px solid':''" *ngFor="let item of expenseDetaillist" (click)="selec(item)">{{item}}</li>
+        <li [style.border]="expenseDetail == item ? '1px solid':''" *ngFor="let item of expenseDetailList" (click)="selec(item)">{{item}}</li>
       </ul>
       <div class="content" *ngIf="expenseDetail == '内容'">
         <div>
           <label>支出内容:</label>
-          <input type="text">
+          <input type="text" name="content" [(ngModel)]="content">
         </div>
 
         <div>
           <label>金额:</label>
-          <input type="number">
+          <input type="number" name="amount" [(ngModel)]="amount">
           <span>元</span>
         </div>
       </div>
@@ -109,7 +109,7 @@
 
       <div class="label" *ngIf="expenseDetail == '标签'">
         <ng-container>
-          <span *ngFor="let item of laelList">
+          <span *ngFor="let item of labelList">
             {{item.name}}
             <i (click)="deleteLabel(item)">×</i>
           </span>
@@ -118,29 +118,27 @@
         <span (click)="isLabelInputShow=true" *ngIf="!isLabelInputShow">+新增标签</span>
         <div class="input" *ngIf="isLabelInputShow">
           <div>
-            <input name="label" (focus)="isLabelInputShow=true" (blur)="blur('isLabelInputShow')" [(ngModel)]="label"
-              placeholder="添加标签">
-            <i>+</i>
+            <input name="label" [(ngModel)]="label" placeholder="添加标签">
+            <i (click)="addLabel()">+</i>
+            <i (click)="cancel()">x</i>
           </div>
           <ul>
-            <li (click)="selecLabel(item)" *ngFor="let item of (baseData?.labelList | filterName:'name':label)">
+            <li (click)="selecLabel(item)" *ngFor="let item of  (baseData?.labelList | filterList:'list':labelList)">
               {{item?.name}}
             </li>
           </ul>
         </div>
-
       </div>
 
       <div class="memo" *ngIf="expenseDetail == '备注'">
-        <textarea>
-
+        <textarea name="memo" [(ngModel)]="memo">
         </textarea>
       </div>
     </div>
   </form>
 
   <div class="btn-group">
-    <button>添加支出</button>
+    <button (click)="addExpense()">添加支出</button>
     <button>重置</button>
   </div>
 </main>

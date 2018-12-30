@@ -6,7 +6,7 @@ import {
   ExpenseCategoryAddEditComponent, FundPartyAddEditComponent,
   FundWayAddEditComponent, FundAccountAddEditComponent, ParticipantAddEditComponent
 } from '../../../../core/components';
-import { ExpenseListComponent } from '../expense/expense-list';
+import { ExpenseListComponent, ExpenseDetailComponent } from '../expense';
 import { AccountService } from '../../services';
 @Component({
   selector: 'app-expense',
@@ -49,6 +49,9 @@ export class ExpenseComponent implements OnInit, OnDestroy, AfterViewInit {
           break;
         case 'participant-add-edit':
           this.dynamicLoad(ParticipantAddEditComponent);
+          break;
+        case 'expense-detail':
+          this.dynamicLoad(ExpenseDetailComponent);
           break;
         default:
           break;

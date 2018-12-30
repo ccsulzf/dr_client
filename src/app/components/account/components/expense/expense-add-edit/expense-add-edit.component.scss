@@ -75,6 +75,10 @@ main {
         flex-direction: row;
         justify-content: center;
 
+        input {
+          width: 150px;
+        }
+
         div {
           display: flex;
           flex-direction: row;
@@ -202,6 +206,7 @@ main {
               border-bottom: 1px solid;
               width: 120px;
               height: 100%;
+              min-height: 32px;
               padding: 0;
               padding-right: 30px;
 
@@ -243,6 +248,14 @@ main {
 
       }
 
+      .memo {
+        align-items: center;
+
+        textarea {
+          width: 96%;
+          height: 100%;
+        }
+      }
     }
   }
 

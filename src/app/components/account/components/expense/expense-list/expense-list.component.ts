@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { AccountService } from '../../../services';
 @Component({
   selector: 'app-expense-list',
   templateUrl: './expense-list.component.html',
@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ExpenseListComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private accountService: AccountService
+  ) { }
 
   ngOnInit() {
+  }
+
+  toDetailList() {
+    this.accountService.changeComponent({ component: 'expense-detail' });
   }
 
 }

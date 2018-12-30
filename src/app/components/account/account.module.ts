@@ -8,7 +8,7 @@ import { ExpenseComponent } from './components/expense/expense.component';
 import { ExpenseAddEditComponent } from './components/expense/expense-add-edit/expense-add-edit.component';
 import { ExpenseListComponent } from './components/expense/expense-list/expense-list.component';
 import { ExpenseDetailComponent } from './components/expense/expense-list/expense-detail/expense-detail.component';
-import { AccountService } from './services';
+import { AccountService, ExpenseService } from './services';
 @NgModule({
   imports: [
     CommonModule,
@@ -18,10 +18,12 @@ import { AccountService } from './services';
   ],
   declarations: [AccountComponent, ExpenseComponent, ExpenseAddEditComponent, ExpenseListComponent, ExpenseDetailComponent],
   entryComponents: [
-    ExpenseListComponent
+    ExpenseListComponent,
+    ExpenseDetailComponent
   ],
   providers: [
-    AccountService
+    AccountService,
+    ExpenseService
   ]
 })
 export class AccountModule { }
