@@ -199,7 +199,7 @@ export class ExpenseAddEditComponent implements OnInit {
     this.expenseDetail = item;
   }
 
-  addExpense() {
+  async addExpense() {
     try {
       this.expenseService.expense = {
         expenseDate: this.expenseDate,
@@ -216,7 +216,7 @@ export class ExpenseAddEditComponent implements OnInit {
         amount: this.amount,
         memo: this.memo
       };
-      this.expenseService.addExpense(this.participantList, this.labelList);
+      await this.expenseService.addExpense(this.participantList, this.labelList);
     } catch (error) {
       alert('添加账目失败：' + error);
     }

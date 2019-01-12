@@ -8,8 +8,9 @@ export class ExpenseService {
         private http: HttpClientService
     ) { }
 
-
     public expenseList = [];
+
+    public expenseDetailList = [];
 
     public expense: any = {
         expenseDate: '',
@@ -44,15 +45,17 @@ export class ExpenseService {
         };
     }
 
-    addExpense(participantList, labelList) {
-        const data = {
-            expense: this.expense,
-            expenseDetail: this.expenseDetail,
-            participantList: participantList,
-            labelList: labelList
-        };
-
-        // await this.http.post('/DR/addExpense', data)
-        console.info(data);
+    async addExpense(participantList, labelList) {
+        try {
+            const data = {
+                expense: this.expense,
+                expenseDetail: this.expenseDetail,
+                participantList: participantList,
+                labelList: labelList
+            };
+            await this.http.post('/DR/addExpense', data);
+        } catch (error) {
+            throw error;
+        }
     }
 }
