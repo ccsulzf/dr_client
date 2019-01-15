@@ -205,16 +205,17 @@ export class ExpenseAddEditComponent implements OnInit {
         expenseDate: this.expenseDate,
         userId: this.system.user.id,
         expenseBookId: this.expenseBook.id,
+        totalAmount: this.amount
+      };
+      this.expenseService.expenseDetail = {
+        content: this.content,
+        amount: this.amount,
+        memo: this.memo,
         addressId: this.addressItem.id,
         expenseCategoryId: this.expenseCategoryItem.id,
         fundPartyId: this.fundPartyItem.id,
         fundWayId: this.fundWayItem.id,
         fundAccountId: this.fundAccountItem.id
-      };
-      this.expenseService.expenseDetail = {
-        content: this.content,
-        amount: this.amount,
-        memo: this.memo
       };
       await this.expenseService.addExpense(this.participantList, this.labelList);
     } catch (error) {

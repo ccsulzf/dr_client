@@ -16,14 +16,15 @@ export class ExpenseService {
         expenseDate: '',
         userId: '',
         expenseBookId: '',
+        totalAmount: 0
+    };
+
+    public expenseDetail: any = {
         addressId: '',
         expenseCategoryId: '',
         fundPartyId: '',
         fundWayId: '',
-        fundAccountId: ''
-    };
-
-    public expenseDetail: any = {
+        fundAccountId: '',
         content: '',
         amount: 0
     };
