@@ -39,7 +39,8 @@
   },
   "dependencies": {
     "lodash": "^4.17.11",
-    "log4js": "~1.1.1"
+    "log4js": "~1.1.1",
+    "moment": "^2.23.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.10.0",

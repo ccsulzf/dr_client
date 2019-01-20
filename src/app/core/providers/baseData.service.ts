@@ -99,7 +99,7 @@ export class BaseDataService {
     }
 
     getExpenseBook(id) {
-
+        return _.find(BaseData.expenseBookList, { id: id });
     }
 
     addExpenseBook(item) {

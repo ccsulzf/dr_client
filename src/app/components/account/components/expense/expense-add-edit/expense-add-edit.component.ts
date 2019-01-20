@@ -5,6 +5,7 @@ import { BaseData } from '../../../../../core/providers/base-data';
 import { HttpClientService } from '../../../../../core/providers';
 import { ExpenseService } from '../../../services';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 @Component({
   selector: 'expense-add-edit',
   templateUrl: './expense-add-edit.component.html',
@@ -199,10 +200,18 @@ export class ExpenseAddEditComponent implements OnInit {
     this.expenseDetail = item;
   }
 
+  init() {
+    this.expenseDetail = '内容',
+      this.content = '';
+    this.amount = '';
+    this.participantList.push(this.system.user);
+    this.participantList = [];
+  }
+
   async addExpense() {
     try {
       this.expenseService.expense = {
-        expenseDate: this.expenseDate,
+        expenseDate: moment(this.expenseDate).format('YYYY-MM-DD'),
         userId: this.system.user.id,
         expenseBookId: this.expenseBook.id,
         totalAmount: this.amount
@@ -218,9 +227,10 @@ export class ExpenseAddEditComponent implements OnInit {
         fundAccountId: this.fundAccountItem.id
       };
       await this.expenseService.addExpense(this.participantList, this.labelList);
+      this.expenseService.init();
+      this.init();
     } catch (error) {
       alert('添加账目失败：' + error);
     }
-
   }
 }
