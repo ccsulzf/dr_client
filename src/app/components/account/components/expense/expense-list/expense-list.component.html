@@ -4,11 +4,11 @@
       今日支出
     </span>
     <span>
-      总计:-358.00元
+      总计:-{{dayAmout}}元
     </span>
   </div>
-  <ul>
-    <li *ngFor="let item of expenseService?.expenseList">
+  <ul *ngIf="hasExpense">
+    <li (click)="goDetail(item)" *ngFor="let item of expenseService?.expenseList">
       <span>
         {{item.expenseBookName}}
       </span>
@@ -17,4 +17,8 @@
       </span>
     </li>
   </ul>
+
+  <div *ngIf="!hasExpense" class="no-expense">
+    今日未有支出
+  </div>
 </main>

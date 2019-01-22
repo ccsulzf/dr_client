@@ -19,7 +19,7 @@
       <label>
         账户余额:
       </label>
-      <input type="number" [disabled]="fundAccount.isCredit" name="amount" [(ngModel)]="fundAccountAmount">
+      <input type="number" [disabled]="fundAccount.isCredit" name="balance" [(ngModel)]="fundAccount.balance">
     </div>
 
     <div style="flex-direction: row;">
@@ -47,14 +47,19 @@
         <label>
           账单日:
         </label>
-        <input type="date" name="billDay" [(ngModel)]="creditAccount.billDay">
+        <select name="billDay" [(ngModel)]="creditAccount.billDay">
+          <option *ngFor="let item of numbers" name="item" [value]="item">{{item}}</option>
+        </select>
       </div>
 
       <div>
         <label>
           还款日:
         </label>
-        <input type="date" name="repaymentDay" [(ngModel)]="creditAccount.repaymentDay">
+        <select name="repaymentDay" [(ngModel)]="creditAccount.repaymentDay">
+          <option *ngFor="let item of numbers" name="item" [value]="item">{{item}}</option>
+        </select>
+        <!-- <input type="date" name="repaymentDay" [(ngModel)]="creditAccount.repaymentDay"> -->
       </div>
     </fieldset>
 

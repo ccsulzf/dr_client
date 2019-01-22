@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AccountService } from '../../../services';
 import { BaseDataService, SystemService } from '../../../../../core/providers';
 import { BaseData } from '../../../../../core/providers/base-data';
@@ -11,7 +11,10 @@ import * as moment from 'moment';
   templateUrl: './expense-add-edit.component.html',
   styleUrls: ['./expense-add-edit.component.scss']
 })
-export class ExpenseAddEditComponent implements OnInit {
+export class ExpenseAddEditComponent implements OnInit, OnDestroy {
+
+  public editEvent;
+
   public baseData;
   public isAddressShow = false;
   public isExpenseCategory = false;
@@ -67,22 +70,47 @@ export class ExpenseAddEditComponent implements OnInit {
   ) {
     this.baseData = BaseData;
     this.expenseBook = this.baseData.expenseBookList[0];
-    this.participantList.push(this.system.user);
   }
 
   ngOnInit() {
     this.getExpenseCategoryList();
+    this.editEvent = this.expenseService.editEvent.subscribe(async (data: any) => {
+      this.expenseDate = moment(data.expense.expenseDate).format('YYYY-MM-DD');
+
+      await this.selectExpenseBook(this.baseDataService.getExpenseBook(data.expense.expenseBookId));
+
+      this.setAddress(this.baseDataService.getAddress(data.expenseDetail.addressId));
+
+      this.setExpenseCategory(this.baseDataService.getExpenseCategory(data.expenseDetail.expenseCategoryId));
+
+      this.setFundParty(this.baseDataService.getFundParty(data.expenseDetail.fundPartyId));
+
+      this.setFundWay(this.baseDataService.getFundWay(data.expenseDetail.fundWayId));
+
+      this.setFundAccount(this.baseDataService.getFundAccount(data.expenseDetail.fundAccountId));
+
+      this.content = data.expenseDetail.content;
+
+      this.amount = data.expenseDetail.amount;
+    });
   }
 
+  ngOnDestroy() {
+    if (this.editEvent) {
+      this.editEvent.unsubscribe();
+    }
+  }
 
-  selectExpenseBook(item) {
+  async selectExpenseBook(item) {
     this.expenseBook = item;
-    this.getExpenseCategoryList();
+    await this.getExpenseCategoryList();
   }
 
   async getExpenseCategoryList() {
     if (this.expenseBook) {
       this.baseData.expenseCategoryList = await this.http.get('/DR/ExpenseCategory?expenseBookId=' + this.expenseBook.id);
+      this.expenseCategory = '';
+      this.expenseCategoryItem = null;
     }
   }
 
@@ -149,7 +177,7 @@ export class ExpenseAddEditComponent implements OnInit {
       this.isLabelInputShow = false;
       this.baseDataService.addLable(value);
       this.label = '';
-    })
+    });
   }
 
   cancel() {

@@ -1,67 +1,27 @@
 <main>
   <div class="day-expense">
     <span (click)="return()">
-      一日三餐
+      {{data.expenseBookName}}
     </span>
     <span>
-      -112.00元
+      -{{data.totalAmount}}元
     </span>
   </div>
   <ul class="expense-detail-list">
-    <li>
+    <li *ngFor="let group of groupList">
       <div class="expense-category">
-        早餐
+        {{group.name}}
       </div>
       <div class="expense-detail">
-        <ul>
-          <li class="expense-detail-item">
+        <ul *ngFor="let item of group.list" (click)="edit(item)">
+          <li>
             <div>
-              <span>牛肉面</span>
-              <span>向东街</span>
+              <span>{{item.content}}</span>
+              <span>{{item.fundPartyName}}</span>
             </div>
             <div>
-              <span>-10.00元</span>
-              <span>支付宝</span>
-            </div>
-          </li>
-          <li class="expense-detail-item">
-            <div>
-              <span>牛奶</span>
-              <span>步步高</span>
-            </div>
-            <div>
-              <span>-100.00元</span>
-              <span>微信</span>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </li>
-
-    <li>
-      <div class="expense-category">
-        电子产品
-      </div>
-      <div class="expense-detail">
-        <ul>
-          <li class="expense-detail-item">
-            <div>
-              <span>电脑</span>
-              <span>京东</span>
-            </div>
-            <div>
-              <span>-889.00元</span>
-              <span>支付宝</span>
-            </div>
-          </li>
-          <li class="expense-detail-item">
-            <div>
-              <span>一加6</span>
-              <span>一加官网</span>
-            </div>
-            <div>
-              <span>-3660元</span>
-              <span>招行</span>
+              <span>-{{item.amount}}元</span>
+              <span>{{item.fundWayName}}</span>
             </div>
           </li>
         </ul>

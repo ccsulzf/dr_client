@@ -51,7 +51,10 @@ export class ExpenseComponent implements OnInit, OnDestroy, AfterViewInit {
           this.dynamicLoad(ParticipantAddEditComponent);
           break;
         case 'expense-detail':
-          this.dynamicLoad(ExpenseDetailComponent);
+          this.dynamicLoad(ExpenseDetailComponent, value.data);
+          break;
+        case 'expense-list':
+          this.dynamicLoad(ExpenseListComponent);
           break;
         default:
           break;

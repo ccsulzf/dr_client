@@ -34,12 +34,11 @@ export class BaseDataService {
 
         this.http.get('/DR/Participant?userId=' + this.system.user.id).then((value: any) => {
             BaseData.participantList = value;
-            BaseData.participantList.push(this.system.user);
         });
 
         this.http.get('/DR/Label?userId=' + this.system.user.id).then((value: any) => {
             BaseData.labelList = value;
-        })
+        });
     }
 
     public addLable(item) {
@@ -58,12 +57,24 @@ export class BaseDataService {
         BaseData.fundAccountList.push(item);
     }
 
+    public getFundAccount(id) {
+        return _.find(BaseData.fundAccountList, { id: id });
+    }
+
     public addFundWay(item) {
         BaseData.fundWayList.push(item);
     }
 
+    public getFundWay(id) {
+        return _.find(BaseData.fundWayList, { id: id });
+    }
+
     public addFundParty(item) {
         BaseData.fundPartyList.push(item);
+    }
+
+    public getFundParty(id) {
+        return _.find(BaseData.fundPartyList, { id: id });
     }
 
     public getExpenseCategoryList() {
@@ -74,12 +85,16 @@ export class BaseDataService {
         BaseData.expenseCategoryList.push(item);
     }
 
+    public getExpenseCategory(id) {
+        return _.find(BaseData.expenseCategoryList, { id: id });
+    }
+
     getAddressList() {
         return BaseData.addressList;
     }
 
     getAddress(id) {
-
+        return _.find(BaseData.addressList, { id: id });
     }
 
     addAddress(item) {

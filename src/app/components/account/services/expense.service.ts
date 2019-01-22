@@ -1,9 +1,13 @@
 import { Injectable, Component } from '@angular/core';
 import { HttpClientService, BaseDataService, SystemService } from '../../../core/providers';
+
+import { Subject } from 'rxjs';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 @Injectable()
 export class ExpenseService {
+
+    public editEvent = new Subject<object>();
 
     constructor(
         private http: HttpClientService,
@@ -50,17 +54,28 @@ export class ExpenseService {
         };
     }
 
+
+    edit(value: object) {
+        this.editEvent.next(value);
+    }
+
     async addExpense(participantList, labelList) {
         try {
+
             const data = {
                 expense: this.expense,
                 expenseDetail: this.expenseDetail,
                 participantList: participantList,
                 labelList: labelList
             };
+
             await this.http.post('/DR/addExpense', data);
 
-            let expense = _.find(this.expenseList, { expenseBookId: this.expense.expenseBookId });
+            const fundAccount = this.baseDataService.getFundAccount(this.expenseDetail.fundAccountId);
+
+            fundAccount.balance = (fundAccount.balance * 100 - this.expenseDetail.amount * 100) / 100;
+
+            const expense = _.find(this.expenseList, { expenseBookId: this.expense.expenseBookId });
             if (expense) {
                 expense.totalAmount += this.expenseDetail.amount;
             } else {
@@ -77,6 +92,4 @@ export class ExpenseService {
             throw error;
         }
     }
-
-
 }

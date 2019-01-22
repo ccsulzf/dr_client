@@ -7,6 +7,7 @@ main {
     display: flex;
     align-items: stretch;
     padding: 0 20px;
+    margin: 4px 0 10px 0;
 
     ul {
       display: inline-flex;
@@ -16,9 +17,13 @@ main {
 
       li {
         margin-right: 20px;
-        display: inline-block;
+        display: inline-flex;
         white-space: nowrap;
         cursor: pointer;
+        height: 40px;
+        align-items: center;
+        /* text-align: center; */
+        padding: 0 10px;
       }
     }
   }
@@ -27,7 +32,7 @@ main {
     padding: 0 20px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(6, 1fr);
+    grid-template-rows: repeat(7, 1fr);
     grid-column-gap: 10px;
     grid-row-gap: 20px;
 
@@ -49,24 +54,41 @@ main {
 
         li {
           cursor: pointer;
+          display: flex;
+          justify-content: space-between;
+          padding-right: 20px;
         }
       }
     }
 
     .detail {
       grid-column: span 2;
-      grid-row: span 3;
-      border: 1px solid;
+      grid-row: span 4;
+      border: 1px dashed;
 
       ul {
         display: inline-flex;
         width: 100%;
-        margin: 4px 0;
+        margin-bottom: 12px;
+        border-bottom: 2px solid #efefef;
 
-        li {
-          margin: 0 10px;
+        .detail-item {
+          height: 40px;
+          padding: 0 24px;
           cursor: pointer;
-          padding: 5px;
+          box-sizing: border-box;
+          opacity: .6;
+          text-align: center;
+          display: inline-flex;
+          justify-content: center;
+          align-items: center;
+          white-space: nowrap;
+          vertical-align: top;
+          text-decoration: none;
+          position: relative;
+          overflow: hidden;
+          -webkit-tap-highlight-color: transparent;
+          cursor: pointer;
         }
       }
 

@@ -31,6 +31,19 @@ main>ul {
   cursor: pointer;
 }
 
+.expense-detail-list ul {
+  border: 1px solid #dedede;
+  border-bottom: none;
+}
+
+.expense-detail-list ul:first-of-type {
+  border-top: none;
+}
+
+.expense-detail-list ul:last-of-type {
+  border-bottom: none;
+}
+
 .expense-detail-list>li {
   display: flex;
   align-items: center;
@@ -65,8 +78,12 @@ main>ul {
   background: #dedede;
 }
 
-.expense-detail li:last-of-type {
-  border-bottom: none;
+.expense-detail li {
+  cursor: pointer;
+}
+
+.expense-detail li:hover {
+  background: #dedede;
 }
 
 .expense-detail li div {
@@ -76,18 +93,20 @@ main>ul {
   width: 100%;
 }
 
-.expense-detail li div span {
-  flex-grow: 1;
+.expense-detail li div:first-of-type {
+  border-bottom: 1px dashed #dedede;
 }
 
-
-// .expense-detail li div span:nth-of-type(2) {
-//   flex-grow: 0;
-// }
+.expense-detail li div span {
+  flex-grow: 1;
+  margin: 3px 2px;
+}
 
 .expense-detail li div span:first-of-type {
   width: 40%;
-  margin: 3px 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .expense-detail li div span:last-of-type {

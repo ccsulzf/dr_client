@@ -63,14 +63,19 @@
         (blur)="blur('isFundAccount')">
       <ul *ngIf="isFundAccount">
         <li *ngFor="let item of (baseData?.fundAccountList | filterMap:'fundWayId':fundWayItem?.id)" (click)="setFundAccount(item)">
-          {{item?.name}}
+          <span>{{item?.name}}</span>
+          <span>余额:{{item?.balance}}</span>
         </li>
         <li (click)="addFundAccount()">添加付款账户</li>
       </ul>
     </div>
-    <div class="detail">
+
+
+    <fieldset class="detail">
+      <legend>支出明细</legend>
       <ul>
-        <li [style.border]="expenseDetail == item ? '1px solid':''" *ngFor="let item of expenseDetailList" (click)="selec(item)">{{item}}</li>
+        <li class="detail-item" [style.border-bottom]="expenseDetail == item ? '2px solid #40a9ff':''" *ngFor="let item of expenseDetailList"
+          (click)="selec(item)">{{item}}</li>
       </ul>
       <div class="content" *ngIf="expenseDetail == '内容'">
         <div>
@@ -96,7 +101,7 @@
         <span *ngIf="!isPrticipanInputShow" (click)="isPrticipanInputShow=!isPrticipanInputShows">+ 添加参与者</span>
 
         <div class="input" *ngIf="isPrticipanInputShow ">
-          <input (focus)="isPrticipanInputShow=true" placeholder="添加参与者" (blur)="blur('isPrticipanInputShow')">
+          <input placeholder="添加参与者" (focus)="isPrticipanInputShow=true" (blur)="blur('isPrticipanInputShow')">
 
           <ul *ngIf="isPrticipanInputShow">
             <li *ngFor="let item of (baseData?.participantList | filterList:'list':participantList)" (click)="setParticipantItem(item)">
@@ -132,9 +137,9 @@
 
       <div class="memo" *ngIf="expenseDetail == '备注'">
         <textarea name="memo" [(ngModel)]="memo">
-        </textarea>
+          </textarea>
       </div>
-    </div>
+    </fieldset>
   </form>
 
   <div class="btn-group">
