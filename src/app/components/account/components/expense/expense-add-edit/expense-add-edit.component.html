@@ -28,7 +28,7 @@
       <input type="text" id="catehory" name="expenseCategory" [(ngModel)]="expenseCategory" (focus)="isExpenseCategory=true"
         (blur)="blur('isExpenseCategory')">
       <ul *ngIf="isExpenseCategory">
-        <li *ngFor="let item of baseData?.expenseCategoryList" (click)="setExpenseCategory(item)">
+        <li *ngFor="let item of expenseCategoryList" (click)="setExpenseCategory(item)">
           {{item.name}}
         </li>
         <li (click)="addExpenseCategory()">添加支出类别</li>
@@ -93,7 +93,7 @@
       <div class="participan" *ngIf="expenseDetail == '参与人'">
         <ng-container *ngFor="let item of participantList">
           <span>
-            {{item.name}}
+            {{item?.name}}
             <i (click)="deleteParticipant(item)">×</i>
           </span>
         </ng-container>
@@ -142,8 +142,16 @@
     </fieldset>
   </form>
 
-  <div class="btn-group">
+  <div class="btn-group" *ngIf="!editOrDelFlag && addFlag">
     <button (click)="addExpense()">添加支出</button>
-    <button>重置</button>
+    <button (click)="reset()">重置</button>
+  </div>
+
+  <div class="edit-del" *ngIf="editOrDelFlag && !addFlag">
+    <div class="btn-group">
+      <button (click)="editExpense()">编辑</button>
+      <button (click)="delExpense()">删除</button>
+    </div>
+    <a (click)="goAdd()">&gt;&gt;添加支出</a>
   </div>
 </main>

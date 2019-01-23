@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { HttpClientService, BaseDataService } from '../../../../../../core/providers';
+import { HttpClientService, BaseDataService, BaseData } from '../../../../../../core/providers';
 import { AccountService, ExpenseService } from '../../../../services';
 
 import * as _ from 'lodash';
@@ -25,7 +25,6 @@ export class ExpenseDetailComponent implements OnInit {
       if (list && list.length) {
         for (const item of list) {
           const expenseCategory = this.baseDataService.getExpenseCategory(item.expenseCategoryId);
-
           item.expenseCategoryName = expenseCategory.name;
 
           const fundParty = this.baseDataService.getFundParty(item.fundPartyId);

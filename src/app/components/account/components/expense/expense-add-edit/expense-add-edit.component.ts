@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { AccountService } from '../../../services';
 import { BaseDataService, SystemService } from '../../../../../core/providers';
 import { BaseData } from '../../../../../core/providers/base-data';
@@ -11,9 +11,14 @@ import * as moment from 'moment';
   templateUrl: './expense-add-edit.component.html',
   styleUrls: ['./expense-add-edit.component.scss']
 })
-export class ExpenseAddEditComponent implements OnInit, OnDestroy {
+export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
 
   public editEvent;
+
+
+  public addFlag = true;
+
+  public editOrDelFlag = false;
 
   public baseData;
   public isAddressShow = false;
@@ -34,6 +39,7 @@ export class ExpenseAddEditComponent implements OnInit, OnDestroy {
 
   public expenseCategory;
   public expenseCategoryItem;
+  public expenseCategoryList;
 
   public fundParty;
   public fundPartyItem;
@@ -56,6 +62,10 @@ export class ExpenseAddEditComponent implements OnInit, OnDestroy {
   public amount;
   public memo;
 
+  public expenseId;
+  public expenseDetailId;
+  public totalAmount;
+
   public expenseDetailList = [
     '内容', '参与人', '标签', '备注'
   ];
@@ -72,12 +82,20 @@ export class ExpenseAddEditComponent implements OnInit, OnDestroy {
     this.expenseBook = this.baseData.expenseBookList[0];
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.getExpenseCategoryList();
     this.editEvent = this.expenseService.editEvent.subscribe(async (data: any) => {
-      this.expenseDate = moment(data.expense.expenseDate).format('YYYY-MM-DD');
 
-      await this.selectExpenseBook(this.baseDataService.getExpenseBook(data.expense.expenseBookId));
+      this.expenseId = data.expense.id;
+      this.expenseDetailId = data.expenseDetail.id;
+      this.totalAmount = data.expense.totalAmount;
+
+      this.selectExpenseBook(this.baseDataService.getExpenseBook(data.expense.expenseBookId));
+
+      this.addFlag = false;
+      this.editOrDelFlag = true;
+
+      this.expenseDate = moment(data.expense.expenseDate).format('YYYY-MM-DD');
 
       this.setAddress(this.baseDataService.getAddress(data.expenseDetail.addressId));
 
@@ -92,7 +110,13 @@ export class ExpenseAddEditComponent implements OnInit, OnDestroy {
       this.content = data.expenseDetail.content;
 
       this.amount = data.expenseDetail.amount;
+
+      await this.getLableList();
+
+      await this.getParticipantList();
     });
+
+    this.participantList.push(_.find(BaseData.participantList, { isMyself: true }));
   }
 
   ngOnDestroy() {
@@ -101,14 +125,35 @@ export class ExpenseAddEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  async selectExpenseBook(item) {
-    this.expenseBook = item;
-    await this.getExpenseCategoryList();
+
+  async getParticipantList() {
+    this.participantList = [];
+    const data: any = await this.http.get('/DR/ExpenseDetailParticipant?expenseDetailId=' + this.expenseDetailId);
+    if (data && data.length) {
+      for (const item of data) {
+        this.participantList.push(this.baseDataService.getParticipant(item.participantId));
+      }
+    }
   }
 
-  async getExpenseCategoryList() {
+  async getLableList() {
+    this.labelList = [];
+    const data: any = await this.http.get('/DR/ExpenseDetailLabel?expenseDetailId=' + this.expenseDetailId);
+    if (data && data.length) {
+      for (const item of data) {
+        this.labelList.push(this.baseDataService.getLabel(item.labelId));
+      }
+    }
+  }
+
+  selectExpenseBook(item) {
+    this.expenseBook = item;
+    this.getExpenseCategoryList();
+  }
+
+  getExpenseCategoryList() {
     if (this.expenseBook) {
-      this.baseData.expenseCategoryList = await this.http.get('/DR/ExpenseCategory?expenseBookId=' + this.expenseBook.id);
+      this.expenseCategoryList = _.filter(BaseData.expenseCategoryList, { expenseBookId: this.expenseBook.id });
       this.expenseCategory = '';
       this.expenseCategoryItem = null;
     }
@@ -159,7 +204,7 @@ export class ExpenseAddEditComponent implements OnInit, OnDestroy {
 
   setAddress(item) {
     this.addressItem = item;
-    this.address = item.province + '/' + item.city + '/' + item.area;
+    this.address = item.province + '|' + item.city + '|' + item.area;
   }
 
   setExpenseCategory(item) {
@@ -232,8 +277,35 @@ export class ExpenseAddEditComponent implements OnInit, OnDestroy {
     this.expenseDetail = '内容',
       this.content = '';
     this.amount = '';
-    this.participantList.push(this.system.user);
     this.participantList = [];
+    this.participantList.push(_.find(BaseData.participantList, { isMyself: true }));
+  }
+
+
+  reset() {
+    this.expenseDate = '';
+    this.addressItem = null;
+    this.address = '';
+
+    this.expenseCategoryItem = null;
+    this.expenseCategory = '';
+
+    this.fundPartyItem = null;
+    this.fundParty = '';
+
+    this.fundWayItem = null;
+    this.fundWay = '';
+
+    this.fundAccountItem = null;
+    this.fundAccount = '';
+
+    this.init();
+  }
+
+  goAdd() {
+    this.reset();
+    this.addFlag = true;
+    this.editOrDelFlag = false;
   }
 
   async addExpense() {
@@ -261,4 +333,41 @@ export class ExpenseAddEditComponent implements OnInit, OnDestroy {
       alert('添加账目失败：' + error);
     }
   }
+
+  async editExpense() {
+    try {
+      this.expenseService.expense = {
+        id: this.expenseId,
+        expenseDate: moment(this.expenseDate).format('YYYY-MM-DD'),
+        userId: this.system.user.id,
+        expenseBookId: this.expenseBook.id,
+        totalAmount: this.totalAmount
+      };
+
+      this.expenseService.expenseDetail = {
+        id: this.expenseDetailId,
+        expenseId: this.expenseId,
+        content: this.content,
+        amount: this.amount,
+        memo: this.memo,
+        addressId: this.addressItem.id,
+        expenseCategoryId: this.expenseCategoryItem.id,
+        fundPartyId: this.fundPartyItem.id,
+        fundWayId: this.fundWayItem.id,
+        fundAccountId: this.fundAccountItem.id
+      };
+
+      await this.expenseService.editExpense(this.participantList, this.labelList);
+      this.accountService.changeComponent({ component: 'expense-list' });
+      this.expenseService.init();
+      this.reset();
+      this.goAdd();
+    } catch (error) {
+      alert('编辑账目失败：' + error);
+    }
+  }
+
+  // async delExpense() {
+
+  // }
 }

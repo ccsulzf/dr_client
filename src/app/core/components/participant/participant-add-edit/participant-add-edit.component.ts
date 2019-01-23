@@ -8,9 +8,13 @@ import { SystemService, HttpClientService, BaseDataService } from '../../../prov
 })
 export class ParticipantAddEditComponent implements OnInit {
 
-  public name = '';
-  public alias = '';
-  public memo = '';
+  public participant = {
+    name: '',
+    alias: '',
+    memo: '',
+    isMyself: false,
+    userId: this.system.user.id
+  };
   constructor(
     public system: SystemService,
     public http: HttpClientService,
@@ -21,8 +25,7 @@ export class ParticipantAddEditComponent implements OnInit {
   }
 
   async add() {
-    // console.info(this.system.user);
-    const participant = await this.http.post('/DR/Participant', { name: this.name, alias: this.alias, memo: this.memo, userId: this.system.user.id });
+    const participant = await this.http.post('/DR/Participant', this.participant);
     if (participant) {
       this.baseData.addParticipant(participant);
       this.system.done();

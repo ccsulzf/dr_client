@@ -12,6 +12,7 @@ export class BaseDataService {
     ) { }
 
     async getAllBaseData() {
+
         this.http.get('/DR/ExpenseBook?userId=' + this.system.user.id).then((value: any) => {
             BaseData.expenseBookList = value;
         });
@@ -39,10 +40,18 @@ export class BaseDataService {
         this.http.get('/DR/Label?userId=' + this.system.user.id).then((value: any) => {
             BaseData.labelList = value;
         });
+
+        this.http.get('/DR/ExpenseCategoryList?userId=' + this.system.user.id).then((value: any) => {
+            BaseData.expenseBookList = value;
+        });
     }
 
     public addLable(item) {
         BaseData.labelList.push(item);
+    }
+
+    public getLabel(id) {
+        return _.find(BaseData.labelList, { id: id });
     }
 
     public deleteLabel(item) {
@@ -51,6 +60,10 @@ export class BaseDataService {
 
     public addParticipant(item) {
         BaseData.participantList.push(item);
+    }
+
+    public getParticipant(id) {
+        return _.find(BaseData.participantList, { id: id });
     }
 
     public addFundAccount(item) {
