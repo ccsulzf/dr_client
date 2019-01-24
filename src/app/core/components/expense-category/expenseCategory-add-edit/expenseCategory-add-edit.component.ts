@@ -21,11 +21,11 @@ export class ExpenseCategoryAddEditComponent implements OnInit {
   async add() {
     const expenseCategory = await this.http.post('/DR/ExpenseCategory',
       {
-        expenseBookId: this.data.id, name: this.name, memo: this.memo
+        expenseBookId: this.data.id, name: this.name, memo: this.memo,
+        userId: this.system.user.id
       });
     if (expenseCategory) {
       this.baseData.addExpenseCategory(expenseCategory);
-      // this.baseData.addAddress(address);
       this.system.done();
     }
   }

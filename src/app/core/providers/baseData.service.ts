@@ -41,8 +41,8 @@ export class BaseDataService {
             BaseData.labelList = value;
         });
 
-        this.http.get('/DR/ExpenseCategoryList?userId=' + this.system.user.id).then((value: any) => {
-            BaseData.expenseBookList = value;
+        this.http.get('/DR/ExpenseCategory?userId=' + this.system.user.id).then((value: any) => {
+            BaseData.expenseCategoryList = value;
         });
     }
 

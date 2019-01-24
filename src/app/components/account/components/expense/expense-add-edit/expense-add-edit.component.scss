@@ -2,6 +2,14 @@
   flex-grow: 1;
 }
 
+input[type=date]::-webkit-inner-spin-button {
+  visibility: hidden;
+}
+
+input[type=date]::-webkit-inner-spin-button {
+  visibility: hidden;
+}
+
 main {
   .expense-book {
     display: flex;

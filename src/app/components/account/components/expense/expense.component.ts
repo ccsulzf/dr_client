@@ -1,4 +1,7 @@
-import { Component, OnInit, ViewChild, ComponentFactoryResolver, OnDestroy, AfterViewInit } from '@angular/core';
+import {
+  Component, OnInit, ViewChild, ComponentFactoryResolver,
+  OnDestroy, AfterViewInit, AfterViewChecked, ChangeDetectorRef
+} from '@angular/core';
 import { DynamicComponentDirective } from '../../../../core/directives';
 import { SystemService } from '../../../../core/providers';
 import {
@@ -13,17 +16,21 @@ import { AccountService } from '../../services';
   templateUrl: './expense.component.html',
   styleUrls: ['./expense.component.scss']
 })
-export class ExpenseComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ExpenseComponent implements OnDestroy, AfterViewInit, AfterViewChecked {
   @ViewChild(DynamicComponentDirective) dynamic: DynamicComponentDirective;
   public changeComponent;
   public done;
   constructor(
     public componentFactoryResolver: ComponentFactoryResolver,
     public accountService: AccountService,
-    public system: SystemService
+    public system: SystemService,
+    private cd: ChangeDetectorRef
   ) { }
 
-  ngOnInit() {
+  ngAfterViewInit() {
+    this.accountService.rootComponent.component = ExpenseListComponent;
+    this.accountService.rootComponent.data = '';
+    this.dynamicLoad(ExpenseListComponent);
     this.done = this.system.doneEvent.subscribe(() => {
       this.dynamicLoad(this.accountService.rootComponent.component, this.accountService.rootComponent.data);
     });
@@ -62,11 +69,15 @@ export class ExpenseComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
-    this.accountService.rootComponent.component = ExpenseListComponent;
-    this.accountService.rootComponent.data = '';
-    this.dynamicLoad(ExpenseListComponent);
+  ngAfterViewChecked() {
+    this.cd.detectChanges();
   }
+
+  // ngAfterViewInit() {
+  //   this.accountService.rootComponent.component = ExpenseListComponent;
+  //   this.accountService.rootComponent.data = '';
+  //   this.dynamicLoad(ExpenseListComponent);
+  // }
 
   dynamicLoad(component?, data?) {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);

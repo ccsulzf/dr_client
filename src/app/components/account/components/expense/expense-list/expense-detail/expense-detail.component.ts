@@ -10,8 +10,6 @@ import * as _ from 'lodash';
 })
 export class ExpenseDetailComponent implements OnInit {
   @Input() data;
-
-  groupList = [];
   constructor(
     private accountService: AccountService,
     private http: HttpClientService,
@@ -21,27 +19,12 @@ export class ExpenseDetailComponent implements OnInit {
 
   ngOnInit() {
     this.http.get('/DR/ExpenseDetail?expenseId=' + this.data.id).then((list: any) => {
-      this.groupList = [];
+      this.expenseService.expenseDetailList = [];
       if (list && list.length) {
         for (const item of list) {
-          const expenseCategory = this.baseDataService.getExpenseCategory(item.expenseCategoryId);
-          item.expenseCategoryName = expenseCategory.name;
-
-          const fundParty = this.baseDataService.getFundParty(item.fundPartyId);
-          item.fundPartyName = fundParty.name;
-
-          const fundWay = this.baseDataService.getFundWay(item.fundWayId);
-          item.fundWayName = fundWay.name;
+          this.expenseService.changeExpenseDetail(item);
         }
-        this.expenseService.expenseDetailList = list;
-        const group = _.groupBy(list, 'expenseCategoryName');
-
-        for (const item in group) {
-          this.groupList.push({
-            name: item,
-            list: group[item]
-          });
-        }
+        this.expenseService.groupDetailList();
       }
     });
   }

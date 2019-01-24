@@ -1,8 +1,9 @@
 <main>
   <div class="day-expense">
-    <span>
-      今日支出
+    <span (click)="getCal()" *ngIf="!isShowCal">
+      {{showDate}}
     </span>
+    <input type="date" [hidden]="!isShowCal" name="selectDate" [ngModel]="selectDate" (ngModelChange)="changeDate($event)">
     <span>
       总计:-{{expenseService?.totalDayAmount}}元
     </span>
@@ -19,6 +20,10 @@
   </ul>
 
   <div *ngIf="!(expenseService?.expenseList && expenseService?.expenseList.length)" class="no-expense">
-    今日未有支出
+    未有支出
   </div>
+</main>
+<main>
+  <input id="calendar" type="date">
+  <input class="button" type="button" value="Click" />
 </main>

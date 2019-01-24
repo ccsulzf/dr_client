@@ -15,7 +15,6 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
 
   public editEvent;
 
-
   public addFlag = true;
 
   public editOrDelFlag = false;
@@ -64,6 +63,7 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
 
   public expenseId;
   public expenseDetailId;
+  public expenseBookId;
   public totalAmount;
 
   public expenseDetailList = [
@@ -87,6 +87,7 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
     this.editEvent = this.expenseService.editEvent.subscribe(async (data: any) => {
 
       this.expenseId = data.expense.id;
+      this.expenseBookId = data.expense.expenseBookId;
       this.expenseDetailId = data.expenseDetail.id;
       this.totalAmount = data.expense.totalAmount;
 
@@ -327,7 +328,12 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
         fundAccountId: this.fundAccountItem.id
       };
       await this.expenseService.addExpense(this.participantList, this.labelList);
-      this.expenseService.init();
+      if ((this.expenseService.expneseListDate !==
+        moment(this.expenseDate).format('YYYY-MM-DD'))
+        || (this.expenseBookId !== this.expenseBook.id)) {
+        this.expenseService.expneseListDate = moment(this.expenseDate).format('YYYY-MM-DD'),
+          this.accountService.changeComponent({ component: 'expense-list' });
+      }
       this.init();
     } catch (error) {
       alert('添加账目失败：' + error);
@@ -358,16 +364,16 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
       };
 
       await this.expenseService.editExpense(this.participantList, this.labelList);
-      this.accountService.changeComponent({ component: 'expense-list' });
+
+      this.expenseService.expneseListDate = moment(this.expenseDate).format('YYYY-MM-DD'),
+        this.accountService.changeComponent({ component: 'expense-list' });
+
       this.expenseService.init();
+
       this.reset();
       this.goAdd();
     } catch (error) {
       alert('编辑账目失败：' + error);
     }
   }
-
-  // async delExpense() {
-
-  // }
 }

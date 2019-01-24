@@ -9,8 +9,13 @@ export class ExpenseService {
 
     public editEvent = new Subject<object>();
 
+    public changeDateEvent = new Subject<string>();
+
     public totalDayAmount = 0;
 
+    public expneseListDate = moment().format('YYYY-MM-DD');
+
+    public groupExpenseDetailList = [];
     constructor(
         private http: HttpClientService,
         private baseDataService: BaseDataService,
@@ -21,61 +26,62 @@ export class ExpenseService {
 
     public expenseDetailList = [];
 
-    // public expense: any = {
-    //     expenseDate: '',
-    //     userId: '',
-    //     expenseBookId: '',
-    //     totalAmount: 0
-    // };
     public expense: any;
 
-    // public expenseDetail: any = {
-    //     addressId: '',
-    //     expenseCategoryId: '',
-    //     fundPartyId: '',
-    //     fundWayId: '',
-    //     fundAccountId: '',
-    //     content: '',
-    //     amount: 0
-    // };
     public expenseDetail: any;
 
     init() {
-        // this.expense = {
-        //     userId: '',
-        //     expenseBookId: '',
-        //     expenseDate: '',
-        // };
-        // this.expenseDetail = {
-        //     addressId: '',
-        //     content: '',
-        //     amount: 0,
-        //     memo: '',
-        //     expenseCategoryId: '',
-        //     fundPartyId: '',
-        //     fundWayId: '',
-        //     fundAccountId: ''
-        // };
         this.expense = null;
         this.expenseDetail = null;
     }
-
 
     edit(value: object) {
         this.editEvent.next(value);
     }
 
+    changeDate(value: string) {
+        this.changeDateEvent.next(value);
+    }
+
+    changeExpenseDetail(item) {
+        const expenseCategory = this.baseDataService.getExpenseCategory(item.expenseCategoryId);
+        item.expenseCategoryName = expenseCategory.name;
+
+        const fundParty = this.baseDataService.getFundParty(item.fundPartyId);
+        item.fundPartyName = fundParty.name;
+
+        const fundWay = this.baseDataService.getFundWay(item.fundWayId);
+        item.fundWayName = fundWay.name;
+
+        this.expenseDetailList.push(item);
+    }
+
+    groupDetailList() {
+        this.groupExpenseDetailList = [];
+        const group = _.groupBy(this.expenseDetailList, 'expenseCategoryName');
+
+        for (const item in group) {
+            this.groupExpenseDetailList.push({
+                name: item,
+                list: group[item]
+            });
+        }
+    }
+
     async addExpense(participantList, labelList) {
         try {
-
-            const data = {
+            const expenseData = {
                 expense: this.expense,
                 expenseDetail: this.expenseDetail,
                 participantList: participantList,
                 labelList: labelList
             };
 
-            const expenseId = await this.http.post('/DR/addExpense', data);
+            const data: any = await this.http.post('/DR/addExpense', expenseData);
+
+            this.changeExpenseDetail(data.expenseDetail);
+
+            this.groupDetailList();
 
             const fundAccount = this.baseDataService.getFundAccount(this.expenseDetail.fundAccountId);
 
@@ -90,7 +96,7 @@ export class ExpenseService {
             } else {
                 const expenseBook = this.baseDataService.getExpenseBook(this.expense.expenseBookId);
                 this.expenseList.push({
-                    id: expenseId,
+                    id: data.expenseId,
                     expenseDate: moment().format('YYYY-MM-DD'),
                     userId: this.system.user.id,
                     expenseBookId: this.expense.expenseBookId,
@@ -98,7 +104,6 @@ export class ExpenseService {
                     totalAmount: this.expenseDetail.amount
                 });
             }
-
         } catch (error) {
             throw error;
         }

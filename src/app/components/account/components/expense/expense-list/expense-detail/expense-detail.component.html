@@ -8,7 +8,7 @@
     </span>
   </div>
   <ul class="expense-detail-list">
-    <li *ngFor="let group of groupList">
+    <li *ngFor="let group of expenseService?.groupExpenseDetailList">
       <div class="expense-category">
         {{group.name}}
       </div>
