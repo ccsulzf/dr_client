@@ -117,7 +117,26 @@ export class ExpenseService {
                 participantList: participantList,
                 labelList: labelList
             };
-            await this.http.post('/DR/editExpense', data);
+            const prevExpenseDetail: any = await this.http.post('/DR/editExpense', data);
+            const prevFundAccount = this.baseDataService.getFundAccount(prevExpenseDetail.fundAccountId);
+            const nowFundAccount = this.baseDataService.getFundAccount(this.expenseDetail.fundAccountId);
+
+            prevFundAccount.balance = (prevFundAccount.balance * 100 + prevExpenseDetail.amount * 100) / 100;
+
+            nowFundAccount.balance = (nowFundAccount.balance * 100 - this.expenseDetail.amount * 100) / 100;
+
+        } catch (error) {
+            throw error;
+        }
+    }
+
+
+    async deleteExpenseDetail(expenseDetailId) {
+        try {
+            await this.http.delete('/DR/delExpense?expenseDetailId=' + expenseDetailId);
+            const fundAccount = this.baseDataService.getFundAccount(this.expenseDetail.fundAccountId);
+            fundAccount.balance = (fundAccount.balance * 100 + this.expenseDetail.amount * 100) / 100;
+            this.totalDayAmount = (this.totalDayAmount * 100 - this.expenseDetail.amount * 100) / 100;
         } catch (error) {
             throw error;
         }

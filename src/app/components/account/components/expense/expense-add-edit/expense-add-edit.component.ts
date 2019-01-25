@@ -373,7 +373,24 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
       this.reset();
       this.goAdd();
     } catch (error) {
-      alert('编辑账目失败：' + error);
+      alert('编辑账目失败:' + error);
+    }
+  }
+
+
+  async delExpense() {
+    try {
+      await this.expenseService.deleteExpenseDetail(this.expenseDetailId);
+      this.reset();
+      _.remove(this.expenseService.expenseDetailList, { id: this.expenseDetailId });
+      if (this.expenseService.expenseDetailList.length) {
+        this.expenseService.groupDetailList();
+      } else {
+        _.remove(this.expenseService.expenseList, { id: this.expenseId });
+        this.accountService.changeComponent({ component: 'expense-list' });
+      }
+    } catch (error) {
+      alert('删除账目失败:' + error);
     }
   }
 }
