@@ -2,12 +2,10 @@
   flex-grow: 1;
 }
 
-input[type=date]::-webkit-inner-spin-button {
-  visibility: hidden;
-}
-
-input[type=date]::-webkit-inner-spin-button {
-  visibility: hidden;
+ul,
+li {
+  margin: 0;
+  padding: 0;
 }
 
 main {

@@ -1,7 +1,12 @@
 <main>
   <p>{{user.name}}</p>
   <ul>
-    <li (click)="toAccount()">记账</li>
+    <li>记账
+      <ul>
+        <li (click)="toExpense()">支出</li>
+        <li (click)="toIncome()">收入</li>
+      </ul>
+    </li>
     <li>报表</li>
     <li>设置</li>
   </ul>

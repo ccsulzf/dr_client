@@ -79,7 +79,9 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
     public expenseService: ExpenseService
   ) {
     this.baseData = BaseData;
+    this.expenseDate = moment().format('YYYY-MM-DD');
     this.expenseBook = this.baseData.expenseBookList[0];
+    this.setAddress(_.find(BaseData.addressList, { isCurrenLive: 1 }))
   }
 
   ngAfterViewInit() {
@@ -301,6 +303,9 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
     this.fundAccount = '';
 
     this.init();
+    this.expenseDate = moment().format('YYYY-MM-DD');
+    this.expenseBook = this.baseData.expenseBookList[0];
+    this.setAddress(_.find(BaseData.addressList, { isCurrenLive: 1 }))
   }
 
   goAdd() {
@@ -382,6 +387,7 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
     try {
       await this.expenseService.deleteExpenseDetail(this.expenseDetailId);
       this.reset();
+      this.goAdd();
       _.remove(this.expenseService.expenseDetailList, { id: this.expenseDetailId });
       if (this.expenseService.expenseDetailList.length) {
         this.expenseService.groupDetailList();

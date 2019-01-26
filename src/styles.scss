@@ -8,15 +8,15 @@ body {
   overflow: hidden;
 }
 
-ul,
-p {
-  margin: 0;
-  padding: 0;
+// 控制日期的上下
+input[type=date]::-webkit-inner-spin-button {
+  visibility: hidden;
 }
 
-li {
-  list-style: none;
+input[type=date]::-webkit-inner-spin-button {
+  visibility: hidden;
 }
+
 
 button {
   cursor: pointer;

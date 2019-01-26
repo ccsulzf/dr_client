@@ -9,6 +9,9 @@ import { ExpenseAddEditComponent } from './components/expense/expense-add-edit/e
 import { ExpenseListComponent } from './components/expense/expense-list/expense-list.component';
 import { ExpenseDetailComponent } from './components/expense/expense-list/expense-detail/expense-detail.component';
 import { AccountService, ExpenseService } from './services';
+import { IncomeComponent } from './components/income/income.component';
+import { IncomeListComponent } from './components/income/income-list/income-list.component';
+import { IncomeAddEditComponent } from './components/income/income-add-edit/income-add-edit.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -16,7 +19,7 @@ import { AccountService, ExpenseService } from './services';
     AccountRoutingModule,
     FormsModule
   ],
-  declarations: [AccountComponent, ExpenseComponent, ExpenseAddEditComponent, ExpenseListComponent, ExpenseDetailComponent],
+  declarations: [AccountComponent, ExpenseComponent, ExpenseAddEditComponent, ExpenseListComponent, ExpenseDetailComponent, IncomeComponent, IncomeListComponent, IncomeAddEditComponent],
   entryComponents: [
     ExpenseListComponent,
     ExpenseDetailComponent
