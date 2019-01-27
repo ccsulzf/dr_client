@@ -18,6 +18,16 @@ input[type=date]::-webkit-inner-spin-button {
 }
 
 
+// 向上的三角形
+.down-triangle {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 8.7px 5px 0 5px;
+  border-color: #00adb5 transparent transparent transparent;
+}
+
+
 button {
   cursor: pointer;
 }

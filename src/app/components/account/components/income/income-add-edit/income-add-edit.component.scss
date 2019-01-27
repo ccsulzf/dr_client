@@ -1,0 +1,60 @@
+:host {
+  flex-grow: 1;
+  width: 20px;
+}
+
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}
+
+
+form {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(6, auto);
+  grid-column-gap: 10px;
+  grid-row-gap: 20px;
+  padding: 0 20px;
+
+  input {
+    width: 98%;
+    margin-top: 2px;
+  }
+
+  .row-3 {
+    grid-column: span 3;
+  }
+
+  .row-6 {
+    grid-column: span 6;
+  }
+
+  .period {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-column-gap: 10px;
+  }
+
+  .participant,
+  .label {
+    div {
+      height: 60px;
+      border: 1px dashed;
+    }
+
+  }
+
+  .memo {
+    display: flex;
+    flex-direction: column;
+
+    textarea {
+      border: 1px solid #dedede;
+      height: 60px;
+    }
+
+  }
+
+}

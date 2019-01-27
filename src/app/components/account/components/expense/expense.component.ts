@@ -73,12 +73,6 @@ export class ExpenseComponent implements OnDestroy, AfterViewInit, AfterViewChec
     this.cd.detectChanges();
   }
 
-  // ngAfterViewInit() {
-  //   this.accountService.rootComponent.component = ExpenseListComponent;
-  //   this.accountService.rootComponent.data = '';
-  //   this.dynamicLoad(ExpenseListComponent);
-  // }
-
   dynamicLoad(component?, data?) {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
     const viewContainerRef = this.dynamic.viewContainerRef;

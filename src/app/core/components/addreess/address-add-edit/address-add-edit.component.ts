@@ -55,7 +55,7 @@ export class AddressAddEditComponent implements OnInit {
       });
     if (address) {
       this.baseData.addAddress(address);
-      this.system.done();
+      this.system.done(address);
     }
   }
 

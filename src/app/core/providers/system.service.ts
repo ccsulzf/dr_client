@@ -2,10 +2,25 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 @Injectable()
 export class SystemService {
+
+    public temp: any;
+
+    public showListEvent = new Subject<any>();
+
     public doneEvent = new Subject<any>();
+
+    public changeComponentEvent = new Subject<object>();
 
     done(value?) {
         this.doneEvent.next(value);
+    }
+
+    showList(data) {
+        this.showListEvent.next(data);
+    }
+
+    changeComponent(value: object) {
+        this.changeComponentEvent.next(value);
     }
 
     set user(value) {

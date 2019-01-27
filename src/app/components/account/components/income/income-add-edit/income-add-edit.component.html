@@ -1,3 +1,66 @@
-<p>
-  income-add-edit works!
-</p>
+<main>
+  <form>
+    <div class="row-3">
+      <address-select [title]="'收入地点'" (setAddress)="onSetAddress($event)"></address-select>
+    </div>
+    <div class="row-3">
+      <incomeCategory-select [title]="'收入类别'"></incomeCategory-select>
+    </div>
+    <div class="row-3">
+      <label>
+        收入付款方:
+      </label>
+      <input type="text">
+    </div>
+    <div class="row-3">
+      <label>
+        收款方式:
+      </label>
+      <input type="text">
+    </div>
+    <div class="row-3">
+      <label>
+        收款账户:
+      </label>
+      <input type="text">
+    </div>
+    <div class="row-3">
+      <label>
+        收款金额:
+      </label>
+      <input type="text">
+    </div>
+
+    <div class="row-6">
+      <label>收款周期:</label>
+      <div class="row-6 period">
+        <input class="row-3" type="date" placeholder="开始日期">
+        <input class="row-3" type="date">
+      </div>
+    </div>
+
+    <div class="row-3 participant">
+      <label>
+        参与人:
+      </label>
+      <div>
+      </div>
+    </div>
+    <div class="row-3 label">
+      <label>
+        标签:
+      </label>
+      <div>
+
+      </div>
+    </div>
+
+    <div class="row-6 memo">
+      <label>
+        备注:
+      </label>
+
+      <textarea class="row-6"></textarea>
+    </div>
+  </form>
+</main>

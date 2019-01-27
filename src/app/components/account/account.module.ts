@@ -22,7 +22,8 @@ import { IncomeAddEditComponent } from './components/income/income-add-edit/inco
   declarations: [AccountComponent, ExpenseComponent, ExpenseAddEditComponent, ExpenseListComponent, ExpenseDetailComponent, IncomeComponent, IncomeListComponent, IncomeAddEditComponent],
   entryComponents: [
     ExpenseListComponent,
-    ExpenseDetailComponent
+    ExpenseDetailComponent,
+    IncomeListComponent
   ],
   providers: [
     AccountService,
