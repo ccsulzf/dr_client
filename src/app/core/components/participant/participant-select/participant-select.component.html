@@ -1,0 +1,19 @@
+<main>
+  <label>参与:</label>
+  <div class="content">
+    <ul class="selected-participant">
+      <li>李志锋 <i></i></li>
+    </ul>
+    <div class="select" id="participant-select" blankClick>
+      <button>选择参与人</button>
+      <div class="ul-select" *ngIf="isListShow">
+        <ul>
+          <!-- <li (click)="select(item)" *ngFor="let item of addressList">
+                  {{item?.province}}|{{item?.city}}|{{item?.area}}
+                </li> -->
+        </ul>
+        <div class="add" (click)="add()">添加参与人</div>
+      </div>
+    </div>
+  </div>
+</main>

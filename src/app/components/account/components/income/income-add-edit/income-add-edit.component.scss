@@ -15,8 +15,8 @@ form {
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(6, auto);
   grid-column-gap: 10px;
-  grid-row-gap: 20px;
-  padding: 0 20px;
+  grid-row-gap: 15px;
+  padding: 20px;
 
   input {
     width: 98%;
@@ -37,14 +37,6 @@ form {
     grid-column-gap: 10px;
   }
 
-  .participant,
-  .label {
-    div {
-      height: 60px;
-      border: 1px dashed;
-    }
-
-  }
 
   .memo {
     display: flex;

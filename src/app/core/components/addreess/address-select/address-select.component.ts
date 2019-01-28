@@ -25,11 +25,11 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.addressList = BaseData.addressList;
-    this.select(_.find(this.addressList, { isCurrenLive: 1 }))
+    this.select(_.find(this.addressList, { isCurrenLive: 1 }));
     this.setAddress.emit(this.addressItem.id);
 
     this.showListEvent = this.system.showListEvent.subscribe((data) => {
-      if (this.clickId == data.id) {
+      if (this.clickId === data.id) {
         this.isListShow = !this.isListShow;
       } else {
         if (data.id) {
@@ -42,7 +42,7 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
       if (data) {
         this.select(data);
       } else {
-        this.select(_.find(this.addressList, { isCurrenLive: 1 }))
+        this.select(_.find(this.addressList, { isCurrenLive: 1 }));
       }
     });
   }

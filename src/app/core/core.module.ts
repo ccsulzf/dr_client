@@ -23,6 +23,7 @@ import { FundAccountAddEditComponent } from './components/fundAccount/fund-accou
 import { ParticipantAddEditComponent } from './components/participant/participant-add-edit/participant-add-edit.component';
 import { AddressSelectComponent } from './components/addreess/address-select/address-select.component';
 import { IncomeCategorySelectComponent } from './components/income-category/incomeCategory-select/incomeCategory-select.component';
+import { ParticipantSelectComponent } from './components/participant/participant-select/participant-select.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -32,11 +33,14 @@ import { IncomeCategorySelectComponent } from './components/income-category/inco
   declarations: [NavComponent, DynamicComponentDirective, BlankClickDirective,
     AddressAddEditComponent, ExpenseBookAddEditComponent,
     ExpenseCategoryAddEditComponent, FundPartyAddEditComponent,
-    FilterPipe, FilterListPipe, FilterNamePipe, FundWayAddEditComponent, FundAccountAddEditComponent, ParticipantAddEditComponent, AddressSelectComponent, IncomeCategorySelectComponent],
+    FilterPipe, FilterListPipe, FilterNamePipe, FundWayAddEditComponent,
+    FundAccountAddEditComponent, ParticipantAddEditComponent,
+    AddressSelectComponent, IncomeCategorySelectComponent, ParticipantSelectComponent],
   exports: [
     NavComponent,
     AddressSelectComponent,
     IncomeCategorySelectComponent,
+    ParticipantSelectComponent,
     DynamicComponentDirective,
     BlankClickDirective,
     FilterPipe,
