@@ -24,6 +24,7 @@ import { ParticipantAddEditComponent } from './components/participant/participan
 import { AddressSelectComponent } from './components/addreess/address-select/address-select.component';
 import { IncomeCategorySelectComponent } from './components/income-category/incomeCategory-select/incomeCategory-select.component';
 import { ParticipantSelectComponent } from './components/participant/participant-select/participant-select.component';
+import { LabelSelectComponent } from './components/label/label-select/label-select.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -35,12 +36,13 @@ import { ParticipantSelectComponent } from './components/participant/participant
     ExpenseCategoryAddEditComponent, FundPartyAddEditComponent,
     FilterPipe, FilterListPipe, FilterNamePipe, FundWayAddEditComponent,
     FundAccountAddEditComponent, ParticipantAddEditComponent,
-    AddressSelectComponent, IncomeCategorySelectComponent, ParticipantSelectComponent],
+    AddressSelectComponent, IncomeCategorySelectComponent, ParticipantSelectComponent, LabelSelectComponent],
   exports: [
     NavComponent,
     AddressSelectComponent,
     IncomeCategorySelectComponent,
     ParticipantSelectComponent,
+    LabelSelectComponent,
     DynamicComponentDirective,
     BlankClickDirective,
     FilterPipe,

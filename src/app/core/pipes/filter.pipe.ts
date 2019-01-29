@@ -39,11 +39,11 @@ export class FilterListPipe implements PipeTransform {
 
 @Pipe({ name: 'filterName' })
 export class FilterNamePipe implements PipeTransform {
-    transform(list, prop, value) { 
+    transform(list, prop, value) {
         console.info(list);
         console.info(prop);
         console.info(value);
-        
+
         if (!prop || !value) {
             return list;
         }

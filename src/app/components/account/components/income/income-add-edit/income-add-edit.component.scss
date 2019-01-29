@@ -31,6 +31,11 @@ form {
     grid-column: span 6;
   }
 
+  .participant,
+  .label {
+    margin-top: -10px;
+  }
+
   .period {
     display: grid;
     grid-template-columns: repeat(6, 1fr);

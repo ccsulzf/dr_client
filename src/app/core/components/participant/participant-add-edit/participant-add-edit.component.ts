@@ -28,7 +28,7 @@ export class ParticipantAddEditComponent implements OnInit {
     const participant = await this.http.post('/DR/Participant', this.participant);
     if (participant) {
       this.baseData.addParticipant(participant);
-      this.system.done();
+      this.system.done({ model: 'participant', data: participant });
     }
   }
 

@@ -8,6 +8,10 @@ body {
   overflow: hidden;
 }
 
+label {
+  font-size: 14px;
+}
+
 // 控制日期的上下
 input[type=date]::-webkit-inner-spin-button {
   visibility: hidden;

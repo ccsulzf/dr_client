@@ -40,15 +40,10 @@
     </div>
 
     <div class="row-6 participant">
-      <participant-select></participant-select>
+      <participant-select [title]="'参与'" (setParticipantList)="onSetParticipantList($event)"></participant-select>
     </div>
     <div class="row-6 label">
-      <label>
-        标签:
-      </label>
-      <div>
-
-      </div>
+      <label-select [title]="'标签'"></label-select>
     </div>
 
     <div class="row-6 memo">

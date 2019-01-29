@@ -16,7 +16,7 @@ import { AccountService } from '../../services';
   templateUrl: './income.component.html',
   styleUrls: ['./income.component.scss']
 })
-export class IncomeComponent implements OnInit, AfterViewInit {
+export class IncomeComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(DynamicComponentDirective) dynamic: DynamicComponentDirective;
   public changeComponent;
   public done;

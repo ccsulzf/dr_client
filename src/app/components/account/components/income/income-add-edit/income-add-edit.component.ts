@@ -16,7 +16,10 @@ export class IncomeAddEditComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSetAddress() {
+  onSetAddress(address) {
+  }
 
+  onSetParticipantList(participantList) {
+    console.info(participantList);
   }
 }

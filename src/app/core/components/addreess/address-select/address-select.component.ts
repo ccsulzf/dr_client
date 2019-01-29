@@ -26,8 +26,6 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.addressList = BaseData.addressList;
     this.select(_.find(this.addressList, { isCurrenLive: 1 }));
-    this.setAddress.emit(this.addressItem.id);
-
     this.showListEvent = this.system.showListEvent.subscribe((data) => {
       if (this.clickId === data.id) {
         this.isListShow = !this.isListShow;
@@ -38,9 +36,9 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.doneEvent = this.system.doneEvent.subscribe((data) => {
-      if (data) {
-        this.select(data);
+    this.doneEvent = this.system.doneEvent.subscribe((value) => {
+      if (value && value.model === 'address') {
+        this.select(value.data);
       } else {
         this.select(_.find(this.addressList, { isCurrenLive: 1 }));
       }
@@ -52,6 +50,7 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
     if (item) {
       this.addressItem = item;
       this.address = item.province + '|' + item.city + '|' + item.area;
+      this.setAddress.emit(this.addressItem.id);
     } else {
       this.addressItem = null;
       this.address = '';

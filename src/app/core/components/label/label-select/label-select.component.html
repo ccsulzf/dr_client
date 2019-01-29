@@ -1,0 +1,12 @@
+<main>
+  <label *ngIf="title">{{title}}:</label>
+  <div class="content">
+    <ul class="selected-label">
+      <li class="label">真的好吃 <i></i></li>
+      <li class="add-label" *ngIf="!isInputShow" (click)="showLabel()">+ 添加标签</li>
+      <li *ngIf="isInputShow">
+        <input (focus)="isInputShow = true" (blur)="isInputShow = false">
+      </li>
+    </ul>
+  </div>
+</main>

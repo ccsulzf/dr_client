@@ -1,12 +1,19 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, EventEmitter, Output } from '@angular/core';
 import { SystemService, BaseDataService, BaseData } from '../../../providers';
-
+import * as _ from 'lodash';
 @Component({
   selector: 'participant-select',
   templateUrl: './participant-select.component.html',
   styleUrls: ['./participant-select.component.scss']
 })
 export class ParticipantSelectComponent implements OnInit, OnDestroy {
+  @Input() title;
+  @Output() setParticipantList = new EventEmitter<any>();
+  // 已选择的
+  selectedParticipantList = [];
+
+  participantList = [];
+
   isListShow = false;
 
   showListEvent;
@@ -18,6 +25,10 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.participantList = BaseData.participantList;
+
+    this.select(_.find(BaseData.participantList, { isMyself: true }));
+
     this.showListEvent = this.system.showListEvent.subscribe((data) => {
       if (this.clickId === data.id) {
         this.isListShow = !this.isListShow;
@@ -28,11 +39,9 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.doneEvent = this.system.doneEvent.subscribe((data) => {
-      if (data) {
-        // this.select(data);
-      } else {
-        // this.select(_.find(this.addressList, { isCurrenLive: 1 }))
+    this.doneEvent = this.system.doneEvent.subscribe((value) => {
+      if (value && value.model === 'participant') {
+        this.select(value.data);
       }
     });
   }
@@ -47,4 +56,25 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
     }
   }
 
+  select(item?) {
+    this.isListShow = false;
+    if (item) {
+      this.participantList = BaseData.participantList;
+      this.selectedParticipantList.push(item);
+      this.participantList = _.differenceBy(this.participantList, this.selectedParticipantList, 'name');
+      this.setParticipantList.emit(this.selectedParticipantList);
+    }
+  }
+
+  add() {
+    this.select();
+    this.system.changeComponent({ component: 'participant-add-edit' });
+  }
+
+  delete(item) {
+    this.participantList = BaseData.participantList;
+    _.remove(this.selectedParticipantList, item);
+    this.participantList = _.differenceBy(this.participantList, this.selectedParticipantList, 'name');
+    this.setParticipantList.emit(this.selectedParticipantList);
+  }
 }
