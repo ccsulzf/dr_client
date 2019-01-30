@@ -44,6 +44,10 @@ export class BaseDataService {
         this.http.get('/DR/ExpenseCategory?userId=' + this.system.user.id).then((value: any) => {
             BaseData.expenseCategoryList = value;
         });
+
+        this.http.get('/DR/IncomeCategory?userId=' + this.system.user.id).then((value: any) => {
+            BaseData.incomeCategoryList = value;
+        });
     }
 
     public addLable(item) {
@@ -96,6 +100,10 @@ export class BaseDataService {
 
     public addExpenseCategory(item) {
         BaseData.expenseCategoryList.push(item);
+    }
+
+    public addIncomeCategory(item) {
+        BaseData.incomeCategoryList.push(item);
     }
 
     public getExpenseCategory(id) {

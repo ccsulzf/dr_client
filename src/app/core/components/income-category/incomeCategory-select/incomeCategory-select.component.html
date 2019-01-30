@@ -9,10 +9,10 @@
 
   <div class="ul-select" *ngIf="isListShow">
     <ul>
-      <li>123</li>
-      <li>234</li>
-      <li>123</li>
+      <li (click)="select(item)" *ngFor="let item of incomeCategoryList">
+        {{item?.name}}
+      </li>
     </ul>
-    <div class="add">添加支出类别</div>
+    <div class="add" (click)="add()">添加收入类别</div>
   </div>
 </main>

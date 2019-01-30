@@ -6,6 +6,7 @@ main {
   display: flex;
   flex-direction: row;
   align-items: center;
+  min-height: 26px;
 }
 
 .content {
@@ -24,14 +25,28 @@ ul {
   flex-wrap: wrap;
   padding: 8px 0;
 
+  input {
+    border: 1px solid #d9d9d9;
+    margin: 2px 4px;
+    border-radius: 4px;
+    width: 75px;
+    height: 22px;
+    padding-left: 4px;
+
+    &:focus {
+      border: 1px solid #2db7f5;
+      outline: none;
+    }
+  }
+
   .label {
     box-sizing: border-box;
-    margin: 0 8px 0 0;
+    margin: 2px 4px;
     padding: 0 7px;
     list-style: none;
     display: inline-block;
-    line-height: 20px;
-    height: 22px;
+    line-height: 24px;
+    height: 26px;
     border-radius: 4px;
     border: 1px solid #d9d9d9;
     background: #fafafa;
@@ -64,12 +79,12 @@ ul {
 
   .add-label {
     box-sizing: border-box;
-    margin: 0 8px 0 0;
+    margin: 2px 4px;
     padding: 0 7px;
     list-style: none;
     display: inline-block;
-    line-height: 20px;
-    height: 22px;
+    line-height: 24px;
+    height: 26px;
     border-radius: 4px;
     border: 1px dashed #d9d9d9;
     background: #fff;

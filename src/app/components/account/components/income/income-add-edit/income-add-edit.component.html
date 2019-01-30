@@ -4,13 +4,10 @@
       <address-select [title]="'收入地点'" (setAddress)="onSetAddress($event)"></address-select>
     </div>
     <div class="row-3">
-      <incomeCategory-select [title]="'收入类别'"></incomeCategory-select>
+      <incomeCategory-select [title]="'收入类别'" (setCategory)="onSetCategory($event)"></incomeCategory-select>
     </div>
     <div class="row-3">
-      <label>
-        收入付款方:
-      </label>
-      <input type="text">
+      <fund-party-select [title]="'付款方'" [type]="2" (setFundParty)="onSetFundParty($event)"></fund-party-select>
     </div>
     <div class="row-3">
       <label>
@@ -34,8 +31,8 @@
     <div class="row-6">
       <label>收款周期:</label>
       <div class="row-6 period">
-        <input class="row-3" type="date" placeholder="开始日期">
-        <input class="row-3" type="date">
+        <input class="row-3" type="date" name="startDate" [(ngModel)]="startDate" [max]="endDate">
+        <input class="row-3" type="date" name="endDate" [(ngModel)]="endDate" [min]="startDate">
       </div>
     </div>
 
@@ -43,7 +40,7 @@
       <participant-select [title]="'参与'" (setParticipantList)="onSetParticipantList($event)"></participant-select>
     </div>
     <div class="row-6 label">
-      <label-select [title]="'标签'"></label-select>
+      <label-select [title]="'标签'" [type]="'2'" (setLabelList)="onSetLabelList($event)"></label-select>
     </div>
 
     <div class="row-6 memo">

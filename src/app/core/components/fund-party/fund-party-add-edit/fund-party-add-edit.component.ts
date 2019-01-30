@@ -29,7 +29,7 @@ export class FundPartyAddEditComponent implements OnInit {
       });
     if (fundParty) {
       this.baseData.addFundParty(fundParty);
-      this.system.done();
+      this.system.done({ model: 'fundParty', data: fundParty });
     }
   }
 

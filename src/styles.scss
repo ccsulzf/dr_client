@@ -12,6 +12,11 @@ label {
   font-size: 14px;
 }
 
+
+input[type=date]::-webkit-clear-button {
+  visibility: hidden;
+}
+
 // 控制日期的上下
 input[type=date]::-webkit-inner-spin-button {
   visibility: hidden;

@@ -25,6 +25,9 @@ import { AddressSelectComponent } from './components/addreess/address-select/add
 import { IncomeCategorySelectComponent } from './components/income-category/incomeCategory-select/incomeCategory-select.component';
 import { ParticipantSelectComponent } from './components/participant/participant-select/participant-select.component';
 import { LabelSelectComponent } from './components/label/label-select/label-select.component';
+import { FundAccountSelectComponent } from './components/fundAccount/fund-account-select/fund-account-select.component';
+import { IncomeCategoryAddEditComponent } from './components/income-category/income-category-add-edit/income-category-add-edit.component';
+import { FundPartySelectComponent } from './components/fund-party/fund-party-select/fund-party-select.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -36,13 +39,15 @@ import { LabelSelectComponent } from './components/label/label-select/label-sele
     ExpenseCategoryAddEditComponent, FundPartyAddEditComponent,
     FilterPipe, FilterListPipe, FilterNamePipe, FundWayAddEditComponent,
     FundAccountAddEditComponent, ParticipantAddEditComponent,
-    AddressSelectComponent, IncomeCategorySelectComponent, ParticipantSelectComponent, LabelSelectComponent],
+    AddressSelectComponent, IncomeCategorySelectComponent,
+    ParticipantSelectComponent, LabelSelectComponent, FundAccountSelectComponent, IncomeCategoryAddEditComponent, FundPartySelectComponent],
   exports: [
     NavComponent,
     AddressSelectComponent,
     IncomeCategorySelectComponent,
     ParticipantSelectComponent,
     LabelSelectComponent,
+    FundPartySelectComponent,
     DynamicComponentDirective,
     BlankClickDirective,
     FilterPipe,
@@ -63,7 +68,8 @@ import { LabelSelectComponent } from './components/label/label-select/label-sele
     FundPartyAddEditComponent,
     FundWayAddEditComponent,
     FundAccountAddEditComponent,
-    ParticipantAddEditComponent
+    ParticipantAddEditComponent,
+    IncomeCategoryAddEditComponent
   ]
 })
 export class CoreModule { }

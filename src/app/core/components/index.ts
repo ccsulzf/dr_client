@@ -7,3 +7,4 @@ export * from './fund-way';
 export * from './fundAccount';
 export * from './participant';
 export * from './label';
+export * from './income-category';

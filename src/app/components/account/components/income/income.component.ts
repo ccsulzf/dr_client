@@ -5,9 +5,9 @@ import {
 import { DynamicComponentDirective } from '../../../../core/directives';
 import { SystemService } from '../../../../core/providers';
 import {
-  AddressAddEditComponent, ExpenseBookAddEditComponent,
-  ExpenseCategoryAddEditComponent, FundPartyAddEditComponent,
-  FundWayAddEditComponent, FundAccountAddEditComponent, ParticipantAddEditComponent
+  AddressAddEditComponent,
+  FundPartyAddEditComponent,
+  FundWayAddEditComponent, FundAccountAddEditComponent, ParticipantAddEditComponent, IncomeCategoryAddEditComponent
 } from '../../../../core/components';
 import { IncomeListComponent } from './income-list';
 import { AccountService } from '../../services';
@@ -41,14 +41,11 @@ export class IncomeComponent implements OnInit, AfterViewInit, OnDestroy {
     });
     this.changeComponent = this.system.changeComponentEvent.subscribe((value: any) => {
       switch (value.component) {
-        case 'expenseBook-add-edit':
-          this.dynamicLoad(ExpenseBookAddEditComponent);
-          break;
         case 'address-add-edit':
           this.dynamicLoad(AddressAddEditComponent);
           break;
-        case 'expenseCategory-add-edit':
-          this.dynamicLoad(ExpenseCategoryAddEditComponent, value.data);
+        case 'incomeCategory-add-edit':
+          this.dynamicLoad(IncomeCategoryAddEditComponent);
           break;
         case 'fundParty-add-edit':
           this.dynamicLoad(FundPartyAddEditComponent, value.data);

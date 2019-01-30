@@ -8,6 +8,8 @@ import { AccountService } from '../../../services/account.service';
 export class IncomeAddEditComponent implements OnInit {
 
   addressId;
+  startDate;
+  endDate;
 
   constructor(
     private accountService: AccountService
@@ -16,10 +18,22 @@ export class IncomeAddEditComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSetAddress(address) {
+  onSetAddress(addressId) {
+  }
+
+  onSetCategory(incomeCategorId) {
+
+  }
+
+  onSetFundParty(fundPartId) {
+    console.info(fundPartId);
   }
 
   onSetParticipantList(participantList) {
-    console.info(participantList);
   }
+
+  onSetLabelList(labelList) {
+  }
+
+
 }

@@ -6,5 +6,5 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 @Injectable()
 export class IncomeService {
-
+    public incomeDetail: any;
 }

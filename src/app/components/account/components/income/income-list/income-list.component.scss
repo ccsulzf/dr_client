@@ -1,0 +1,108 @@
+main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #fff;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+main>ul {
+  flex-grow: 1;
+  border: 1px solid #dedede;
+  border-radius: 0px 0 3px 3px;
+  border-top: none;
+  font-size: 14px;
+}
+
+
+.month-income {
+  height: 44px;
+  display: flex;
+  background: #40a9ff;
+  border: 1px solid #40a9ff;
+  color: #fff;
+  font-size: 15px;
+  font-weight: bolder;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 7px;
+
+  span {
+    &:first-of-type {
+      cursor: pointer;
+    }
+  }
+}
+
+.income-list ul {
+  border: 1px solid #dedede;
+  border-bottom: none;
+
+  &:first-of-type,
+  &:last-of-type {
+    border-top: none;
+  }
+}
+
+.income-list>li {
+  display: flex;
+  align-items: center;
+  border: 1px solid #dedede;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+}
+
+.income-category {
+  padding: 0 10px;
+  width: 40px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+
+.income-detail {
+  flex-grow: 1;
+
+  li {
+    cursor: pointer;
+
+    &:hover {
+      background: #dedede;
+    }
+
+    div {
+      display: flex;
+      justify-content: space-between;
+      flex-grow: 1;
+      width: 100%;
+
+      &:first-of-type {
+        border-bottom: 1px dashed #dedede;
+      }
+
+      span {
+        flex-grow: 1;
+        margin: 3px 2px;
+
+        &:first-of-type {
+          width: 40%;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+
+        &:last-of-type {
+          text-align: right;
+          width: 40%
+        }
+      }
+    }
+  }
+}
