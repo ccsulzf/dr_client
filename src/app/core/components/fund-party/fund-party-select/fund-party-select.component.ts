@@ -53,6 +53,9 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
     if (this.showListEvent) {
       this.showListEvent.unsubscribe();
     }
+    if (this.doneEvent) {
+      this.doneEvent.unsubscribe();
+    }
   }
 
   select(item?) {

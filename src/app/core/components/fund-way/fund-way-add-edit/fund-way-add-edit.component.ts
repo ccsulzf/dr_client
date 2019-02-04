@@ -27,7 +27,7 @@ export class FundWayAddEditComponent implements OnInit {
       });
     if (fundWay) {
       this.baseData.addFundWay(fundWay);
-      this.system.done();
+      this.system.done({ model: 'fundWay', data: fundWay });
     }
   }
 

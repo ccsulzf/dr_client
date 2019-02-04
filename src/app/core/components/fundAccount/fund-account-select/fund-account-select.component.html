@@ -1,3 +1,21 @@
-<p>
-  fund-account-select works!
-</p>
+<main>
+  <label>
+    {{title}}:
+  </label>
+  <div class="select" id="fundAccount-list" blankClick>
+    <input type="text" name="fundAccount" [(ngModel)]="fundAccount" disabled placeholder="请选择资金账户">
+    <i class="down-triangle"></i>
+  </div>
+
+  <div class="ul-select" *ngIf="isListShow">
+    <ul>
+      <li (click)="select(item)" *ngFor="let item of fundAccountList">
+        <span>
+          {{item?.name}}
+        </span>
+        <span>{{item?.balance}}</span>
+      </li>
+    </ul>
+    <div class="add" (click)="add()">添加资金账户</div>
+  </div>
+</main>

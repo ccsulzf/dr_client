@@ -28,6 +28,7 @@ import { LabelSelectComponent } from './components/label/label-select/label-sele
 import { FundAccountSelectComponent } from './components/fundAccount/fund-account-select/fund-account-select.component';
 import { IncomeCategoryAddEditComponent } from './components/income-category/income-category-add-edit/income-category-add-edit.component';
 import { FundPartySelectComponent } from './components/fund-party/fund-party-select/fund-party-select.component';
+import { FundwaySelectComponent } from './components/fund-way/fundway-select/fundway-select.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -40,7 +41,7 @@ import { FundPartySelectComponent } from './components/fund-party/fund-party-sel
     FilterPipe, FilterListPipe, FilterNamePipe, FundWayAddEditComponent,
     FundAccountAddEditComponent, ParticipantAddEditComponent,
     AddressSelectComponent, IncomeCategorySelectComponent,
-    ParticipantSelectComponent, LabelSelectComponent, FundAccountSelectComponent, IncomeCategoryAddEditComponent, FundPartySelectComponent],
+    ParticipantSelectComponent, LabelSelectComponent, FundAccountSelectComponent, IncomeCategoryAddEditComponent, FundPartySelectComponent, FundwaySelectComponent],
   exports: [
     NavComponent,
     AddressSelectComponent,
@@ -48,6 +49,8 @@ import { FundPartySelectComponent } from './components/fund-party/fund-party-sel
     ParticipantSelectComponent,
     LabelSelectComponent,
     FundPartySelectComponent,
+    FundwaySelectComponent,
+    FundAccountSelectComponent,
     DynamicComponentDirective,
     BlankClickDirective,
     FilterPipe,

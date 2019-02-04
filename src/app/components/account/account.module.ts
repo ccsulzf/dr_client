@@ -8,7 +8,7 @@ import { ExpenseComponent } from './components/expense/expense.component';
 import { ExpenseAddEditComponent } from './components/expense/expense-add-edit/expense-add-edit.component';
 import { ExpenseListComponent } from './components/expense/expense-list/expense-list.component';
 import { ExpenseDetailComponent } from './components/expense/expense-list/expense-detail/expense-detail.component';
-import { AccountService, ExpenseService } from './services';
+import { AccountService, ExpenseService, IncomeService } from './services';
 import { IncomeComponent } from './components/income/income.component';
 import { IncomeListComponent } from './components/income/income-list/income-list.component';
 import { IncomeAddEditComponent } from './components/income/income-add-edit/income-add-edit.component';
@@ -27,7 +27,8 @@ import { IncomeAddEditComponent } from './components/income/income-add-edit/inco
   ],
   providers: [
     AccountService,
-    ExpenseService
+    ExpenseService,
+    IncomeService
   ]
 })
 export class AccountModule { }

@@ -4,30 +4,26 @@
       <address-select [title]="'收入地点'" (setAddress)="onSetAddress($event)"></address-select>
     </div>
     <div class="row-3">
-      <incomeCategory-select [title]="'收入类别'" (setCategory)="onSetCategory($event)"></incomeCategory-select>
-    </div>
-    <div class="row-3">
       <fund-party-select [title]="'付款方'" [type]="2" (setFundParty)="onSetFundParty($event)"></fund-party-select>
     </div>
     <div class="row-3">
-      <label>
-        收款方式:
-      </label>
-      <input type="text">
-    </div>
-    <div class="row-3">
-      <label>
-        收款账户:
-      </label>
-      <input type="text">
+      <incomeCategory-select [title]="'收入类别'" (setCategory)="onSetCategory($event)"></incomeCategory-select>
     </div>
     <div class="row-3">
       <label>
         收款金额:
       </label>
-      <input type="text">
+      <div class="amount">
+        <input type="text" name="amount" [(ngModel)]="amount">
+        <span>元</span>
+      </div>
     </div>
-
+    <div class="row-3">
+      <fundway-select [title]="'收款方式'" (setFundWay)="onSetFundWay($event)"></fundway-select>
+    </div>
+    <div class="row-3">
+      <fund-account-select [title]="'存入账户'" [fundWayId]="fundWayId" (setFundAccount)="onSetFundAccount($event)"></fund-account-select>
+    </div>
     <div class="row-6">
       <label>收款周期:</label>
       <div class="row-6 period">
@@ -47,8 +43,20 @@
       <label>
         备注:
       </label>
-
-      <textarea class="row-6"></textarea>
+      <textarea name="memo" [(ngModel)]="memo" class="row-6"></textarea>
     </div>
   </form>
+
+  <div class="btn-group" *ngIf="!editOrDelFlag && addFlag">
+    <button (click)="add()">添加收入</button>
+    <button (click)="reset()">重置</button>
+  </div>
+
+  <div class="edit-del" *ngIf="editOrDelFlag && !addFlag">
+    <div class="btn-group">
+      <button (click)="edit()">编辑</button>
+      <button (click)="del()">删除</button>
+    </div>
+    <a (click)="goAdd()">&gt;&gt;添加收入</a>
+  </div>
 </main>

@@ -59,7 +59,6 @@ export class ExpenseService {
     groupDetailList() {
         this.groupExpenseDetailList = [];
         const group = _.groupBy(this.expenseDetailList, 'expenseCategoryName');
-
         for (const item in group) {
             this.groupExpenseDetailList.push({
                 name: item,

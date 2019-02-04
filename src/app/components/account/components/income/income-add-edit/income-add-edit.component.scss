@@ -23,6 +23,27 @@ form {
     margin-top: 2px;
   }
 
+  .amount {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    input {
+      margin-top: 5px;
+      outline: none;
+      border: none;
+      border-bottom: 1px dashed;
+      height: 20px;
+      padding-right: 15px;
+    }
+
+    span {
+      position: absolute;
+      right: 5px;
+    }
+  }
+
+
   .row-3 {
     grid-column: span 3;
   }
@@ -45,13 +66,42 @@ form {
 
   .memo {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 
     textarea {
       border: 1px solid #dedede;
       height: 60px;
+      flex-grow: 1;
+      margin-left: 4px;
     }
 
   }
 
+}
+
+
+.btn-group {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  margin: 10px 20px;
+  justify-content: center;
+
+  button {
+    margin-right: 20px;
+  }
+}
+
+.edit-del {
+  display: flex;
+  align-items: center;
+  margin: 0 20px;
+
+  .btn-group {
+    margin: 10px 0px;
+  }
+
+  a {
+    cursor: pointer;
+  }
 }
