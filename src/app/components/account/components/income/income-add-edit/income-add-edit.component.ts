@@ -11,6 +11,10 @@ import * as _ from 'lodash';
 })
 export class IncomeAddEditComponent implements OnInit {
 
+  public editEvent;
+
+  public income;
+
   addressId;
   incomeCategoryId;
   fundPartyId;
@@ -18,7 +22,7 @@ export class IncomeAddEditComponent implements OnInit {
   fundWayId;
   fundAccountId;
   startDate;
-  endDate = moment().format('YYYY-MM-DD');
+  endDate;
   memo;
 
   participantList = [];
@@ -34,14 +38,19 @@ export class IncomeAddEditComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.editEvent = this.incomeService.editEvent.subscribe((data) => {
+
+      this.addFlag = false;
+      this.editOrDelFlag = true;
+    });
   }
 
   onSetAddress(addressId) {
     this.addressId = addressId;
   }
 
-  onSetCategory(incomeCategorId) {
-    this.incomeCategoryId = incomeCategorId;
+  onSetCategory(incomeCategoryId) {
+    this.incomeCategoryId = incomeCategoryId;
   }
 
   onSetFundParty(fundPartyId) {
@@ -68,7 +77,7 @@ export class IncomeAddEditComponent implements OnInit {
     this.incomeService.income = {
       userId: this.systemService.user.id,
       addressId: this.addressId,
-      incomeCategorId: this.incomeCategoryId,
+      incomeCategoryId: this.incomeCategoryId,
       fundPartyId: this.fundPartyId,
       amount: this.amount,
       fundWayId: this.fundWayId,

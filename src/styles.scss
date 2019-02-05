@@ -26,6 +26,18 @@ input[type=date]::-webkit-inner-spin-button {
   visibility: hidden;
 }
 
+input[type=month]::-webkit-clear-button {
+  visibility: hidden;
+}
+
+// 控制日期的上下
+input[type=month]::-webkit-inner-spin-button {
+  visibility: hidden;
+}
+
+input[type=month]::-webkit-inner-spin-button {
+  visibility: hidden;
+}
 
 // 向上的三角形
 .down-triangle {

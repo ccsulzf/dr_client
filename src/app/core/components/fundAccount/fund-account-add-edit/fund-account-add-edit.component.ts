@@ -38,8 +38,8 @@ export class FundAccountAddEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fundWay = this.data;
-    this.fundAccount.fundWayId = this.fundWay.id;
+    this.fundWay = this.baseData.getFundWay(this.data.fundWayId);
+    this.fundAccount.fundWayId = this.data.fundWayId;
     this.fundAccount.userId = this.system.user.id;
   }
 

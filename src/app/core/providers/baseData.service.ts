@@ -94,6 +94,7 @@ export class BaseDataService {
         return _.find(BaseData.fundPartyList, { id: id });
     }
 
+
     public getExpenseCategoryList() {
         return BaseData.expenseCategoryList;
     }
@@ -102,14 +103,17 @@ export class BaseDataService {
         BaseData.expenseCategoryList.push(item);
     }
 
-    public addIncomeCategory(item) {
-        BaseData.incomeCategoryList.push(item);
-    }
-
     public getExpenseCategory(id) {
         return _.find(BaseData.expenseCategoryList, { id: id });
     }
 
+    public addIncomeCategory(item) {
+        BaseData.incomeCategoryList.push(item);
+    }
+
+    public getIncomeCategory(id) {
+        return _.find(BaseData.incomeCategoryList, { id: id });
+    }
     getAddressList() {
         return BaseData.addressList;
     }

@@ -9,8 +9,8 @@ import * as _ from 'lodash';
 export class FundAccountSelectComponent implements OnInit, OnDestroy {
   @Input() title;
   @Input() fundWayId;
+  @Input() filterCredit;
   @Output() setFundAccount = new EventEmitter<string>();
-
 
   fundAccountList = [];
   fundAccountItem;
@@ -29,6 +29,9 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.fundAccountList = _.filter(BaseData.fundAccountList, { fundWayId: this.fundWayId });
+    if (this.filterCredit) {
+      this.fundAccountList = _.filter(this.fundAccountList, { isCredit: 0 })
+    }
     this.select(_.first(this.fundAccountList));
     this.showListEvent = this.system.showListEvent.subscribe((data) => {
       if (this.clickId === data.id) {
@@ -44,6 +47,9 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
         this.select(value.data);
       } else {
         this.fundAccountList = _.filter(BaseData.fundAccountList, { fundWayId: this.fundWayId });
+        if (this.filterCredit) {
+          this.fundAccountList = _.filter(this.fundAccountList, { isCredit: 0 })
+        }
         this.select(_.first(this.fundAccountList));
       }
     });
@@ -61,9 +67,11 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
 
   select(item?) {
     this.fundAccountList = _.filter(BaseData.fundAccountList, { fundWayId: this.fundWayId });
+    if (this.filterCredit) {
+      this.fundAccountList = _.filter(this.fundAccountList, { isCredit: 0 })
+    }
     this.isListShow = false;
     if (item) {
-      console.info(item);
       this.fundAccountItem = item;
       this.fundAccount = item.name;
       this.setFundAccount.emit(this.fundAccountItem.id);
@@ -73,9 +81,8 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
     }
   }
 
-
   add() {
     this.select();
-    this.system.changeComponent({ component: 'fundAccount-add-edit', data: this.fundAccountItem });
+    this.system.changeComponent({ component: 'fundAccount-add-edit', data: { fundWayId: this.fundWayId } });
   }
 }

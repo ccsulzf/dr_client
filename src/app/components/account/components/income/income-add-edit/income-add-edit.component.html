@@ -1,10 +1,10 @@
 <main>
   <form>
     <div class="row-3">
-      <address-select [title]="'收入地点'" (setAddress)="onSetAddress($event)"></address-select>
+      <address-select [title]="'收入地点'"  (setAddress)="onSetAddress($event)"></address-select>
     </div>
     <div class="row-3">
-      <fund-party-select [title]="'付款方'" [type]="2" (setFundParty)="onSetFundParty($event)"></fund-party-select>
+      <fund-party-select [title]="'付款方'"  [type]="2" (setFundParty)="onSetFundParty($event)"></fund-party-select>
     </div>
     <div class="row-3">
       <incomeCategory-select [title]="'收入类别'" (setCategory)="onSetCategory($event)"></incomeCategory-select>
@@ -22,7 +22,8 @@
       <fundway-select [title]="'收款方式'" (setFundWay)="onSetFundWay($event)"></fundway-select>
     </div>
     <div class="row-3">
-      <fund-account-select [title]="'存入账户'" [fundWayId]="fundWayId" (setFundAccount)="onSetFundAccount($event)"></fund-account-select>
+      <fund-account-select [title]="'存入账户'" [fundWayId]="fundWayId" (setFundAccount)="onSetFundAccount($event)"
+        [filterCredit]="true"></fund-account-select>
     </div>
     <div class="row-6">
       <label>收款周期:</label>

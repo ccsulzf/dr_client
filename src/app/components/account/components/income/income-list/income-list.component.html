@@ -1,24 +1,28 @@
 <main>
   <div class="month-income">
-    <span>本月收入</span>
+    <span (click)="getCal()" *ngIf="!isShowCal">{{showDate}}</span>
+    <input type="month" [hidden]="!isShowCal" name="selectDate" [ngModel]="selectDate" (ngModelChange)="changeDate($event)">
     <span>
-      总计: 6300元
+      总计: {{incomeService?.totalMonthAmount}}元
     </span>
   </div>
-  <ul class="income-list">
-    <li>
+  <div class="no-content" *ngIf="!(incomeService?.incomeList && incomeService?.incomeList.length)">
+    当前没有收入
+  </div>
+  <ul class="income-list" *ngIf="incomeService?.incomeList && incomeService?.incomeList.length">
+    <li *ngFor="let group of incomeService?.groupIncomeList">
       <div class="income-category">
-        工资
+        {{group.name}}
       </div>
       <div class="income-detail">
         <ul>
-          <li>
+          <li *ngFor="let detail of group.list" (click)="edit(detail)">
             <div>
-              <span>湖南畅旅</span>
-              <span>长沙</span>
+              <span>{{detail.fundPartyName}}</span>
+              <span>{{detail.addressName}}</span>
             </div>
             <div>
-              <span>+4800元</span>
+              <span>+{{detail.amount}}元</span>
               <span>一个月</span>
             </div>
           </li>
