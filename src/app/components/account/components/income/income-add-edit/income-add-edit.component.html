@@ -1,29 +1,29 @@
 <main>
   <form>
     <div class="row-3">
-      <address-select [title]="'收入地点'"  (setAddress)="onSetAddress($event)"></address-select>
+      <address-select [title]="'收入地点'" [addressId]="addressId" (setAddress)="onSetAddress($event)"></address-select>
     </div>
     <div class="row-3">
-      <fund-party-select [title]="'付款方'"  [type]="2" (setFundParty)="onSetFundParty($event)"></fund-party-select>
+      <fund-party-select [title]="'付款方'" [type]="2" (setFundParty)="onSetFundParty($event)" [fundPartyId]="fundPartyId"></fund-party-select>
     </div>
     <div class="row-3">
-      <incomeCategory-select [title]="'收入类别'" (setCategory)="onSetCategory($event)"></incomeCategory-select>
+      <incomeCategory-select [title]="'收入类别'" (setCategory)="onSetCategory($event)" [incomeCategoryId]="incomeCategoryId"></incomeCategory-select>
     </div>
     <div class="row-3">
       <label>
         收款金额:
       </label>
       <div class="amount">
-        <input type="text" name="amount" [(ngModel)]="amount">
+        <input type="text" name="amount" placeholder="请输入收入金额" [(ngModel)]="amount">
         <span>元</span>
       </div>
     </div>
     <div class="row-3">
-      <fundway-select [title]="'收款方式'" (setFundWay)="onSetFundWay($event)"></fundway-select>
+      <fundway-select [title]="'收款方式'" (setFundWay)="onSetFundWay($event)" [fundWayId]="fundWayId"></fundway-select>
     </div>
     <div class="row-3">
       <fund-account-select [title]="'存入账户'" [fundWayId]="fundWayId" (setFundAccount)="onSetFundAccount($event)"
-        [filterCredit]="true"></fund-account-select>
+        [filterCredit]="true" [fundAccountId]="fundAccountId"></fund-account-select>
     </div>
     <div class="row-6">
       <label>收款周期:</label>
@@ -34,10 +34,10 @@
     </div>
 
     <div class="row-6 participant">
-      <participant-select [title]="'参与'" (setParticipantList)="onSetParticipantList($event)"></participant-select>
+      <participant-select [title]="'参与'" (setParticipantList)="onSetParticipantList($event)" [hasParticipantList]="participantList"></participant-select>
     </div>
     <div class="row-6 label">
-      <label-select [title]="'标签'" [type]="'2'" (setLabelList)="onSetLabelList($event)"></label-select>
+      <label-select [title]="'标签'" [type]="'2'" (setLabelList)="onSetLabelList($event)" [hasLabelList]="labelList"></label-select>
     </div>
 
     <div class="row-6 memo">

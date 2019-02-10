@@ -5,11 +5,17 @@ export class SystemService {
 
     public temp: any;
 
+    // 选择的公共
     public showListEvent = new Subject<any>();
 
+    // 公共的编辑
     public doneEvent = new Subject<any>();
 
+    // 动态组件
     public changeComponentEvent = new Subject<object>();
+
+    // 重置
+    public resetEvent = new Subject();
 
     done(value?) {
         this.doneEvent.next(value);
@@ -21,6 +27,10 @@ export class SystemService {
 
     changeComponent(value: object) {
         this.changeComponentEvent.next(value);
+    }
+
+    reset() {
+        this.resetEvent.next();
     }
 
     set user(value) {

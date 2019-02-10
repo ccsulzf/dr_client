@@ -14,6 +14,15 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
   incomeCategoryItem;
   incomeCategory;
 
+
+  @Input()
+  set incomeCategoryId(incomeCategoryId) {
+    this.select(_.find(BaseData.incomeCategoryList, { id: incomeCategoryId }));
+  }
+
+  get incomeCategoryId(): string { return this.incomeCategory; }
+
+  resetEvent;
   showListEvent;
   doneEvent;
 
@@ -26,8 +35,11 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.incomeCategoryList = BaseData.incomeCategoryList;
-    this.select(_.first(this.incomeCategoryList));
+    this.init();
+    this.resetEvent = this.system.resetEvent.subscribe(() => {
+      this.init();
+    });
+
     this.showListEvent = this.system.showListEvent.subscribe((data) => {
       if (this.clickId === data.id) {
         this.isListShow = !this.isListShow;
@@ -47,9 +59,20 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.resetEvent) {
+      this.resetEvent.unsubscribe();
+    }
     if (this.showListEvent) {
       this.showListEvent.unsubscribe();
     }
+    if (this.doneEvent) {
+      this.doneEvent.unsubscribe();
+    }
+  }
+
+  init() {
+    this.incomeCategoryList = BaseData.incomeCategoryList;
+    this.select(_.first(this.incomeCategoryList));
   }
 
   select(item?) {

@@ -10,7 +10,16 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
   @Input() title;
   @Output() setParticipantList = new EventEmitter<any>();
   // 已选择的
-  selectedParticipantList = [];
+  selectedParticipantList;
+
+  @Input()
+  set hasParticipantList(hasParticipantList) {
+    this.selectedParticipantList = hasParticipantList;
+    this.participantList = _.differenceBy(BaseData.participantList, this.selectedParticipantList, 'name');
+  }
+
+  get hasParticipantList(): string { return this.selectedParticipantList; }
+
 
   participantList = [];
 
@@ -25,9 +34,7 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.participantList = BaseData.participantList;
-
-    this.select(_.find(BaseData.participantList, { isMyself: true }));
+    this.init();
 
     this.showListEvent = this.system.showListEvent.subscribe((data) => {
       if (this.clickId === data.id) {
@@ -54,6 +61,11 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
     if (this.doneEvent) {
       this.doneEvent.unsubscribe();
     }
+  }
+
+  init() {
+    this.participantList = BaseData.participantList;
+    this.select(_.find(BaseData.participantList, { isMyself: true }));
   }
 
   select(item?) {

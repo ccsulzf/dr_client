@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AccountService } from '../../../services/account.service';
 import { IncomeService } from '../../../services/income.service'
-import { SystemService } from '../../../../../core/providers';
+import { SystemService, HttpClientService, BaseData } from '../../../../../core/providers';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 @Component({
@@ -9,12 +9,11 @@ import * as _ from 'lodash';
   templateUrl: './income-add-edit.component.html',
   styleUrls: ['./income-add-edit.component.scss']
 })
-export class IncomeAddEditComponent implements OnInit {
+export class IncomeAddEditComponent implements OnInit, OnDestroy {
 
   public editEvent;
 
-  public income;
-
+  incomeId;
   addressId;
   incomeCategoryId;
   fundPartyId;
@@ -34,15 +33,51 @@ export class IncomeAddEditComponent implements OnInit {
   constructor(
     private accountService: AccountService,
     private incomeService: IncomeService,
-    private systemService: SystemService
+    private systemService: SystemService,
+    private http: HttpClientService
   ) { }
 
   ngOnInit() {
-    this.editEvent = this.incomeService.editEvent.subscribe((data) => {
+    this.editEvent = this.incomeService.editEvent.subscribe(async (data: any) => {
+
+      this.incomeId = data.id;
+      this.addressId = data.addressId;
+      this.fundPartyId = data.fundPartyId;
+      this.incomeCategoryId = data.incomeCategoryId;
+      this.amount = data.amount;
+      this.fundWayId = data.fundWayId;
+      this.fundAccountId = data.fundAccountId;
+
+      this.startDate = moment(data.startDate).format('YYYY-MM-DD');
+      this.endDate = moment(data.endDate).format('YYYY-MM-DD');
+
+      this.http.get('/DR/IncomeLabel?incomeId=' + data.id).then((list: any) => {
+        this.labelList = [];
+        if (list && list.length) {
+          for (const item of list) {
+            this.labelList.push(_.find(BaseData.labelList, { id: item.labelId }));
+          }
+        }
+      });
+
+      this.http.get('/DR/IncomeParticipant?incomeId=' + data.id).then((list: any) => {
+        this.participantList = [];
+        if (list && list.length) {
+          for (const item of list) {
+            this.participantList.push(_.find(BaseData.participantList, { id: item.participantId }));
+          }
+        }
+      });
 
       this.addFlag = false;
       this.editOrDelFlag = true;
     });
+  }
+
+  ngOnDestroy() {
+    if (this.editEvent) {
+      this.editEvent.unsubscribe();
+    }
   }
 
   onSetAddress(addressId) {
@@ -86,8 +121,43 @@ export class IncomeAddEditComponent implements OnInit {
       endDate: this.endDate,
       memo: this.memo,
     }
-
     await this.incomeService.add(this.participantList, this.labelList);
+    this.reset();
   }
 
+  async edit() {
+    this.incomeService.income = {
+      id: this.incomeId,
+      userId: this.systemService.user.id,
+      addressId: this.addressId,
+      incomeCategoryId: this.incomeCategoryId,
+      fundPartyId: this.fundPartyId,
+      amount: this.amount,
+      fundWayId: this.fundWayId,
+      fundAccountId: this.fundAccountId,
+      startDate: this.startDate,
+      endDate: this.endDate,
+      memo: this.memo,
+    }
+    this.reset();
+    await this.incomeService.editIncome(this.participantList, this.labelList);
+  }
+
+  async del() {
+    await this.incomeService.deleteIncome(this.incomeId, this.fundAccountId);
+    this.reset();
+  }
+
+  reset() {
+    this.amount = '';
+    this.startDate = '';
+    this.endDate = '';
+    this.systemService.reset();
+  }
+
+  goAdd() {
+    this.addFlag = true;
+    this.editOrDelFlag = false;
+    this.reset();
+  }
 }

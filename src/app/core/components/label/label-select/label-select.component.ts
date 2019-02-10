@@ -12,18 +12,27 @@ export class LabelSelectComponent implements OnInit, OnDestroy {
   @Output() setLabelList = new EventEmitter<any>();
   @ViewChild('inputText') inputText: ElementRef;
 
-  labelList = [];
+  @Input()
+  set hasLabelList(hasLabelList) {
+    this.labelList = hasLabelList;
+  }
+
+  get hasLabelList(): string { return this.labelList; }
+
+  labelList;
   isInputShow = false;
-
-  showInputEvent;
-
   name;
+
+  resetEvent;
   constructor(
     private system: SystemService,
     private http: HttpClientService
   ) { }
 
   ngOnInit() {
+    this.resetEvent = this.system.resetEvent.subscribe(() => {
+      this.labelList = [];
+    });
   }
 
   showLabel() {
@@ -34,8 +43,8 @@ export class LabelSelectComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.showInputEvent) {
-      this.showInputEvent.unsubscribe();
+    if (this.resetEvent) {
+      this.resetEvent.unsubscribe();
     }
   }
 

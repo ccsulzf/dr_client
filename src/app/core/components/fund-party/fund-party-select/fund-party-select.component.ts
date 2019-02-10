@@ -12,10 +12,18 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
   @Input() type;
   @Output() setFundParty = new EventEmitter<string>();
 
+  @Input()
+  set fundPartyId(fundPartyId) {
+    this.select(_.find(BaseData.fundPartyList, { id: fundPartyId }));
+  }
+
+  get fundPartyId(): string { return this.fundParty; }
+
   fundPartyList = [];
   fundPartyItem;
   fundParty;
 
+  resetEvent;
   showListEvent;
   doneEvent;
 
@@ -28,8 +36,10 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.fundPartyList = _.filter(BaseData.fundPartyList, { type: this.type });
-    this.select(_.first(this.fundPartyList));
+    this.resetEvent = this.system.resetEvent.subscribe(() => {
+      this.init();
+    });
+
     this.showListEvent = this.system.showListEvent.subscribe((data) => {
       if (this.clickId === data.id) {
         this.isListShow = !this.isListShow;
@@ -49,7 +59,15 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
     });
   }
 
+  init() {
+    this.fundPartyList = _.filter(BaseData.fundPartyList, { type: this.type });
+    this.select(_.first(this.fundPartyList));
+  }
+
   ngOnDestroy() {
+    if (this.resetEvent) {
+      this.resetEvent.unsubscribe();
+    }
     if (this.showListEvent) {
       this.showListEvent.unsubscribe();
     }

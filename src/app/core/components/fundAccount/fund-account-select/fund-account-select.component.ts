@@ -12,6 +12,13 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
   @Input() filterCredit;
   @Output() setFundAccount = new EventEmitter<string>();
 
+  @Input()
+  set fundAccountId(fundAccountId) {
+    this.select(_.find(BaseData.fundAccountList, { id: fundAccountId }));
+  }
+
+  get fundAccountId(): string { return this.fundAccount; }
+
   fundAccountList = [];
   fundAccountItem;
   fundAccount;
@@ -28,11 +35,7 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.fundAccountList = _.filter(BaseData.fundAccountList, { fundWayId: this.fundWayId });
-    if (this.filterCredit) {
-      this.fundAccountList = _.filter(this.fundAccountList, { isCredit: 0 })
-    }
-    this.select(_.first(this.fundAccountList));
+    this.init();
     this.showListEvent = this.system.showListEvent.subscribe((data) => {
       if (this.clickId === data.id) {
         this.isListShow = !this.isListShow;
@@ -64,6 +67,13 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
     }
   }
 
+  init() {
+    this.fundAccountList = _.filter(BaseData.fundAccountList, { fundWayId: this.fundWayId });
+    if (this.filterCredit) {
+      this.fundAccountList = _.filter(this.fundAccountList, { isCredit: 0 })
+    }
+    this.select(_.first(this.fundAccountList));
+  }
 
   select(item?) {
     this.fundAccountList = _.filter(BaseData.fundAccountList, { fundWayId: this.fundWayId });

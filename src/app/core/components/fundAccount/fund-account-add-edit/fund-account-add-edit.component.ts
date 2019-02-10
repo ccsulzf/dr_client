@@ -64,7 +64,7 @@ export class FundAccountAddEditComponent implements OnInit {
     const fundcount = await this.http.post('/DR/addFundCount', { fundAccount: this.fundAccount, creditAccount: this.creditAccount });
     if (fundcount) {
       BaseData.fundAccountList.push(fundcount);
-      this.system.done();
+      this.system.done({ model: 'fundAccount', data: fundcount });
     }
   }
 

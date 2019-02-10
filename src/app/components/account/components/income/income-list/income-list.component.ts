@@ -10,12 +10,14 @@ import * as moment from 'moment';
   templateUrl: './income-list.component.html',
   styleUrls: ['./income-list.component.scss']
 })
-export class IncomeListComponent implements OnInit {
+export class IncomeListComponent implements OnInit, OnDestroy {
   public showDate;
 
   public isShowCal = false;
 
   public selectDate;
+
+  public changeListByDate;
   constructor(
     private incomeService: IncomeService,
     private http: HttpClientService,
@@ -30,12 +32,22 @@ export class IncomeListComponent implements OnInit {
   }
 
   edit(detail) {
+    this.incomeService.income = detail;
     this.incomeService.edit(detail);
   }
 
   ngAfterViewInit() {
+    this.changeListByDate = this.incomeService.changeListByDateEvent.subscribe(() => {
+      this.getListByDate(this.incomeService.incomeListDate);
+    });
     this.getListByDate(this.incomeService.incomeListDate);
     this.cd.detectChanges();
+  }
+
+  ngOnDestroy() {
+    if (this.changeListByDate) {
+      this.changeListByDate.unsubscribe();
+    }
   }
 
   changeDate(data) {

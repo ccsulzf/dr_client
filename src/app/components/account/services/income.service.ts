@@ -9,6 +9,8 @@ export class IncomeService {
 
     public editEvent = new Subject<object>();
 
+    public changeListByDateEvent = new Subject();
+
     public income: any;
 
     public incomeList = [];
@@ -17,7 +19,7 @@ export class IncomeService {
 
     public incomeListDate = moment().format('YYYY-MM-DD');
 
-    public totalMonthAmount;
+    public totalMonthAmount = 0;
     constructor(
         private http: HttpClientService,
         private baseDataService: BaseDataService,
@@ -26,6 +28,10 @@ export class IncomeService {
 
     edit(value: object) {
         this.editEvent.next(value);
+    }
+
+    changeListBydate() {
+        this.changeListByDateEvent.next();
     }
 
     changeIncome(item) {
@@ -55,8 +61,6 @@ export class IncomeService {
                 list: group[item]
             });
         }
-
-        console.info(this.groupIncomeList);
     }
 
     async add(participantList, labelList) {
@@ -74,9 +78,48 @@ export class IncomeService {
 
             this.totalMonthAmount = (this.totalMonthAmount * 100 + this.income.amount * 100) / 100;
 
-            this.income.id = data;
-            this.changeIncome(this.income);
-            this.groupDetailList();
+            this.changeListBydate();
+        } catch (error) {
+            throw error;
+        }
+    }
+
+
+    async editIncome(participantList, labelList) {
+        try {
+            const incomeData = {
+                income: this.income,
+                participantList: participantList,
+                labelList: labelList
+            }
+
+            const incomeId: any = await this.http.post('/DR/editIncome', incomeData);
+
+            this.incomeListDate = moment(this.income.endDate).format('YYYY-MM');
+
+            const oldIncome = _.find(this.incomeList, { id: this.income.id });
+
+            const diffAmount = (this.income.amount * 100 - oldIncome.amount * 100) / 100;
+
+            const fundAccount = this.baseDataService.getFundAccount(this.income.fundAccountId);
+
+            fundAccount.balance = (fundAccount.balance * 100 + diffAmount * 100) / 100;
+
+            this.changeListBydate();
+        } catch (error) {
+            throw error;
+        }
+    }
+
+
+    async deleteIncome(incomeId, fundAccountId) {
+        try {
+            await this.http.get('/DR/deleteIncome?id=' + incomeId);
+            const fundAccount = this.baseDataService.getFundAccount(fundAccountId);
+
+            fundAccount.amount = (fundAccount.amount * 100 - this.income.amount * 100) / 100;
+
+            this.changeListBydate();
         } catch (error) {
             throw error;
         }

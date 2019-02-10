@@ -9,12 +9,21 @@ import * as _ from 'lodash';
 export class AddressSelectComponent implements OnInit, OnDestroy {
   @Input() title;
   @Output() setAddress = new EventEmitter<string>();
+
+  @Input()
+  set addressId(addressId) {
+    this.select(_.find(BaseData.addressList, { id: addressId }));
+  }
+
+  get addressId(): string { return this.address; }
+
   addressList = [];
   addressItem;
   address;
 
   showListEvent;
   doneEvent;
+  resetEvent;
 
   isListShow = false;
 
@@ -24,8 +33,12 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.addressList = BaseData.addressList;
-    this.select(_.find(this.addressList, { isCurrenLive: 1 }));
+    this.init();
+
+    this.resetEvent = this.system.resetEvent.subscribe(() => {
+      this.init();
+    })
+
     this.showListEvent = this.system.showListEvent.subscribe((data) => {
       if (this.clickId === data.id) {
         this.isListShow = !this.isListShow;
@@ -43,6 +56,11 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
         this.select(_.find(this.addressList, { isCurrenLive: 1 }));
       }
     });
+  }
+
+  init() {
+    this.addressList = BaseData.addressList;
+    this.select(_.find(this.addressList, { isCurrenLive: 1 }));
   }
 
   select(item?) {
@@ -63,6 +81,11 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+
+    if (this.resetEvent) {
+      this.resetEvent.unsubscribe();
+    }
+
     if (this.showListEvent) {
       this.showListEvent.unsubscribe();
     }
