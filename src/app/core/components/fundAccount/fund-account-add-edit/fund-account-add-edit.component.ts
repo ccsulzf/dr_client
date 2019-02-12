@@ -1,4 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {
+  Component, OnInit, Input, OnDestroy, Output, EventEmitter,
+  HostListener, ElementRef, Renderer, ViewContainerRef, ViewChild
+} from '@angular/core';
 import { HttpClientService, BaseDataService, SystemService, BaseData } from '../../../providers';
 
 @Component({
@@ -8,6 +11,11 @@ import { HttpClientService, BaseDataService, SystemService, BaseData } from '../
 })
 export class FundAccountAddEditComponent implements OnInit {
   @Input() data;
+
+  @ViewChild('divClick') divClick: ElementRef;
+
+  @ViewChild('ulClick') ulClick: ElementRef;
+  public isListShow = false;
 
   public numbers;
 
@@ -32,7 +40,9 @@ export class FundAccountAddEditComponent implements OnInit {
   constructor(
     public system: SystemService,
     public http: HttpClientService,
-    public baseData: BaseDataService
+    public baseData: BaseDataService,
+    private el: ElementRef,
+    private viewRef: ViewContainerRef
   ) {
     this.numbers = Array(30).fill(0).map((x, i) => i + 1);
   }
@@ -41,6 +51,17 @@ export class FundAccountAddEditComponent implements OnInit {
     this.fundWay = this.baseData.getFundWay(this.data.fundWayId);
     this.fundAccount.fundWayId = this.data.fundWayId;
     this.fundAccount.userId = this.system.user.id;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClick() {
+    if (this.divClick.nativeElement.contains(event.target)) {
+      this.isListShow = !this.isListShow;
+    } else {
+      if (!this.ulClick.nativeElement.contains(event.target)) {
+        this.isListShow = false
+      }
+    }
   }
 
   setUsedAmount(data) {

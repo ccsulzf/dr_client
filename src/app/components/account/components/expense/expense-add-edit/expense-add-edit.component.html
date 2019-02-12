@@ -24,14 +24,16 @@
       <fund-party-select [title]="'收款方'" [type]="1" (setFundParty)="onSetFundParty($event)" [fundPartyId]="fundPartyId"></fund-party-select>
     </div>
 
-    <div class="address">
-      <fundChannel-select [title]="'付款渠道'" (setFundChannel)="onSetsetFundChannel($event)" [fundChannelId]="fundChannelId"></fundChannel-select>
-    </div>
 
     <div class="address">
       <fund-account-select [title]="'付款账户'" [fundWayId]="fundWayId" (setFundAccount)="onSetFundAccount($event)"
         [filterCredit]="true" [fundAccountId]="fundAccountId"></fund-account-select>
     </div>
+
+    <div class="address">
+      <fundChannel-select [title]="'付款渠道'" (setFundChannel)="onSetsetFundChannel($event)" [fundChannelId]="fundChannelId"></fundChannel-select>
+    </div>
+
 
     <fieldset class="detail">
       <legend>支出明细</legend>

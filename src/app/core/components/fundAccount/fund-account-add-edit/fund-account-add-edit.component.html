@@ -3,47 +3,63 @@
   <form>
     <div>
       <label>
-        资金来往方式:
+        资金来往渠道:
       </label>
-      <input disabled [value]="fundWay?.name">
+      <div>
+        <div #divClick class="select">
+          <input disabled placeholder="请绑定渠道">
+          <i class="down-triangle"></i>
+        </div>
+        <ul #ulClick [style.display]="isListShow?'block':'none'">
+          <li>
+            <input type="checkbox"> <span>微信</span>
+          </li>
+          <li>
+            <input type="checkbox"> <span>支付宝</span>
+          </li>
+          <li>
+            <input type="checkbox"> <span>银联</span>
+          </li>
+        </ul>
+      </div>
     </div>
 
-    <div>
+    <div class="input">
       <label>
         资金账户:
       </label>
       <input type="text" name="name" [(ngModel)]="fundAccount.name">
     </div>
 
-    <div>
+    <div class="input">
       <label>
         账户余额:
       </label>
       <input type="number" [disabled]="fundAccount.isCredit" name="balance" [(ngModel)]="fundAccount.balance">
     </div>
 
-    <div style="flex-direction: row;">
+    <div class="input" style="flex-direction: row;">
       <input type="checkbox" name="isCredit" [ngModel]="fundAccount.isCredit" (ngModelChange)="setIsCredit($event)">
       <label>账户是否信贷</label>
     </div>
 
     <fieldset *ngIf="fundAccount.isCredit">
       <legend>信贷数据</legend>
-      <div>
+      <div class="input">
         <label>
           信用额度:
         </label>
         <input type="number" name="creditAmount" [(ngModel)]="creditAccount.creditAmount">
       </div>
 
-      <div>
+      <div class="input">
         <label>
           已使用额度:
         </label>
         <input type="number" name="usedAmount" [ngModel]="creditAccount.usedAmount" (ngModelChange)="setUsedAmount($event)">
       </div>
 
-      <div>
+      <div class="input">
         <label>
           账单日:
         </label>
@@ -52,7 +68,7 @@
         </select>
       </div>
 
-      <div>
+      <div class="input">
         <label>
           还款日:
         </label>

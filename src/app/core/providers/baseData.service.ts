@@ -29,9 +29,9 @@ export class BaseDataService {
             BaseData.fundChannelList = value;
         });
 
-        this.http.get('/DR/FundWay?userId=' + this.system.user.id).then((value: any) => {
-            BaseData.fundWayList = value;
-        });
+        // this.http.get('/DR/FundWay?userId=' + this.system.user.id).then((value: any) => {
+        //     BaseData.fundWayList = value;
+        // });
 
         this.http.get('/DR/getFundCount?userId=' + this.system.user.id).then((value: any) => {
             BaseData.fundAccountList = value;
