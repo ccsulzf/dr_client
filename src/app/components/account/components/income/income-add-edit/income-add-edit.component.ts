@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AccountService } from '../../../services/account.service';
-import { IncomeService } from '../../../services/income.service'
+import { IncomeService } from '../../../services/income.service';
 import { SystemService, HttpClientService, BaseData } from '../../../../../core/providers';
 import * as moment from 'moment';
 import * as _ from 'lodash';
@@ -120,7 +120,7 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy {
       startDate: this.startDate,
       endDate: this.endDate,
       memo: this.memo,
-    }
+    };
     await this.incomeService.add(this.participantList, this.labelList);
     this.reset();
   }
@@ -138,7 +138,7 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy {
       startDate: this.startDate,
       endDate: this.endDate,
       memo: this.memo,
-    }
+    };
     this.reset();
     await this.incomeService.editIncome(this.participantList, this.labelList);
   }

@@ -13,6 +13,18 @@ import * as moment from 'moment';
 })
 export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
 
+  public addressId;
+
+  public expenseCategoryId = 3;
+
+  public fundPartyId;
+
+  public fundWayId;
+
+  public fundChannelId;
+
+  public fundAccountId;
+
   public editEvent;
 
   public addFlag = true;
@@ -20,41 +32,13 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
   public editOrDelFlag = false;
 
   public baseData;
-  public isAddressShow = false;
-  public isExpenseCategory = false;
-  public isFundParty = false;
-  public isFundWay = false;
-  public isFundAccount = false;
-
-  public isLabelInputShow = false;
-  public isPrticipanInputShow = false;
 
   public expenseDate;
 
   public expenseBook;
 
-  public address;
-  public addressItem;
-
-  public expenseCategory;
-  public expenseCategoryItem;
-  public expenseCategoryList;
-
-  public fundParty;
-  public fundPartyItem;
-
-  public fundWay;
-  public fundWayItem;
-
-  public fundAccount;
-  public fundAccountItem;
-
-  public participant;
-  public participantItem;
   public participantList = [];
 
-  public label;
-  public labelItem;
   public labelList = [];
 
   public content;
@@ -81,13 +65,38 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
     this.baseData = BaseData;
     this.expenseDate = moment().format('YYYY-MM-DD');
     this.expenseBook = this.baseData.expenseBookList[0];
-    this.setAddress(_.find(BaseData.addressList, { isCurrenLive: 1 }));
+  }
+
+  onSetAddress(addressId) {
+    this.addressId = addressId;
+  }
+
+  onSetCategory(expenseCategoryId) {
+    this.expenseCategoryId = expenseCategoryId;
+  }
+
+  onSetFundParty(fundPartyId) {
+    this.fundPartyId = fundPartyId;
+  }
+
+  onSetsetFundChannel(fundChannelId) {
+    this.fundChannelId = fundChannelId;
+  }
+
+  onSetFundWay(fundWayId) {
+    this.fundWayId = fundWayId;
+  }
+
+  onSetFundAccount(fundAccountId) {
+    this.fundAccountId = fundAccountId;
+  }
+
+  onSetParticipantList(participantList) {
+    this.participantList = participantList;
   }
 
   ngAfterViewInit() {
-    this.getExpenseCategoryList();
     this.editEvent = this.expenseService.editEvent.subscribe(async (data: any) => {
-
       this.expenseId = data.expense.id;
       this.expenseBookId = data.expense.expenseBookId;
       this.expenseDetailId = data.expenseDetail.id;
@@ -100,15 +109,15 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
 
       this.expenseDate = moment(data.expense.expenseDate).format('YYYY-MM-DD');
 
-      this.setAddress(this.baseDataService.getAddress(data.expenseDetail.addressId));
+      this.addressId = data.expenseDetail.addressId;
 
-      this.setExpenseCategory(this.baseDataService.getExpenseCategory(data.expenseDetail.expenseCategoryId));
+      this.expenseCategoryId = data.expenseDetail.expenseCategoryId;
 
-      this.setFundParty(this.baseDataService.getFundParty(data.expenseDetail.fundPartyId));
+      this.fundPartyId = data.expenseDetail.fundPartyId;
 
-      this.setFundWay(this.baseDataService.getFundWay(data.expenseDetail.fundWayId));
+      this.fundWayId = data.expenseDetail.fundWayId;
 
-      this.setFundAccount(this.baseDataService.getFundAccount(data.expenseDetail.fundAccountId));
+      this.fundAccountId = data.expenseDetail.fundAccountId;
 
       this.content = data.expenseDetail.content;
 
@@ -118,8 +127,6 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
 
       await this.getParticipantList();
     });
-
-    this.participantList.push(_.find(BaseData.participantList, { isMyself: true }));
   }
 
   ngOnDestroy() {
@@ -128,6 +135,10 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+
+  addExpenseBook() {
+    this.accountService.changeComponent({ component: 'expenseBook-add-edit' });
+  }
 
   async getParticipantList() {
     this.participantList = [];
@@ -151,128 +162,9 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
 
   selectExpenseBook(item) {
     this.expenseBook = item;
-    this.getExpenseCategoryList();
   }
 
-  getExpenseCategoryList() {
-    if (this.expenseBook) {
-      this.expenseCategoryList = _.filter(BaseData.expenseCategoryList, { expenseBookId: this.expenseBook.id });
-      this.expenseCategory = '';
-      this.expenseCategoryItem = null;
-    }
-  }
-
-  blur(value) {
-    setTimeout(() => {
-      this[value] = false;
-    }, 300);
-  }
-
-  deleteLabel(item) {
-    _.remove(this.labelList, item);
-    this.baseDataService.addLable(item);
-  }
-
-  selecLabel(item) {
-    this.labelList.push(item);
-    this.baseDataService.deleteLabel(item);
-    this.isLabelInputShow = false;
-  }
-
-  setParticipantItem(item) {
-    this.participantList.push(item);
-    this.participantItem = item;
-    this.participant = item.name;
-    this.isPrticipanInputShow = false;
-  }
-
-  deleteParticipant(item) {
-    _.remove(this.participantList, item);
-  }
-
-  setFundAccount(item) {
-    this.fundAccountItem = item;
-    this.fundAccount = item.name;
-  }
-
-  setFundWay(item) {
-    this.fundWayItem = item;
-    this.fundWay = item.name;
-  }
-
-  setFundParty(item) {
-    this.fundPartyItem = item;
-    this.fundParty = item.name;
-  }
-
-  setAddress(item) {
-    this.addressItem = item;
-    this.address = item.province + '|' + item.city + '|' + item.area;
-  }
-
-  setExpenseCategory(item) {
-    this.expenseCategoryItem = item;
-    this.expenseCategory = item.name;
-  }
-
-  addLabel() {
-    this.http.post('/DR/label', {
-      type: 1,
-      name: this.label,
-      userId: this.system.user.id
-    }).then((value: any) => {
-      this.labelList.push(value);
-      this.isLabelInputShow = false;
-      this.baseDataService.addLable(value);
-      this.label = '';
-    });
-  }
-
-  cancel() {
-    this.label = '';
-    this.isLabelInputShow = false;
-  }
-
-  addParticipant() {
-    this.accountService.changeComponent({ component: 'participant-add-edit' });
-  }
-
-  addExpenseBook() {
-    this.accountService.changeComponent({ component: 'expenseBook-add-edit' });
-  }
-
-  addAddress() {
-    this.address = '';
-    this.accountService.changeComponent({ component: 'address-add-edit' });
-  }
-
-  addExpenseCategory() {
-    this.expenseCategory = '';
-    this.expenseCategoryItem = null;
-    this.accountService.changeComponent({ component: 'expenseCategory-add-edit', data: this.expenseBook });
-  }
-
-  addFundParty() {
-    this.fundParty = '';
-    this.fundPartyItem = null;
-    this.accountService.changeComponent({ component: 'fundParty-add-edit', data: 1 });
-  }
-
-  addFundWay() {
-    this.fundWay = '';
-    this.fundWayItem = null;
-    this.accountService.changeComponent({ component: 'fundWay-add-edit' });
-  }
-
-  addFundAccount() {
-    this.fundAccount = '';
-    this.fundAccountItem = null;
-    if (this.fundWay && this.fundWayItem) {
-      this.accountService.changeComponent({ component: 'fundAccount-add-edit', data: this.fundWayItem });
-    }
-  }
-
-  selec(item) {
+  select(item) {
     this.expenseDetail = item;
   }
 
@@ -287,25 +179,10 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
 
   reset() {
     this.expenseDate = '';
-    this.addressItem = null;
-    this.address = '';
-
-    this.expenseCategoryItem = null;
-    this.expenseCategory = '';
-
-    this.fundPartyItem = null;
-    this.fundParty = '';
-
-    this.fundWayItem = null;
-    this.fundWay = '';
-
-    this.fundAccountItem = null;
-    this.fundAccount = '';
-
     this.init();
     this.expenseDate = moment().format('YYYY-MM-DD');
     this.expenseBook = this.baseData.expenseBookList[0];
-    this.setAddress(_.find(BaseData.addressList, { isCurrenLive: 1 }));
+    this.system.reset();
   }
 
   goAdd() {
@@ -326,11 +203,11 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
         content: this.content,
         amount: this.amount,
         memo: this.memo,
-        addressId: this.addressItem.id,
-        expenseCategoryId: this.expenseCategoryItem.id,
-        fundPartyId: this.fundPartyItem.id,
-        fundWayId: this.fundWayItem.id,
-        fundAccountId: this.fundAccountItem.id
+        addressId: this.addressId,
+        expenseCategoryId: this.expenseCategoryId,
+        fundPartyId: this.fundPartyId,
+        fundWayId: this.fundWayId,
+        fundAccountId: this.fundAccountId
       };
       await this.expenseService.addExpense(this.participantList, this.labelList);
       if ((this.expenseService.expneseListDate !==
@@ -361,11 +238,11 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
         content: this.content,
         amount: this.amount,
         memo: this.memo,
-        addressId: this.addressItem.id,
-        expenseCategoryId: this.expenseCategoryItem.id,
-        fundPartyId: this.fundPartyItem.id,
-        fundWayId: this.fundWayItem.id,
-        fundAccountId: this.fundAccountItem.id
+        addressId: this.addressId,
+        expenseCategoryId: this.expenseCategoryId,
+        fundPartyId: this.fundPartyId,
+        fundWayId: this.fundWayId,
+        fundAccountId: this.fundAccountId
       };
 
       await this.expenseService.editExpense(this.participantList, this.labelList);

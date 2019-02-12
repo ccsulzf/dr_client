@@ -25,6 +25,10 @@ export class BaseDataService {
             BaseData.fundPartyList = value;
         });
 
+        this.http.get('/DR/fundChannel?userId=' + this.system.user.id).then((value: any) => {
+            BaseData.fundChannelList = value;
+        });
+
         this.http.get('/DR/FundWay?userId=' + this.system.user.id).then((value: any) => {
             BaseData.fundWayList = value;
         });
@@ -41,7 +45,7 @@ export class BaseDataService {
             BaseData.labelList = value;
         });
 
-        this.http.get('/DR/ExpenseCategory?userId=' + this.system.user.id).then((value: any) => {
+        this.http.get('/DR/getExpenseCategory?userId=' + this.system.user.id).then((value: any) => {
             BaseData.expenseCategoryList = value;
         });
 
@@ -76,6 +80,14 @@ export class BaseDataService {
 
     public getFundAccount(id) {
         return _.find(BaseData.fundAccountList, { id: id });
+    }
+
+    public addFundChannel(item) {
+        BaseData.fundChannelList.push(item);
+    }
+
+    public getFundChannel(id) {
+        return _.find(BaseData.fundChannelList, { id: id });
     }
 
     public addFundWay(item) {

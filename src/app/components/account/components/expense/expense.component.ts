@@ -34,7 +34,8 @@ export class ExpenseComponent implements OnDestroy, AfterViewInit, AfterViewChec
     this.done = this.system.doneEvent.subscribe(() => {
       this.dynamicLoad(this.accountService.rootComponent.component, this.accountService.rootComponent.data);
     });
-    this.changeComponent = this.accountService.changeComponentEvent.subscribe((value: any) => {
+
+    this.changeComponent = this.system.changeComponentEvent.subscribe((value: any) => {
       switch (value.component) {
         case 'expenseBook-add-edit':
           this.dynamicLoad(ExpenseBookAddEditComponent);
@@ -67,6 +68,40 @@ export class ExpenseComponent implements OnDestroy, AfterViewInit, AfterViewChec
           break;
       }
     });
+
+    // this.changeComponent = this.accountService.changeComponentEvent.subscribe((value: any) => {
+    //   switch (value.component) {
+    //     case 'expenseBook-add-edit':
+    //       this.dynamicLoad(ExpenseBookAddEditComponent);
+    //       break;
+    //     case 'address-add-edit':
+    //       this.dynamicLoad(AddressAddEditComponent);
+    //       break;
+    //     case 'expenseCategory-add-edit':
+    //       this.dynamicLoad(ExpenseCategoryAddEditComponent, value.data);
+    //       break;
+    //     case 'fundParty-add-edit':
+    //       this.dynamicLoad(FundPartyAddEditComponent, value.data);
+    //       break;
+    //     case 'fundWay-add-edit':
+    //       this.dynamicLoad(FundWayAddEditComponent);
+    //       break;
+    //     case 'fundAccount-add-edit':
+    //       this.dynamicLoad(FundAccountAddEditComponent, value.data);
+    //       break;
+    //     case 'participant-add-edit':
+    //       this.dynamicLoad(ParticipantAddEditComponent);
+    //       break;
+    //     case 'expense-detail':
+    //       this.dynamicLoad(ExpenseDetailComponent, value.data);
+    //       break;
+    //     case 'expense-list':
+    //       this.dynamicLoad(ExpenseListComponent);
+    //       break;
+    //     default:
+    //       break;
+    //   }
+    // });
   }
 
   ngAfterViewChecked() {

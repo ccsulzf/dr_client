@@ -12,70 +12,32 @@
     </div>
 
     <div class="address">
-      <label for="address">地点:</label>
-
-      <input type="text" id="address" name="address" [(ngModel)]="address" (focus)="isAddressShow=true" (blur)="blur('isAddressShow')">
-      <ul *ngIf="isAddressShow">
-        <li *ngFor="let item of baseData?.addressList" (click)="setAddress(item)">
-          {{item?.province}}|{{item?.city}}|{{item?.area}}
-        </li>
-        <li (click)="addAddress()">添加地点</li>
-      </ul>
+      <address-select [title]="'支出地点'" [addressId]="addressId" (setAddress)="onSetAddress($event)"></address-select>
     </div>
 
     <div class="address">
-      <label for="catehory">支出类别:</label>
-      <input type="text" id="catehory" name="expenseCategory" [(ngModel)]="expenseCategory" (focus)="isExpenseCategory=true"
-        (blur)="blur('isExpenseCategory')">
-      <ul *ngIf="isExpenseCategory">
-        <li *ngFor="let item of expenseCategoryList" (click)="setExpenseCategory(item)">
-          {{item.name}}
-        </li>
-        <li (click)="addExpenseCategory()">添加支出类别</li>
-      </ul>
+      <expenseCategory-select [title]="'支出类别'" [expenseBook]="expenseBook" (setCategory)="onSetCategory($event)"
+        [expenseCategoryId]="expenseCategoryId"></expenseCategory-select>
     </div>
 
     <div class="address">
-      <label for="fundParty">支出收款方:</label>
-      <input type="text" id="fundParty" name="fundParty" [(ngModel)]="fundParty" (focus)="isFundParty=true" (blur)="blur('isFundParty')">
-      <ul *ngIf="isFundParty">
-        <li *ngFor="let item of (baseData?.fundPartyList | filterMap:'type':1 )" (click)="setFundParty(item)">
-          {{item?.name}}
-        </li>
-        <li (click)="addFundParty()">添加支出收款方</li>
-      </ul>
+      <fund-party-select [title]="'收款方'" [type]="1" (setFundParty)="onSetFundParty($event)" [fundPartyId]="fundPartyId"></fund-party-select>
     </div>
 
     <div class="address">
-      <label for="fundWay">付款方式:</label>
-      <input type="text" id="fundWay" name="fundWay" [(ngModel)]="fundWay" (focus)="isFundWay=true" (blur)="blur('isFundWay')">
-      <ul *ngIf="isFundWay">
-        <li *ngFor="let item of baseData?.fundWayList" (click)="setFundWay(item)">
-          {{item?.name}}
-        </li>
-        <li (click)="addFundWay()">添加支出付款方式</li>
-      </ul>
+      <fundChannel-select [title]="'付款渠道'" (setFundChannel)="onSetsetFundChannel($event)" [fundChannelId]="fundChannelId"></fundChannel-select>
     </div>
 
     <div class="address">
-      <label for="fundAccount">付款账户:</label>
-      <input type="text" id="fundAccount" name="fundAccount" [(ngModel)]="fundAccount" (focus)="isFundAccount=true"
-        (blur)="blur('isFundAccount')">
-      <ul *ngIf="isFundAccount">
-        <li *ngFor="let item of (baseData?.fundAccountList | filterMap:'fundWayId':fundWayItem?.id)" (click)="setFundAccount(item)">
-          <span>{{item?.name}}</span>
-          <span>余额:{{item?.balance}}</span>
-        </li>
-        <li (click)="addFundAccount()">添加付款账户</li>
-      </ul>
+      <fund-account-select [title]="'付款账户'" [fundWayId]="fundWayId" (setFundAccount)="onSetFundAccount($event)"
+        [filterCredit]="true" [fundAccountId]="fundAccountId"></fund-account-select>
     </div>
-
 
     <fieldset class="detail">
       <legend>支出明细</legend>
       <ul>
         <li class="detail-item" [style.border-bottom]="expenseDetail == item ? '2px solid #40a9ff':''" *ngFor="let item of expenseDetailList"
-          (click)="selec(item)">{{item}}</li>
+          (click)="select(item)">{{item}}</li>
       </ul>
       <div class="content" *ngIf="expenseDetail == '内容'">
         <div>
@@ -91,48 +53,11 @@
       </div>
 
       <div class="participan" *ngIf="expenseDetail == '参与人'">
-        <ng-container *ngFor="let item of participantList">
-          <span>
-            {{item?.name}}
-            <i (click)="deleteParticipant(item)">×</i>
-          </span>
-        </ng-container>
-
-        <span *ngIf="!isPrticipanInputShow" (click)="isPrticipanInputShow=!isPrticipanInputShows">+ 添加参与者</span>
-
-        <div class="input" *ngIf="isPrticipanInputShow ">
-          <input placeholder="添加参与者" (focus)="isPrticipanInputShow=true" (blur)="blur('isPrticipanInputShow')">
-
-          <ul *ngIf="isPrticipanInputShow">
-            <li *ngFor="let item of (baseData?.participantList | filterList:'list':participantList)" (click)="setParticipantItem(item)">
-              {{item?.name}}
-            </li>
-            <li (click)="addParticipant()">添加参与者</li>
-          </ul>
-        </div>
+        <participant-select [title]="'参与'" (setParticipantList)="onSetParticipantList($event)" [hasParticipantList]="participantList"></participant-select>
       </div>
 
       <div class="label" *ngIf="expenseDetail == '标签'">
-        <ng-container>
-          <span *ngFor="let item of labelList">
-            {{item.name}}
-            <i (click)="deleteLabel(item)">×</i>
-          </span>
-        </ng-container>
-
-        <span (click)="isLabelInputShow=true" *ngIf="!isLabelInputShow">+新增标签</span>
-        <div class="input" *ngIf="isLabelInputShow">
-          <div>
-            <input name="label" [(ngModel)]="label" placeholder="添加标签">
-            <i (click)="addLabel()">+</i>
-            <i (click)="cancel()">x</i>
-          </div>
-          <ul>
-            <li (click)="selecLabel(item)" *ngFor="let item of  (baseData?.labelList | filterList:'list':labelList)">
-              {{item?.name}}
-            </li>
-          </ul>
-        </div>
+        <label-select [title]="'标签'" [type]="'2'" (setLabelList)="onSetLabelList($event)" [hasLabelList]="labelList"></label-select>
       </div>
 
       <div class="memo" *ngIf="expenseDetail == '备注'">

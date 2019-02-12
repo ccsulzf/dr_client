@@ -29,6 +29,9 @@ import { FundAccountSelectComponent } from './components/fundAccount/fund-accoun
 import { IncomeCategoryAddEditComponent } from './components/income-category/income-category-add-edit/income-category-add-edit.component';
 import { FundPartySelectComponent } from './components/fund-party/fund-party-select/fund-party-select.component';
 import { FundwaySelectComponent } from './components/fund-way/fundway-select/fundway-select.component';
+import { ExpenseCategorySelectComponent } from './components/expense-category/expense-category-select/expense-category-select.component';
+
+import { FundChannelAddEditComponent, FundChannelSelectComponent } from './components/fund-channel';
 @NgModule({
   imports: [
     CommonModule,
@@ -41,7 +44,11 @@ import { FundwaySelectComponent } from './components/fund-way/fundway-select/fun
     FilterPipe, FilterListPipe, FilterNamePipe, FundWayAddEditComponent,
     FundAccountAddEditComponent, ParticipantAddEditComponent,
     AddressSelectComponent, IncomeCategorySelectComponent,
-    ParticipantSelectComponent, LabelSelectComponent, FundAccountSelectComponent, IncomeCategoryAddEditComponent, FundPartySelectComponent, FundwaySelectComponent],
+    ParticipantSelectComponent, LabelSelectComponent,
+    FundAccountSelectComponent, IncomeCategoryAddEditComponent,
+    FundPartySelectComponent, FundwaySelectComponent,
+    ExpenseCategorySelectComponent, FundChannelAddEditComponent, FundChannelSelectComponent
+  ],
   exports: [
     NavComponent,
     AddressSelectComponent,
@@ -51,6 +58,8 @@ import { FundwaySelectComponent } from './components/fund-way/fundway-select/fun
     FundPartySelectComponent,
     FundwaySelectComponent,
     FundAccountSelectComponent,
+    ExpenseCategorySelectComponent,
+    FundChannelSelectComponent,
     DynamicComponentDirective,
     BlankClickDirective,
     FilterPipe,
@@ -72,7 +81,8 @@ import { FundwaySelectComponent } from './components/fund-way/fundway-select/fun
     FundWayAddEditComponent,
     FundAccountAddEditComponent,
     ParticipantAddEditComponent,
-    IncomeCategoryAddEditComponent
+    IncomeCategoryAddEditComponent,
+    FundChannelAddEditComponent
   ]
 })
 export class CoreModule { }

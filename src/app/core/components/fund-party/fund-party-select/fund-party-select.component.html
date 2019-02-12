@@ -1,19 +1,18 @@
 <main>
-    <label>
-      {{title}}:
-    </label>
-    <div class="select" id="fundParty-list" blankClick>
-      <input type="text" name="fundParty" [(ngModel)]="fundParty" disabled placeholder="请选择付款方">
-      <i class="down-triangle"></i>
-    </div>
-  
-    <div class="ul-select" *ngIf="isListShow">
-      <ul>
-        <li (click)="select(item)" *ngFor="let item of fundPartyList">
-          {{item?.name}}
-        </li>
-      </ul>
-      <div class="add" (click)="add()">添加付款方</div>
-    </div>
-  </main>
-  
+  <label>
+    {{title}}:
+  </label>
+  <div class="select">
+    <input type="text" name="fundParty" [(ngModel)]="fundParty" disabled placeholder="请选择付款方">
+    <i class="down-triangle"></i>
+  </div>
+
+  <div class="ul-select" *ngIf="isListShow">
+    <ul>
+      <li (click)="select(item)" *ngFor="let item of fundPartyList">
+        {{item?.name}}
+      </li>
+    </ul>
+    <div class="add" (click)="add()">添加付款方</div>
+  </div>
+</main>

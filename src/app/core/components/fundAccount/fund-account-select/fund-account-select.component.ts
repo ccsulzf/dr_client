@@ -51,7 +51,7 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
       } else {
         this.fundAccountList = _.filter(BaseData.fundAccountList, { fundWayId: this.fundWayId });
         if (this.filterCredit) {
-          this.fundAccountList = _.filter(this.fundAccountList, { isCredit: 0 })
+          this.fundAccountList = _.filter(this.fundAccountList, { isCredit: 0 });
         }
         this.select(_.first(this.fundAccountList));
       }
@@ -70,7 +70,7 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
   init() {
     this.fundAccountList = _.filter(BaseData.fundAccountList, { fundWayId: this.fundWayId });
     if (this.filterCredit) {
-      this.fundAccountList = _.filter(this.fundAccountList, { isCredit: 0 })
+      this.fundAccountList = _.filter(this.fundAccountList, { isCredit: 0 });
     }
     this.select(_.first(this.fundAccountList));
   }
@@ -78,7 +78,7 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
   select(item?) {
     this.fundAccountList = _.filter(BaseData.fundAccountList, { fundWayId: this.fundWayId });
     if (this.filterCredit) {
-      this.fundAccountList = _.filter(this.fundAccountList, { isCredit: 0 })
+      this.fundAccountList = _.filter(this.fundAccountList, { isCredit: 0 });
     }
     this.isListShow = false;
     if (item) {

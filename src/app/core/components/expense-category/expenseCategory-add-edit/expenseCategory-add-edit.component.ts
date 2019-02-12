@@ -26,7 +26,7 @@ export class ExpenseCategoryAddEditComponent implements OnInit {
       });
     if (expenseCategory) {
       this.baseData.addExpenseCategory(expenseCategory);
-      this.system.done();
+      this.system.done({ model: 'expenseCategory', data: expenseCategory });
     }
   }
 

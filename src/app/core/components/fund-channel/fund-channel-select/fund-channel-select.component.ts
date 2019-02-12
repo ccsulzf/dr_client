@@ -4,27 +4,27 @@ import {
 } from '@angular/core';
 import { SystemService, BaseData } from '../../../providers';
 import * as _ from 'lodash';
+
 @Component({
-  selector: 'fund-party-select',
-  templateUrl: './fund-party-select.component.html',
-  styleUrls: ['./fund-party-select.component.scss']
+  selector: 'fundChannel-select',
+  templateUrl: './fund-channel-select.component.html',
+  styleUrls: ['./fund-channel-select.component.scss']
 })
-export class FundPartySelectComponent implements OnInit, OnDestroy {
+export class FundChannelSelectComponent implements OnInit, OnDestroy {
 
   @Input() title;
-  @Input() type;
-  @Output() setFundParty = new EventEmitter<string>();
+  @Output() setFundChannel = new EventEmitter<string>();
 
   @Input()
-  set fundPartyId(fundPartyId) {
-    this.select(_.find(BaseData.fundPartyList, { id: fundPartyId }));
+  set fundChannelId(fundChannelId) {
+    this.select(_.find(BaseData.fundChannelList, { id: fundChannelId }));
   }
 
-  get fundPartyId(): string { return this.fundParty; }
+  get fundChannelId(): string { return this.fundChannel; }
 
-  fundPartyList = [];
-  fundPartyItem;
-  fundParty;
+  fundChannelList = [];
+  fundChannelItem;
+  fundChannel;
 
   resetEvent;
   doneEvent;
@@ -38,19 +38,26 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
     private viewRef: ViewContainerRef
   ) { }
 
+
   ngOnInit() {
+    this.init();
+
     this.resetEvent = this.system.resetEvent.subscribe(() => {
       this.init();
     });
 
     this.doneEvent = this.system.doneEvent.subscribe((value) => {
-      if (value && value.model === 'fundParty') {
+      if (value && value.model === 'fundChannel') {
         this.select(value.data);
       } else {
-        this.fundPartyList = _.filter(BaseData.fundPartyList, { type: this.type });
-        this.select(_.first(this.fundPartyList));
+        this.select(_.first(this.fundChannelList));
       }
     });
+  }
+
+  init() {
+    this.fundChannelList = BaseData.fundChannelList;
+    this.select(_.first(this.fundChannelList));
   }
 
   @HostListener('document:click', ['$event'])
@@ -60,11 +67,6 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
     } else {
       this.isListShow = false;
     }
-  }
-
-  init() {
-    this.fundPartyList = _.filter(BaseData.fundPartyList, { type: this.type });
-    this.select(_.first(this.fundPartyList));
   }
 
   ngOnDestroy() {
@@ -77,22 +79,20 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
   }
 
   select(item?) {
-    this.fundPartyList = _.filter(BaseData.fundPartyList, { type: this.type });
     this.isListShow = false;
     if (item) {
-      console.info(item);
-      this.fundPartyItem = item;
-      this.fundParty = item.name;
-      this.setFundParty.emit(this.fundPartyItem.id);
+      this.fundChannelItem = item;
+      this.fundChannel = item.name;
+      this.setFundChannel.emit(this.fundChannelItem.id);
     } else {
-      this.fundPartyItem = null;
-      this.fundParty = '';
+      this.fundChannelItem = null;
+      this.fundChannel = '';
     }
   }
 
-
   add() {
     this.select();
-    this.system.changeComponent({ component: 'fundParty-add-edit', data: this.type });
+    this.system.changeComponent({ component: 'fundChannel-add-edit' });
   }
+
 }

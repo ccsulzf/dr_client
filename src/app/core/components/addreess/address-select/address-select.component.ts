@@ -1,4 +1,7 @@
-import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
+import {
+  Component, OnInit, Input, OnDestroy, Output, EventEmitter,
+  HostListener, ElementRef, Renderer, ViewContainerRef
+} from '@angular/core';
 import { SystemService, BaseDataService, BaseData } from '../../../providers';
 import * as _ from 'lodash';
 @Component({
@@ -27,27 +30,32 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
 
   isListShow = false;
 
-  clickId = 'address-select';
+  // clickId = 'address-select';
   constructor(
-    private system: SystemService
+    private system: SystemService,
+    private el: ElementRef,
+    private renderer: Renderer,
+    private viewRef: ViewContainerRef
   ) { }
+
+
 
   ngOnInit() {
     this.init();
 
     this.resetEvent = this.system.resetEvent.subscribe(() => {
       this.init();
-    })
-
-    this.showListEvent = this.system.showListEvent.subscribe((data) => {
-      if (this.clickId === data.id) {
-        this.isListShow = !this.isListShow;
-      } else {
-        if (data.id) {
-          this.isListShow = false;
-        }
-      }
     });
+
+    // this.showListEvent = this.system.showListEvent.subscribe((data) => {
+    //   if (this.clickId === data.id) {
+    //     this.isListShow = !this.isListShow;
+    //   } else {
+    //     if (data.id) {
+    //       this.isListShow = false;
+    //     }
+    //   }
+    // });
 
     this.doneEvent = this.system.doneEvent.subscribe((value) => {
       if (value && value.model === 'address') {
@@ -56,6 +64,15 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
         this.select(_.find(this.addressList, { isCurrenLive: 1 }));
       }
     });
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClick() {
+    if (this.el.nativeElement.contains(event.target)) {
+      this.isListShow = !this.isListShow;
+    } else {
+      this.isListShow = false;
+    }
   }
 
   init() {

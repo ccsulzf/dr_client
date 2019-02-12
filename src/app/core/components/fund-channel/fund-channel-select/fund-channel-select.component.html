@@ -1,0 +1,18 @@
+<main>
+  <label>
+    {{title}}:
+  </label>
+  <div class="select">
+    <input type="text" name="fundWay" [(ngModel)]="fundWay" disabled [placeholder]="'请选择'+title">
+    <i class="down-triangle"></i>
+  </div>
+
+  <div class="ul-select" *ngIf="isListShow">
+    <ul>
+      <li (click)="select(item)" *ngFor="let item of fundWayList">
+        {{item?.name}}
+      </li>
+    </ul>
+    <div class="add" (click)="add()">添加{{title}}</div>
+  </div>
+</main>

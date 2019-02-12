@@ -1,0 +1,18 @@
+<main>
+  <label>
+    {{title}}:
+  </label>
+  <div class="select">
+    <input type="text" name="expenseCategory" [(ngModel)]="expenseCategory" disabled placeholder="请选择支出类别">
+    <i class="down-triangle"></i>
+  </div>
+
+  <div class="ul-select" *ngIf="isListShow">
+    <ul>
+      <li (click)="select(item)" *ngFor="let item of expenseCategoryList">
+        {{item?.name}}
+      </li>
+    </ul>
+    <div class="add" (click)="add()">添加支出类别</div>
+  </div>
+</main>

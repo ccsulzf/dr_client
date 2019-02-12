@@ -9,6 +9,14 @@ li {
   padding: 0;
 }
 
+input[type="date"] {
+  height: 23px;
+  margin-top: 5px;
+  border: none;
+  border-bottom: 1px dashed;
+  outline: none;
+}
+
 
 form {
   display: grid;
