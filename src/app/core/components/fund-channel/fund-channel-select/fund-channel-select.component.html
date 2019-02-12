@@ -3,13 +3,13 @@
     {{title}}:
   </label>
   <div class="select">
-    <input type="text" name="fundWay" [(ngModel)]="fundWay" disabled [placeholder]="'请选择'+title">
+    <input type="text" name="fundChannel" [(ngModel)]="fundChannel" disabled [placeholder]="'请选择'+title">
     <i class="down-triangle"></i>
   </div>
 
   <div class="ul-select" *ngIf="isListShow">
     <ul>
-      <li (click)="select(item)" *ngFor="let item of fundWayList">
+      <li (click)="select(item)" *ngFor="let item of fundChannelList">
         {{item?.name}}
       </li>
     </ul>

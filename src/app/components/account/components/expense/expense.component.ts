@@ -7,7 +7,8 @@ import { SystemService } from '../../../../core/providers';
 import {
   AddressAddEditComponent, ExpenseBookAddEditComponent,
   ExpenseCategoryAddEditComponent, FundPartyAddEditComponent,
-  FundWayAddEditComponent, FundAccountAddEditComponent, ParticipantAddEditComponent
+  FundWayAddEditComponent, FundAccountAddEditComponent, ParticipantAddEditComponent,
+  FundChannelAddEditComponent
 } from '../../../../core/components';
 import { ExpenseListComponent, ExpenseDetailComponent } from '../expense';
 import { AccountService } from '../../services';
@@ -49,8 +50,8 @@ export class ExpenseComponent implements OnDestroy, AfterViewInit, AfterViewChec
         case 'fundParty-add-edit':
           this.dynamicLoad(FundPartyAddEditComponent, value.data);
           break;
-        case 'fundWay-add-edit':
-          this.dynamicLoad(FundWayAddEditComponent);
+        case 'fundChannel-add-edit':
+          this.dynamicLoad(FundChannelAddEditComponent);
           break;
         case 'fundAccount-add-edit':
           this.dynamicLoad(FundAccountAddEditComponent, value.data);
