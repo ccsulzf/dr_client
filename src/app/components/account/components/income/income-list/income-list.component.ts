@@ -10,7 +10,7 @@ import * as moment from 'moment';
   templateUrl: './income-list.component.html',
   styleUrls: ['./income-list.component.scss']
 })
-export class IncomeListComponent implements OnInit, OnDestroy {
+export class IncomeListComponent implements OnInit, OnDestroy, AfterViewInit {
   public showDate;
 
   public isShowCal = false;
@@ -56,7 +56,6 @@ export class IncomeListComponent implements OnInit, OnDestroy {
   }
 
   dateShow(date) {
-    console.info(moment().diff(moment(date), 'months'));
     switch (moment().diff(moment(date), 'months')) {
       case 0:
         this.showDate = '本月收入';

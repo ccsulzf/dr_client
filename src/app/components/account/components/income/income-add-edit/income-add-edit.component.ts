@@ -18,7 +18,8 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy {
   incomeCategoryId;
   fundPartyId;
   amount;
-  fundWayId;
+  // fundWayId;
+  fundChannelId;
   fundAccountId;
   startDate;
   endDate;
@@ -45,7 +46,7 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy {
       this.fundPartyId = data.fundPartyId;
       this.incomeCategoryId = data.incomeCategoryId;
       this.amount = data.amount;
-      this.fundWayId = data.fundWayId;
+      this.fundChannelId = data.fundChannelId;
       this.fundAccountId = data.fundAccountId;
 
       this.startDate = moment(data.startDate).format('YYYY-MM-DD');
@@ -100,8 +101,8 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy {
     this.labelList = labelList;
   }
 
-  onSetFundWay(fundWayId) {
-    this.fundWayId = fundWayId;
+  onSetsetFundChannel(fundChannelId) {
+    this.fundChannelId = fundChannelId;
   }
 
   onSetFundAccount(fundAccountId) {
@@ -115,7 +116,7 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy {
       incomeCategoryId: this.incomeCategoryId,
       fundPartyId: this.fundPartyId,
       amount: this.amount,
-      fundWayId: this.fundWayId,
+      fundChannelId: this.fundChannelId,
       fundAccountId: this.fundAccountId,
       startDate: this.startDate,
       endDate: this.endDate,
@@ -133,7 +134,7 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy {
       incomeCategoryId: this.incomeCategoryId,
       fundPartyId: this.fundPartyId,
       amount: this.amount,
-      fundWayId: this.fundWayId,
+      fundChannelId: this.fundChannelId,
       fundAccountId: this.fundAccountId,
       startDate: this.startDate,
       endDate: this.endDate,

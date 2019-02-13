@@ -46,8 +46,8 @@ export class IncomeService {
         const fundParty = this.baseDataService.getFundParty(item.fundPartyId);
         item.fundPartyName = fundParty.name;
 
-        const fundWay = this.baseDataService.getFundWay(item.fundWayId);
-        item.fundWayName = fundWay.name;
+        const fundChannel = this.baseDataService.getFundChannel(item.fundChannelId);
+        item.fundChannelName = fundChannel.name;
 
         this.incomeList.push(item);
     }
@@ -69,7 +69,7 @@ export class IncomeService {
                 income: this.income,
                 participantList: participantList,
                 labelList: labelList
-            }
+            };
             const data: any = await this.http.post('/DR/addIncome', incomeData);
 
             const fundAccount = this.baseDataService.getFundAccount(this.income.fundAccountId);
@@ -91,7 +91,7 @@ export class IncomeService {
                 income: this.income,
                 participantList: participantList,
                 labelList: labelList
-            }
+            };
 
             const incomeId: any = await this.http.post('/DR/editIncome', incomeData);
 

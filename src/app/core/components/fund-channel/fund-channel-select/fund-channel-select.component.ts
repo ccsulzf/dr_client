@@ -49,15 +49,13 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy {
     this.doneEvent = this.system.doneEvent.subscribe((value) => {
       if (value && value.model === 'fundChannel') {
         this.select(value.data);
-      } else {
-        this.select(_.first(this.fundChannelList));
       }
     });
   }
 
   init() {
     this.fundChannelList = BaseData.fundChannelList;
-    this.select(_.first(this.fundChannelList));
+    this.select();
   }
 
   @HostListener('document:click', ['$event'])

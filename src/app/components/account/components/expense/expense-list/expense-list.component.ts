@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ChangeDetectorRef, AfterViewChecked } from '@angular/core';
-import { HttpClientService, BaseDataService } from '../../../../../core/providers';
+import { HttpClientService, BaseDataService, SystemService } from '../../../../../core/providers';
 import { AccountService, ExpenseService } from '../../../services';
 import * as moment from 'moment';
 import * as _ from 'lodash';
@@ -22,7 +22,8 @@ export class ExpenseListComponent implements AfterViewInit, OnInit, OnDestroy, A
     private http: HttpClientService,
     private baseDataService: BaseDataService,
     private expenseService: ExpenseService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private system: SystemService
   ) {
   }
 
@@ -87,11 +88,11 @@ export class ExpenseListComponent implements AfterViewInit, OnInit, OnDestroy, A
   }
 
   toDetailList() {
-    this.accountService.changeComponent({ component: 'expense-detail' });
+    this.system.changeComponent({ component: 'expense-detail' });
   }
 
   goDetail(item) {
-    this.accountService.changeComponent({ component: 'expense-detail', data: item });
+    this.system.changeComponent({ component: 'expense-detail', data: item });
   }
 
 }

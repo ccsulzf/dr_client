@@ -12,46 +12,23 @@ export class BaseDataService {
     ) { }
 
     async getAllBaseData() {
+        BaseData.expenseBookList = <any>await this.http.get('/DR/ExpenseBook?userId=' + this.system.user.id);
 
-        this.http.get('/DR/ExpenseBook?userId=' + this.system.user.id).then((value: any) => {
-            BaseData.expenseBookList = value;
-        });
+        BaseData.addressList = <any>await this.http.get('/DR/Address?userId=' + this.system.user.id);
 
-        this.http.get('/DR/Address?userId=' + this.system.user.id).then((value: any) => {
-            BaseData.addressList = value;
-        });
+        BaseData.fundPartyList = <any>await this.http.get('/DR/FundParty?userId=' + this.system.user.id);
 
-        this.http.get('/DR/FundParty?userId=' + this.system.user.id).then((value: any) => {
-            BaseData.fundPartyList = value;
-        });
+        BaseData.fundChannelList = <any>await this.http.get('/DR/fundChannel?userId=' + this.system.user.id);
 
-        this.http.get('/DR/fundChannel?userId=' + this.system.user.id).then((value: any) => {
-            BaseData.fundChannelList = value;
-        });
+        BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
 
-        // this.http.get('/DR/FundWay?userId=' + this.system.user.id).then((value: any) => {
-        //     BaseData.fundWayList = value;
-        // });
+        BaseData.participantList = <any>await this.http.get('/DR/Participant?userId=' + this.system.user.id);
 
-        this.http.get('/DR/getFundCount?userId=' + this.system.user.id).then((value: any) => {
-            BaseData.fundAccountList = value;
-        });
+        BaseData.labelList = <any>await this.http.get('/DR/Label?userId=' + this.system.user.id);
 
-        this.http.get('/DR/Participant?userId=' + this.system.user.id).then((value: any) => {
-            BaseData.participantList = value;
-        });
+        BaseData.expenseCategoryList = <any>await this.http.get('/DR/getExpenseCategory?userId=' + this.system.user.id);
 
-        this.http.get('/DR/Label?userId=' + this.system.user.id).then((value: any) => {
-            BaseData.labelList = value;
-        });
-
-        this.http.get('/DR/getExpenseCategory?userId=' + this.system.user.id).then((value: any) => {
-            BaseData.expenseCategoryList = value;
-        });
-
-        this.http.get('/DR/IncomeCategory?userId=' + this.system.user.id).then((value: any) => {
-            BaseData.incomeCategoryList = value;
-        });
+        BaseData.incomeCategoryList = <any>await this.http.get('/DR/IncomeCategory?userId=' + this.system.user.id);
     }
 
     public addLable(item) {

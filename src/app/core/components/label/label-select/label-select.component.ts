@@ -17,9 +17,9 @@ export class LabelSelectComponent implements OnInit, OnDestroy {
     this.labelList = hasLabelList;
   }
 
-  get hasLabelList(): string { return this.labelList; }
+  get hasLabelList() { return this.labelList; }
 
-  labelList;
+  labelList = [];
   isInputShow = false;
   name;
 

@@ -19,17 +19,17 @@
       </div>
     </div>
     <div class="row-3">
-      <fundway-select [title]="'收款方式'" (setFundWay)="onSetFundWay($event)" [fundWayId]="fundWayId"></fundway-select>
+      <fundChannel-select [title]="'收款渠道'" (setFundChannel)="onSetsetFundChannel($event)" [fundChannelId]="fundChannelId"></fundChannel-select>
     </div>
     <div class="row-3">
-      <fund-account-select [title]="'存入账户'" [fundWayId]="fundWayId" (setFundAccount)="onSetFundAccount($event)"
+      <fund-account-select [title]="'存入账户'" [fundChannelId]="fundChannelId" (setFundAccount)="onSetFundAccount($event)"
         [filterCredit]="true" [fundAccountId]="fundAccountId"></fund-account-select>
     </div>
     <div class="row-6">
       <label>收款周期:</label>
       <div class="row-6 period">
-        <input class="row-3" type="date" name="startDate" [(ngModel)]="startDate" [max]="endDate">
-        <input class="row-3" type="date" name="endDate" [(ngModel)]="endDate" [min]="startDate">
+        <input class="row-3" type="date" name="startDate" [(ngModel)]="startDate">
+        <input class="row-3" type="date" name="endDate" [(ngModel)]="endDate">
       </div>
     </div>
 

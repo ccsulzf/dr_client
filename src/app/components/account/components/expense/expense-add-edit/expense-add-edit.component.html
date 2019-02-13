@@ -24,16 +24,14 @@
       <fund-party-select [title]="'收款方'" [type]="1" (setFundParty)="onSetFundParty($event)" [fundPartyId]="fundPartyId"></fund-party-select>
     </div>
 
-
-    <div class="address">
-      <fund-account-select [title]="'付款账户'" [fundWayId]="fundWayId" (setFundAccount)="onSetFundAccount($event)"
-        [filterCredit]="true" [fundAccountId]="fundAccountId"></fund-account-select>
-    </div>
-
     <div class="address">
       <fundChannel-select [title]="'付款渠道'" (setFundChannel)="onSetsetFundChannel($event)" [fundChannelId]="fundChannelId"></fundChannel-select>
     </div>
 
+    <div class="address">
+      <fund-account-select [title]="'付款账户'" [fundChannelId]="fundChannelId" (setFundAccount)="onSetFundAccount($event)"
+        [filterCredit]="false" [fundAccountId]="fundAccountId"></fund-account-select>
+    </div>
 
     <fieldset class="detail">
       <legend>支出明细</legend>
@@ -54,15 +52,15 @@
         </div>
       </div>
 
-      <div class="participan" *ngIf="expenseDetail == '参与人'">
+      <div class="participan" [style.display]="expenseDetail == '参与人' ? 'block':'none'">
         <participant-select [title]="'参与'" (setParticipantList)="onSetParticipantList($event)" [hasParticipantList]="participantList"></participant-select>
       </div>
 
-      <div class="label" *ngIf="expenseDetail == '标签'">
-        <label-select [title]="'标签'" [type]="'2'" (setLabelList)="onSetLabelList($event)" [hasLabelList]="labelList"></label-select>
+      <div class="label" [style.display]="expenseDetail == '标签' ? 'block':'none'">
+        <label-select [title]="'标签'" [type]="'1'" (setLabelList)="onSetLabelList($event)" [hasLabelList]="labelList"></label-select>
       </div>
 
-      <div class="memo" *ngIf="expenseDetail == '备注'">
+      <div class="memo" [style.display]="expenseDetail == '备注' ? 'block':'none'">
         <textarea name="memo" [(ngModel)]="memo">
           </textarea>
       </div>

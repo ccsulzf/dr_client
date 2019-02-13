@@ -1,4 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import {
+  Component, OnInit, Input, OnDestroy, Output, EventEmitter,
+  HostListener, ElementRef, Renderer, ViewContainerRef
+} from '@angular/core';
 import { SystemService, BaseData } from '../../../providers';
 import * as _ from 'lodash';
 @Component({
@@ -8,8 +11,18 @@ import * as _ from 'lodash';
 })
 export class FundAccountSelectComponent implements OnInit, OnDestroy {
   @Input() title;
-  @Input() fundWayId;
   @Input() filterCredit;
+
+  @Input()
+  set fundChannelId(fundChannelId) {
+    if (fundChannelId) {
+      this.fundChannel = _.find(BaseData.fundChannelList, { id: fundChannelId });
+      this.getFundAccountList();
+    }
+  }
+
+  get fundChannelId(): string { return this.fundChannel.id; }
+
   @Output() setFundAccount = new EventEmitter<string>();
 
   @Input()
@@ -23,63 +36,77 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
   fundAccountItem;
   fundAccount;
 
-  showListEvent;
+  fundChannel;
+
   doneEvent;
+  resetEvent;
 
   isListShow = true;
 
-  clickId = 'fundAccount-list';
-
   constructor(
-    private system: SystemService
+    private system: SystemService,
+    private el: ElementRef,
+    private renderer: Renderer,
+    private viewRef: ViewContainerRef
   ) { }
 
   ngOnInit() {
     this.init();
-    this.showListEvent = this.system.showListEvent.subscribe((data) => {
-      if (this.clickId === data.id) {
-        this.isListShow = !this.isListShow;
-      } else {
-        if (data.id) {
-          this.isListShow = false;
+    this.doneEvent = this.system.doneEvent.subscribe((value) => {
+      if (value && value.model === 'fundAccount') {
+        this.fundChannel = value.fundChannel;
+        this.getFundAccountList();
+        if (this.fundChannel && _.find(value.data.fundChannelList, { id: this.fundChannel.id })) {
+          this.select(value.data);
         }
       }
     });
-    this.doneEvent = this.system.doneEvent.subscribe((value) => {
-      if (value && value.model === 'fundAccount') {
-        this.select(value.data);
-      } else {
-        this.fundAccountList = _.filter(BaseData.fundAccountList, { fundWayId: this.fundWayId });
-        if (this.filterCredit) {
-          this.fundAccountList = _.filter(this.fundAccountList, { isCredit: 0 });
-        }
-        this.select(_.first(this.fundAccountList));
-      }
+    this.resetEvent = this.system.resetEvent.subscribe(() => {
+      this.init();
     });
   }
 
   ngOnDestroy() {
-    if (this.showListEvent) {
-      this.showListEvent.unsubscribe();
-    }
     if (this.doneEvent) {
       this.doneEvent.unsubscribe();
+    }
+    if (this.resetEvent) {
+      this.resetEvent.unsubscribe();
+    }
+  }
+
+  getFundAccountList() {
+    if (this.fundChannel) {
+      this.fundAccountList = _.filter(BaseData.fundAccountList, (item) => {
+        if (_.find(item.fundChannelList, { id: this.fundChannel.id })) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+    }
+    if (this.filterCredit) {
+      this.fundAccountList = _.filter(this.fundAccountList, { isCredit: 0 });
+    }
+
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClick() {
+    if (this.el.nativeElement.contains(event.target)) {
+      this.isListShow = !this.isListShow;
+    } else {
+      this.isListShow = false;
     }
   }
 
   init() {
-    this.fundAccountList = _.filter(BaseData.fundAccountList, { fundWayId: this.fundWayId });
-    if (this.filterCredit) {
-      this.fundAccountList = _.filter(this.fundAccountList, { isCredit: 0 });
-    }
-    this.select(_.first(this.fundAccountList));
+    this.getFundAccountList();
+    this.select();
   }
 
   select(item?) {
-    this.fundAccountList = _.filter(BaseData.fundAccountList, { fundWayId: this.fundWayId });
-    if (this.filterCredit) {
-      this.fundAccountList = _.filter(this.fundAccountList, { isCredit: 0 });
-    }
+    this.getFundAccountList();
     this.isListShow = false;
     if (item) {
       this.fundAccountItem = item;
@@ -93,6 +120,6 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
 
   add() {
     this.select();
-    this.system.changeComponent({ component: 'fundAccount-add-edit', data: { fundWayId: this.fundWayId } });
+    this.system.changeComponent({ component: 'fundAccount-add-edit', data: this.fundChannel });
   }
 }

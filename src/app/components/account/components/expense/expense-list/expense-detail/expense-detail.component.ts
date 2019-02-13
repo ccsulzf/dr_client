@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { HttpClientService, BaseDataService, BaseData } from '../../../../../../core/providers';
+import { HttpClientService, BaseDataService, BaseData, SystemService } from '../../../../../../core/providers';
 import { AccountService, ExpenseService } from '../../../../services';
 
 import * as _ from 'lodash';
@@ -14,7 +14,8 @@ export class ExpenseDetailComponent implements OnInit {
     private accountService: AccountService,
     private http: HttpClientService,
     private baseDataService: BaseDataService,
-    private expenseService: ExpenseService
+    private expenseService: ExpenseService,
+    private system: SystemService
   ) { }
 
   ngOnInit() {
@@ -30,7 +31,7 @@ export class ExpenseDetailComponent implements OnInit {
   }
 
   return() {
-    this.accountService.changeComponent({ component: 'expense-list' });
+    this.system.changeComponent({ component: 'expense-list' });
   }
 
   edit(item) {

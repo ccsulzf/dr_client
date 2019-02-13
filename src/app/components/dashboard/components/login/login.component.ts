@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
   async login() {
     const flag = await this.loginService.login(this.nameOrEmali, this.password);
     if (flag) {
-      this.baseData.getAllBaseData();
+      await this.baseData.getAllBaseData();
       this.router.navigateByUrl('/dashboard/home');
     }
   }

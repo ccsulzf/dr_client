@@ -11,15 +11,13 @@ import * as moment from 'moment';
   templateUrl: './expense-add-edit.component.html',
   styleUrls: ['./expense-add-edit.component.scss']
 })
-export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
+export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public addressId;
 
   public expenseCategoryId = 3;
 
   public fundPartyId;
-
-  public fundWayId;
 
   public fundChannelId;
 
@@ -62,6 +60,10 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
     public system: SystemService,
     public expenseService: ExpenseService
   ) {
+
+  }
+
+  ngOnInit() {
     this.baseData = BaseData;
     this.expenseDate = moment().format('YYYY-MM-DD');
     this.expenseBook = this.baseData.expenseBookList[0];
@@ -81,10 +83,6 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
 
   onSetsetFundChannel(fundChannelId) {
     this.fundChannelId = fundChannelId;
-  }
-
-  onSetFundWay(fundWayId) {
-    this.fundWayId = fundWayId;
   }
 
   onSetFundAccount(fundAccountId) {
@@ -115,7 +113,7 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
 
       this.fundPartyId = data.expenseDetail.fundPartyId;
 
-      this.fundWayId = data.expenseDetail.fundWayId;
+      this.fundChannelId = data.expenseDetail.fundChannelId;
 
       this.fundAccountId = data.expenseDetail.fundAccountId;
 
@@ -137,7 +135,7 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
 
 
   addExpenseBook() {
-    this.accountService.changeComponent({ component: 'expenseBook-add-edit' });
+    this.system.changeComponent({ component: 'expenseBook-add-edit' });
   }
 
   async getParticipantList() {
@@ -206,7 +204,7 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
         addressId: this.addressId,
         expenseCategoryId: this.expenseCategoryId,
         fundPartyId: this.fundPartyId,
-        fundWayId: this.fundWayId,
+        fundChannelId: this.fundChannelId,
         fundAccountId: this.fundAccountId
       };
       await this.expenseService.addExpense(this.participantList, this.labelList);
@@ -214,7 +212,7 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
         moment(this.expenseDate).format('YYYY-MM-DD'))
         || (this.expenseBookId !== this.expenseBook.id)) {
         this.expenseService.expneseListDate = moment(this.expenseDate).format('YYYY-MM-DD'),
-          this.accountService.changeComponent({ component: 'expense-list' });
+          this.system.changeComponent({ component: 'expense-list' });
       }
       this.init();
     } catch (error) {
@@ -241,14 +239,14 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
         addressId: this.addressId,
         expenseCategoryId: this.expenseCategoryId,
         fundPartyId: this.fundPartyId,
-        fundWayId: this.fundWayId,
+        fundChannelId: this.fundChannelId,
         fundAccountId: this.fundAccountId
       };
 
       await this.expenseService.editExpense(this.participantList, this.labelList);
 
       this.expenseService.expneseListDate = moment(this.expenseDate).format('YYYY-MM-DD'),
-        this.accountService.changeComponent({ component: 'expense-list' });
+        this.system.changeComponent({ component: 'expense-list' });
 
       this.expenseService.init();
 
@@ -270,7 +268,7 @@ export class ExpenseAddEditComponent implements AfterViewInit, OnDestroy {
         this.expenseService.groupDetailList();
       } else {
         _.remove(this.expenseService.expenseList, { id: this.expenseId });
-        this.accountService.changeComponent({ component: 'expense-list' });
+        this.system.changeComponent({ component: 'expense-list' });
       }
     } catch (error) {
       alert('删除账目失败:' + error);

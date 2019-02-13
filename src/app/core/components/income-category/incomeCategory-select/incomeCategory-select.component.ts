@@ -1,4 +1,7 @@
-import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
+import {
+  Component, OnInit, Input, OnDestroy, Output, EventEmitter,
+  HostListener, ElementRef, Renderer, ViewContainerRef
+} from '@angular/core';
 import { SystemService, BaseData } from '../../../providers';
 import * as _ from 'lodash';
 @Component({
@@ -23,15 +26,13 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
   get incomeCategoryId(): string { return this.incomeCategory; }
 
   resetEvent;
-  showListEvent;
   doneEvent;
 
   isListShow = false;
 
-  clickId = 'incomeCategory-list';
-
   constructor(
-    private system: SystemService
+    private system: SystemService,
+    private el: ElementRef,
   ) { }
 
   ngOnInit() {
@@ -40,15 +41,6 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
       this.init();
     });
 
-    this.showListEvent = this.system.showListEvent.subscribe((data) => {
-      if (this.clickId === data.id) {
-        this.isListShow = !this.isListShow;
-      } else {
-        if (data.id) {
-          this.isListShow = false;
-        }
-      }
-    });
     this.doneEvent = this.system.doneEvent.subscribe((value) => {
       if (value && value.model === 'incomeCategory') {
         this.select(value.data);
@@ -58,12 +50,18 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
     });
   }
 
+  @HostListener('document:click', ['$event'])
+  onClick() {
+    if (this.el.nativeElement.contains(event.target)) {
+      this.isListShow = !this.isListShow;
+    } else {
+      this.isListShow = false;
+    }
+  }
+
   ngOnDestroy() {
     if (this.resetEvent) {
       this.resetEvent.unsubscribe();
-    }
-    if (this.showListEvent) {
-      this.showListEvent.unsubscribe();
     }
     if (this.doneEvent) {
       this.doneEvent.unsubscribe();
@@ -72,6 +70,8 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
 
   init() {
     this.incomeCategoryList = BaseData.incomeCategoryList;
+
+    console.info(this.incomeCategoryList);
     this.select(_.first(this.incomeCategoryList));
   }
 

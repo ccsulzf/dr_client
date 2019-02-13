@@ -19,7 +19,12 @@ import { IncomeAddEditComponent } from './components/income/income-add-edit/inco
     AccountRoutingModule,
     FormsModule
   ],
-  declarations: [AccountComponent, ExpenseComponent, ExpenseAddEditComponent, ExpenseListComponent, ExpenseDetailComponent, IncomeComponent, IncomeListComponent, IncomeAddEditComponent],
+  declarations: [
+    AccountComponent, ExpenseComponent,
+    ExpenseAddEditComponent, ExpenseListComponent,
+    ExpenseDetailComponent, IncomeComponent,
+    IncomeListComponent, IncomeAddEditComponent
+  ],
   entryComponents: [
     ExpenseListComponent,
     ExpenseDetailComponent,

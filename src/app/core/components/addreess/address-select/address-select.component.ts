@@ -47,16 +47,6 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
       this.init();
     });
 
-    // this.showListEvent = this.system.showListEvent.subscribe((data) => {
-    //   if (this.clickId === data.id) {
-    //     this.isListShow = !this.isListShow;
-    //   } else {
-    //     if (data.id) {
-    //       this.isListShow = false;
-    //     }
-    //   }
-    // });
-
     this.doneEvent = this.system.doneEvent.subscribe((value) => {
       if (value && value.model === 'address') {
         this.select(value.data);

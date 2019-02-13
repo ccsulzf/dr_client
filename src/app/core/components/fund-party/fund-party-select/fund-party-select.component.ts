@@ -48,7 +48,7 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
         this.select(value.data);
       } else {
         this.fundPartyList = _.filter(BaseData.fundPartyList, { type: this.type });
-        this.select(_.first(this.fundPartyList));
+        // this.select(_.first(this.fundPartyList));
       }
     });
   }
@@ -64,7 +64,7 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
 
   init() {
     this.fundPartyList = _.filter(BaseData.fundPartyList, { type: this.type });
-    this.select(_.first(this.fundPartyList));
+    this.select();
   }
 
   ngOnDestroy() {
@@ -80,7 +80,6 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
     this.fundPartyList = _.filter(BaseData.fundPartyList, { type: this.type });
     this.isListShow = false;
     if (item) {
-      console.info(item);
       this.fundPartyItem = item;
       this.fundParty = item.name;
       this.setFundParty.emit(this.fundPartyItem.id);

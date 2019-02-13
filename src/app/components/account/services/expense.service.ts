@@ -50,8 +50,8 @@ export class ExpenseService {
         const fundParty = this.baseDataService.getFundParty(item.fundPartyId);
         item.fundPartyName = fundParty.name;
 
-        const fundWay = this.baseDataService.getFundWay(item.fundWayId);
-        item.fundWayName = fundWay.name;
+        const fundChannel = this.baseDataService.getFundChannel(item.fundChannelId);
+        item.fundChannelName = fundChannel.name;
 
         this.expenseDetailList.push(item);
     }

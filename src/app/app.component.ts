@@ -12,9 +12,7 @@ export class AppComponent implements OnInit {
     private system: SystemService
   ) { }
 
-  async ngOnInit() {
-    if (this.system.user) {
-      await this.baseData.getAllBaseData();
-    }
+  ngOnInit() {
+
   }
 }

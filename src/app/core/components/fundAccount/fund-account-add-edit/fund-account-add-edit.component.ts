@@ -3,7 +3,7 @@ import {
   HostListener, ElementRef, Renderer, ViewContainerRef, ViewChild
 } from '@angular/core';
 import { HttpClientService, BaseDataService, SystemService, BaseData } from '../../../providers';
-
+import * as _ from 'lodash';
 @Component({
   selector: 'app-fund-account-add-edit',
   templateUrl: './fund-account-add-edit.component.html',
@@ -11,18 +11,21 @@ import { HttpClientService, BaseDataService, SystemService, BaseData } from '../
 })
 export class FundAccountAddEditComponent implements OnInit {
   @Input() data;
-
   @ViewChild('divClick') divClick: ElementRef;
 
   @ViewChild('ulClick') ulClick: ElementRef;
+
+  public baseData;
+
   public isListShow = false;
+
+  public fundChannelList;
+
+  public fundChannelName;
 
   public numbers;
 
-  public fundWay;
-
   public fundAccount = {
-    fundWayId: '',
     name: '',
     balance: 0,
     // 有信贷用户balance等于 abs(creditAmount) - abs(usedAmount)
@@ -40,16 +43,18 @@ export class FundAccountAddEditComponent implements OnInit {
   constructor(
     public system: SystemService,
     public http: HttpClientService,
-    public baseData: BaseDataService,
+    public baseDataService: BaseDataService,
     private el: ElementRef,
     private viewRef: ViewContainerRef
   ) {
+    this.fundChannelList = BaseData.fundChannelList;
+    for (const item of this.fundChannelList) {
+      item.selected = false;
+    }
     this.numbers = Array(30).fill(0).map((x, i) => i + 1);
   }
 
   ngOnInit() {
-    this.fundWay = this.baseData.getFundWay(this.data.fundWayId);
-    this.fundAccount.fundWayId = this.data.fundWayId;
     this.fundAccount.userId = this.system.user.id;
   }
 
@@ -59,14 +64,19 @@ export class FundAccountAddEditComponent implements OnInit {
       this.isListShow = !this.isListShow;
     } else {
       if (!this.ulClick.nativeElement.contains(event.target)) {
-        this.isListShow = false
+        this.isListShow = false;
       }
     }
   }
 
+  select(selected, item) {
+    item.selected = selected;
+    this.fundChannelName = _.map(_.filter(this.fundChannelList, { selected: true }), 'name').join(',');
+  }
+
   setUsedAmount(data) {
-    this.fundAccount.balance = (this.creditAccount.creditAmount * 100 - this.creditAccount.usedAmount * 100) / 100;
     this.creditAccount.usedAmount = data;
+    this.fundAccount.balance = (this.creditAccount.creditAmount * 100 - this.creditAccount.usedAmount * 100) / 100;
   }
 
   setIsCredit(data) {
@@ -82,10 +92,16 @@ export class FundAccountAddEditComponent implements OnInit {
   }
 
   async add() {
-    const fundcount = await this.http.post('/DR/addFundCount', { fundAccount: this.fundAccount, creditAccount: this.creditAccount });
+    const fundcount = await this.http.post('/DR/addFundCount',
+      {
+        fundAccount: this.fundAccount,
+        creditAccount: this.creditAccount,
+        fundChannelList: _.filter(this.fundChannelList, { selected: true })
+      });
     if (fundcount) {
+      // 如果添加的账户中包含之前的渠道,发送事件,自动选择新增的账户
       BaseData.fundAccountList.push(fundcount);
-      this.system.done({ model: 'fundAccount', data: fundcount });
+      this.system.done({ model: 'fundAccount', data: fundcount, fundChannel: this.data });
     }
   }
 
