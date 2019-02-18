@@ -1,7 +1,5 @@
-
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AuthGuard } from './auth.guard';
 const routes: Routes = [
     {
         path: '',
@@ -10,6 +8,7 @@ const routes: Routes = [
     },
     { path: 'dashboard', loadChildren: './components/dashboard/dashboard.module#DashboardModule' },
     { path: 'account', loadChildren: './components/account/account.module#AccountModule' },
+    { path: 'report', loadChildren: './components/report/report.module#ReportModule' }
 ];
 
 @NgModule({

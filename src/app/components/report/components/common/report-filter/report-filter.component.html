@@ -1,0 +1,25 @@
+<main>
+  <div class="filter">
+    <!-- 下来选择你要过滤的条件 -->
+    <span #filterClick>
+      + 查询条件
+    </span>
+    <ul #ulClick [style.display]="isListShow?'block':'none'">
+      <li *ngFor="let item of reportConfig"><input type="checkbox" name="selected" [ngModel]="item.selected"
+          (ngModelChange)="onSelect(item,$event)">{{item.name}}</li>
+      <!-- <li>
+        <em>全选</em>
+        <em>全清</em>
+      </li> -->
+    </ul>
+  </div>
+  <!-- 这就是你要过滤的条件 -->
+  <section>
+    <ng-container *ngFor="let item of selectedConfigList">
+      <ng-container [ngSwitch]="item.type">
+        <report-equal *ngSwitchCase="'equal'" [data]="item" (test)="onTest($event)"></report-equal>
+      </ng-container>
+    </ng-container>
+  </section>
+
+</main>

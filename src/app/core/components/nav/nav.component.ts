@@ -25,6 +25,10 @@ export class NavComponent implements OnInit {
     this.router.navigateByUrl('/account/income');
   }
 
+  toExpenseDetail() {
+    this.router.navigateByUrl('/report/expense-detail');
+  }
+
   logout() {
     this.router.navigateByUrl('/dashboard');
     this.system.deleteUser();

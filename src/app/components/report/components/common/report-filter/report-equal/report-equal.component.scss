@@ -1,0 +1,39 @@
+:host {
+  height: 32px;
+  margin: 10px 2px;
+  box-sizing: border-box;
+}
+
+main {
+  height: 100%;
+}
+
+div {
+  height: 100%;
+  width: 95px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: 1px solid;
+  box-sizing: border-box;
+  cursor: pointer;
+  // input {
+  //   height: 100%;
+  //   box-sizing: border-box;
+  //   border: 1px solid;
+  //   outline: none;
+  //   padding-left: 5px;
+  // }
+
+  label {
+    display: none;
+    position: absolute;
+    top: -10px;
+    width: auto;
+    left: 5px;
+    z-index: 1000;
+    pointer-events: none;
+    background: #fff;
+  }
+}
