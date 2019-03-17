@@ -44,10 +44,10 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
   isListShow = true;
 
   constructor(
-    private system: SystemService,
-    private el: ElementRef,
-    private renderer: Renderer,
-    private viewRef: ViewContainerRef
+    public system: SystemService,
+    public el: ElementRef,
+    public renderer: Renderer,
+    public viewRef: ViewContainerRef
   ) { }
 
   ngOnInit() {
@@ -86,9 +86,10 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
       });
     }
     if (this.filterCredit) {
-      this.fundAccountList = _.filter(this.fundAccountList, { isCredit: 0 });
+      this.fundAccountList = _.filter(this.fundAccountList, (item) => {
+        return item.isCredit == 1;
+      });
     }
-
   }
 
   @HostListener('document:click', ['$event'])

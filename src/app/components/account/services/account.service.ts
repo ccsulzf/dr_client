@@ -9,6 +9,7 @@ export class AccountService {
     public rootComponent: any = {
         component: ''
     };
+
     constructor() { }
 
     changeComponent(value: object) {

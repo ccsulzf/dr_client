@@ -30,7 +30,7 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
 
   clickId = 'participant-select';
   constructor(
-    private system: SystemService
+    public system: SystemService
   ) { }
 
   ngOnInit() {

@@ -11,8 +11,8 @@ import { BaseDataService, SystemService } from './core/providers';
 })
 export class AuthGuard implements CanActivate {
     constructor(
-        private baseDataService: BaseDataService,
-        private system: SystemService
+        public baseDataService: BaseDataService,
+        public system: SystemService
     ) { }
     async canActivate(
         next: ActivatedRouteSnapshot,

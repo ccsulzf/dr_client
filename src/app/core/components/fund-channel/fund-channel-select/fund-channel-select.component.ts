@@ -32,10 +32,10 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy {
   isListShow = false;
 
   constructor(
-    private system: SystemService,
-    private el: ElementRef,
-    private renderer: Renderer,
-    private viewRef: ViewContainerRef
+    public system: SystemService,
+    public el: ElementRef,
+    public renderer: Renderer,
+    public viewRef: ViewContainerRef
   ) { }
 
 

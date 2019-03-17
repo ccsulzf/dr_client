@@ -32,10 +32,10 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
 
   // clickId = 'address-select';
   constructor(
-    private system: SystemService,
-    private el: ElementRef,
-    private renderer: Renderer,
-    private viewRef: ViewContainerRef
+    public system: SystemService,
+    public el: ElementRef,
+    public renderer: Renderer,
+    public viewRef: ViewContainerRef
   ) { }
 
 

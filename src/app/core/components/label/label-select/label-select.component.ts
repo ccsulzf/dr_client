@@ -25,8 +25,8 @@ export class LabelSelectComponent implements OnInit, OnDestroy {
 
   resetEvent;
   constructor(
-    private system: SystemService,
-    private http: HttpClientService
+    public system: SystemService,
+    public http: HttpClientService
   ) { }
 
   ngOnInit() {

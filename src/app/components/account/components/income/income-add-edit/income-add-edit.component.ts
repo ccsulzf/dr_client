@@ -32,10 +32,10 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy {
   public editOrDelFlag = false;
 
   constructor(
-    private accountService: AccountService,
-    private incomeService: IncomeService,
-    private systemService: SystemService,
-    private http: HttpClientService
+    public accountService: AccountService,
+    public incomeService: IncomeService,
+    public systemService: SystemService,
+    public http: HttpClientService
   ) { }
 
   ngOnInit() {

@@ -29,6 +29,7 @@
     "ng:serve:web": "npm run postinstall:web && ng serve -o",
     "electron:serve-tsc": "tsc -p tsconfig-serve.json",
     "electron:serve": "wait-on http-get://localhost:4200/ && npm run electron:serve-tsc && electron . --serve",
+    "electron:pack": "npm run build:prod && npx electron-builder build --dir",
     "electron:local": "npm run build:prod && electron .",
     "electron:linux": "npm run build:prod && electron-builder build --linux",
     "electron:windows": "npm run build:prod && electron-builder build --windows",
@@ -38,6 +39,9 @@
     "version": "conventional-changelog -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md"
   },
   "dependencies": {
+    "ag-grid": "^18.1.2",
+    "ag-grid-angular": "^20.1.0",
+    "ag-grid-community": "^20.1.0",
     "lodash": "^4.17.11",
     "log4js": "~1.1.1",
     "moment": "^2.23.0"

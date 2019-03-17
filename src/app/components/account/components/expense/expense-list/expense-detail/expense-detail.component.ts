@@ -11,11 +11,11 @@ import * as _ from 'lodash';
 export class ExpenseDetailComponent implements OnInit {
   @Input() data;
   constructor(
-    private accountService: AccountService,
-    private http: HttpClientService,
-    private baseDataService: BaseDataService,
-    private expenseService: ExpenseService,
-    private system: SystemService
+    public accountService: AccountService,
+    public http: HttpClientService,
+    public baseDataService: BaseDataService,
+    public expenseService: ExpenseService,
+    public system: SystemService
   ) { }
 
   ngOnInit() {

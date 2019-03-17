@@ -44,8 +44,8 @@ export class FundAccountAddEditComponent implements OnInit {
     public system: SystemService,
     public http: HttpClientService,
     public baseDataService: BaseDataService,
-    private el: ElementRef,
-    private viewRef: ViewContainerRef
+    public el: ElementRef,
+    public viewRef: ViewContainerRef
   ) {
     this.fundChannelList = BaseData.fundChannelList;
     for (const item of this.fundChannelList) {

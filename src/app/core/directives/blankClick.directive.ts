@@ -5,10 +5,10 @@ import { SystemService } from '../providers/system.service';
 })
 export class BlankClickDirective {
     constructor(
-        private el: ElementRef,
-        private renderer: Renderer,
-        private system: SystemService,
-        private viewRef: ViewContainerRef
+        public el: ElementRef,
+        public renderer: Renderer,
+        public system: SystemService,
+        public viewRef: ViewContainerRef
     ) { }
 
     @HostListener('document:click', ['$event'])

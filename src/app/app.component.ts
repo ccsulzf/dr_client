@@ -8,8 +8,8 @@ import { BaseDataService, SystemService } from './core/providers';
 export class AppComponent implements OnInit {
 
   constructor(
-    private baseData: BaseDataService,
-    private system: SystemService
+    public baseData: BaseDataService,
+    public system: SystemService
   ) { }
 
   ngOnInit() {

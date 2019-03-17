@@ -19,9 +19,9 @@ export class IncomeListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public changeListByDate;
   constructor(
-    private incomeService: IncomeService,
-    private http: HttpClientService,
-    private cd: ChangeDetectorRef
+    public incomeService: IncomeService,
+    public http: HttpClientService,
+    public cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {

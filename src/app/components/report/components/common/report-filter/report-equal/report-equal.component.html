@@ -1,8 +1,12 @@
 <!-- <button (click)="butClick()">测 试</button> -->
 <main>
-  <div (click)="divClick()">
+  <div #selectOption>
     {{placeholder}}
     <label [style.display]="labelShow?'inline-block':'none'">{{data.name}}</label>
+    <i (click)="del($event)"></i>
   </div>
-  <!-- {{data.name}} -->
+  <ul #optionULSelect [style.display]="isListShow?'block':'none'">
+    <li *ngFor="let item of list; let i=index"><input type="checkbox" [ngModel]="item.selected" (ngModelChange)="select($event,item)"
+        [name]="'selected'+i+data.code">{{item.name}}</li>
+  </ul>
 </main>

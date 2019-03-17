@@ -6,11 +6,11 @@ import { API_CONFIG } from '../../app.config';
 
 @Injectable()
 export class HttpClientService {
-    private httpOptions = {
+    public httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
 
-    constructor(private http: HttpClient, private log: LogService) {
+    constructor(public http: HttpClient, public log: LogService) {
     }
 
     handleHost(url) {
@@ -127,14 +127,14 @@ export class HttpClientService {
         return this.delete('/' + moduleName + '/' + param);
     }
 
-    private extractData(body: any) {
+    public extractData(body: any) {
         if (body.error && (body.error.code >= 500 || body.error.code === 404)) {
             throw body.error;
         }
         return body.data;
     }
 
-    private handleError(error: HttpErrorResponse | any) {
+    public handleError(error: HttpErrorResponse | any) {
         let errorMsg: string;
         if (error instanceof HttpErrorResponse) {
             if (!error.ok) {

@@ -32,7 +32,7 @@ export class FundwaySelectComponent implements OnInit, OnDestroy {
   clickId = 'fundWay-list';
 
   constructor(
-    private system: SystemService
+    public system: SystemService
   ) { }
 
   ngOnInit() {

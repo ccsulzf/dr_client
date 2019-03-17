@@ -25,7 +25,7 @@ export class ExpenseComponent implements OnDestroy, AfterViewInit, AfterViewChec
     public componentFactoryResolver: ComponentFactoryResolver,
     public accountService: AccountService,
     public system: SystemService,
-    private cd: ChangeDetectorRef
+    public cd: ChangeDetectorRef
   ) { }
 
   ngAfterViewInit() {

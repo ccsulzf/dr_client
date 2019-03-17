@@ -21,9 +21,9 @@ export class IncomeService {
 
     public totalMonthAmount = 0;
     constructor(
-        private http: HttpClientService,
-        private baseDataService: BaseDataService,
-        private system: SystemService
+        public http: HttpClientService,
+        public baseDataService: BaseDataService,
+        public system: SystemService
     ) { }
 
     edit(value: object) {

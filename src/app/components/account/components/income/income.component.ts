@@ -25,7 +25,7 @@ export class IncomeComponent implements OnInit, AfterViewInit, OnDestroy {
     public componentFactoryResolver: ComponentFactoryResolver,
     public system: SystemService,
     public accountService: AccountService,
-    private cd: ChangeDetectorRef
+    public cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {

@@ -31,8 +31,8 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
   isListShow = false;
 
   constructor(
-    private system: SystemService,
-    private el: ElementRef,
+    public system: SystemService,
+    public el: ElementRef,
   ) { }
 
   ngOnInit() {

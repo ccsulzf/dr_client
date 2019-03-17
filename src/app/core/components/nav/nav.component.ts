@@ -9,8 +9,8 @@ import { Router } from '@angular/router';
 export class NavComponent implements OnInit {
   public user;
   constructor(
-    private router: Router,
-    private system: SystemService
+    public router: Router,
+    public system: SystemService
   ) { }
 
   ngOnInit() {

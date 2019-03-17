@@ -32,13 +32,15 @@ import { FundwaySelectComponent } from './components/fund-way/fundway-select/fun
 import { ExpenseCategorySelectComponent } from './components/expense-category/expense-category-select/expense-category-select.component';
 
 import { FundChannelAddEditComponent, FundChannelSelectComponent } from './components/fund-channel';
+
+import { WebviewDirective } from './directives';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     HttpClientModule
   ],
-  declarations: [NavComponent, DynamicComponentDirective, BlankClickDirective,
+  declarations: [NavComponent, DynamicComponentDirective,WebviewDirective ,BlankClickDirective,
     AddressAddEditComponent, ExpenseBookAddEditComponent,
     ExpenseCategoryAddEditComponent, FundPartyAddEditComponent,
     FilterPipe, FilterListPipe, FilterNamePipe, FundWayAddEditComponent,
@@ -61,6 +63,7 @@ import { FundChannelAddEditComponent, FundChannelSelectComponent } from './compo
     ExpenseCategorySelectComponent,
     FundChannelSelectComponent,
     DynamicComponentDirective,
+    WebviewDirective,
     BlankClickDirective,
     FilterPipe,
     FilterListPipe,

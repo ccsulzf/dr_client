@@ -1,5 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-
+import { Component, OnInit, Input, Output, EventEmitter, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { ReportService } from '../../../../services';
+import { BaseDataService, BaseData } from '../../../../../../core/providers';
+import * as _ from 'lodash';
 @Component({
   selector: 'report-equal',
   templateUrl: './report-equal.component.html',
@@ -9,35 +11,85 @@ export class ReportEqualComponent implements OnInit {
   @Input() data;
   @Output() test = new EventEmitter<string>();
 
+  baseData;
+  list = [];
+  selectedList = [];
+
+
+  @ViewChild('optionULSelect') optionULSelect: ElementRef;
+  @ViewChild('selectOption') selectOption: ElementRef;
   labelShow = false;
+  isListShow = false;
 
   placeholder;
-  constructor() { }
+  constructor(
+    public reportService: ReportService,
+    public el: ElementRef,
+  ) {
+    this.baseData = BaseData;
+  }
 
   ngOnInit() {
     this.placeholder = this.data.name;
+    this.list = this.baseData[`${this.data.code}List`];
+    for (let item of this.list) {
+      item.selected = false;
+    }
   }
 
   divClick() {
     this.labelShow = !this.labelShow;
-    if(this.labelShow){
+    if (this.labelShow) {
       this.placeholder = '';
     } else {
-       this.placeholder = this.data.name;
+      this.placeholder = this.data.name;
     }
   }
 
-  inputFocus() {
-    this.labelShow = true;
-    this.placeholder = '';
+  del(e) {
+    e.stopPropagation();
+    this.reportService.removeSelect(this.data.code);
   }
 
-  inputBlur() {
-    this.labelShow = false;
-    this.placeholder = this.data.name;
+
+  @HostListener('document:click', ['$event'])
+  onClick() {
+    if (this.selectOption.nativeElement.contains(event.target)) {
+      this.isListShow = !this.isListShow;
+      if (this.isListShow) {
+        this.labelShow = true;
+        this.setPlaceHolder();
+      }
+    } else {
+      if (this.optionULSelect.nativeElement.contains(event.target)) {
+        this.isListShow = true;
+        this.labelShow = true;
+        this.setPlaceHolder();
+      } else {
+        this.isListShow = false;
+      }
+    }
   }
-  butClick() {
-    console.info('点击按钮');
-    this.test.emit('我按了一个按钮');
+
+  setPlaceHolder() {
+    if (this.selectedList && this.selectedList.length) {
+      this.placeholder = `已选(+${this.selectedList.length})`;
+      this.labelShow = true;
+    } else {
+      this.placeholder = this.data.name;
+      this.labelShow = false;
+    }
   }
+
+  select(data, item) {
+    if (data) {
+      item.selected = data;
+      this.selectedList.push(item)
+    } else {
+      _.remove(this.selectedList, item);
+      item.selected = data;
+    }
+    this.setPlaceHolder();
+  }
+
 }

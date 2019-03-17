@@ -17,9 +17,9 @@ export class ExpenseService {
 
     public groupExpenseDetailList = [];
     constructor(
-        private http: HttpClientService,
-        private baseDataService: BaseDataService,
-        private system: SystemService
+        public http: HttpClientService,
+        public baseDataService: BaseDataService,
+        public system: SystemService
     ) { }
 
     public expenseList = [];

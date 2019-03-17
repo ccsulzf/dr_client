@@ -18,12 +18,12 @@ export class ExpenseListComponent implements AfterViewInit, OnInit, OnDestroy, A
 
   public selectDate;
   constructor(
-    private accountService: AccountService,
-    private http: HttpClientService,
-    private baseDataService: BaseDataService,
-    private expenseService: ExpenseService,
-    private cd: ChangeDetectorRef,
-    private system: SystemService
+    public accountService: AccountService,
+    public http: HttpClientService,
+    public baseDataService: BaseDataService,
+    public expenseService: ExpenseService,
+    public cd: ChangeDetectorRef,
+    public system: SystemService
   ) {
   }
 

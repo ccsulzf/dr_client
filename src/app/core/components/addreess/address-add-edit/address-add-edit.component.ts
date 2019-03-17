@@ -18,9 +18,9 @@ export class AddressAddEditComponent implements OnInit {
   public areaList = [];
   public data;
   constructor(
-    private httpClient: HttpClient,
-    private system: SystemService,
-    private http: HttpClientService,
+    public httpClient: HttpClient,
+    public system: SystemService,
+    public http: HttpClientService,
     public baseData: BaseDataService
   ) { }
 

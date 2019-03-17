@@ -44,10 +44,10 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
   clickId = 'expenseCategory-list';
 
   constructor(
-    private system: SystemService,
-    private el: ElementRef,
-    private renderer: Renderer,
-    private viewRef: ViewContainerRef
+    public system: SystemService,
+    public el: ElementRef,
+    public renderer: Renderer,
+    public viewRef: ViewContainerRef
   ) { }
 
 

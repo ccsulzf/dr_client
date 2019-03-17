@@ -1,18 +1,21 @@
-import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild, HostListener } from '@angular/core';
+import { ReportService } from '../../../services';
 import * as _ from 'lodash';
 @Component({
   selector: 'report-filter',
   templateUrl: './report-filter.component.html',
   styleUrls: ['./report-filter.component.scss']
 })
-export class ReportFilterComponent implements OnInit {
+export class ReportFilterComponent implements OnInit, OnDestroy {
   isListShow = false;
+
+  removeSelectEvent;
 
   @ViewChild('filterClick') filterClick: ElementRef;
 
   @ViewChild('ulClick') ulClick: ElementRef;
 
-  private reportConfig = [{
+  public reportConfig = [{
     code: 'expenseBook',
     name: '账本',
     type: 'equal',
@@ -62,11 +65,23 @@ export class ReportFilterComponent implements OnInit {
     selected: false
   }];
 
-  private selectedConfigList = [];
-  constructor() { }
+  public selectedConfigList = [];
+  constructor(
+    public reportService: ReportService
+  ) { }
 
   ngOnInit() {
+    this.removeSelectEvent = this.reportService.removeSelectEvent.subscribe((data) => {
+      let item = _.find(this.reportConfig, { code: data });
+      item.selected = false;
+      _.remove(this.selectedConfigList, { code: data });
+    });
   }
+
+  ngOnDestroy() {
+    this.removeSelectEvent.unsubscribe();
+  }
+
 
   onSelect(item, value) {
     item.selected = value;

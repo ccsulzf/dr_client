@@ -133,6 +133,9 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
+  onSetLabelList(labelList) {
+    this.labelList = labelList;
+  }
 
   addExpenseBook() {
     this.system.changeComponent({ component: 'expenseBook-add-edit' });
