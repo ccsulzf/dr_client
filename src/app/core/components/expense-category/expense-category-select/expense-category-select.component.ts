@@ -19,11 +19,12 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
     this.select(_.find(BaseData.expenseCategoryList, { id: expenseCategoryId }));
   }
 
-  get expenseCategoryId(): string { return this.expenseCategory; }
+  get expenseCategoryId(): string { return this.expenseCategory.id; }
 
   @Input()
   set expenseBook(expenseBook) {
     this.expenseBookId = expenseBook.id;
+    this.init();
   }
 
   get expenseBook() {

@@ -59,9 +59,7 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     public baseDataService: BaseDataService,
     public system: SystemService,
     public expenseService: ExpenseService
-  ) {
-
-  }
+  ) { }
 
   ngOnInit() {
     this.baseData = BaseData;
@@ -163,6 +161,7 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
 
   selectExpenseBook(item) {
     this.expenseBook = item;
+    this.expenseBookId = item.id;
   }
 
   select(item) {
@@ -173,6 +172,7 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     this.expenseDetail = '内容',
       this.content = '';
     this.amount = '';
+    this.memo = '';
     this.participantList = [];
     this.participantList.push(_.find(BaseData.participantList, { isMyself: true }));
   }
