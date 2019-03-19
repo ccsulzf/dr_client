@@ -1,14 +1,8 @@
 <main>
   <report-filter>
   </report-filter>
-  <p>
-    expense-detail works!
-  </p>
-  <ag-grid-angular 
-    style="width: 500px; height: 500px;" 
-    class="ag-theme-balham"
-    [rowData]="rowData" 
-    [columnDefs]="columnDefs"
-    >
-</ag-grid-angular>
+  <section>
+    <ag-grid-angular style="width: 100%; height: 100%;" class="ag-theme-balham" [gridOptions]="gridOptions">
+    </ag-grid-angular>
+  </section>
 </main>

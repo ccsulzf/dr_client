@@ -1,0 +1,23 @@
+main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+section {
+  margin: 5px;
+  height: calc(100% - 55px);
+}
+
+
+
+// .ag-theme-balham .ag-header-cell::after,
+// .ag-theme-balham .ag-header-group-cell::after {
+//   border-right: 0 !important;
+// }
+
+
+// .ag-theme-balham .ag-header-cell,
+// .ag-theme-balham .ag-header-group-cell {
+//   border-right: 1px solid #b7b7b7 !important;
+// }

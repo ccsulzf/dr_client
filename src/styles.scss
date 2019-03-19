@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~ag-grid-community/dist/styles/ag-grid.css";
 @import "~ag-grid-community/dist/styles/ag-theme-balham.css";
+
 html,
 body {
   margin: 0;
@@ -53,4 +54,28 @@ input[type=month]::-webkit-inner-spin-button {
 
 button {
   cursor: pointer;
+}
+
+// 下面都是ag-grid的样式
+
+
+// 修改头部的那个border没有充满
+.ag-ltr .ag-header-cell {
+  border-right: 1px solid #b7b7b7;
+}
+
+.ag-header-cell::after,
+.ag-header-group-cell::after {
+  border: 0 !important;
+}
+
+.ag-cell {
+  /* border-right: 1px solid #dfdfdf !important;
+    border-bottom: 1px solid #dfdfdf !important; */
+  border-right: 1px dotted #808080 !important;
+  // border-bottom: 1px solid #dedede !important;
+}
+
+.ag-ltr .ag-cell-focus{
+  border: 1px solid #0091EA !important;
 }
