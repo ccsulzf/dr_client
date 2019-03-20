@@ -12,11 +12,12 @@ import { ReportFilterComponent } from './components/common/report-filter/report-
 import { ExpenseDetailComponent } from './components/expense/expense-detail/expense-detail.component';
 import { ReportEqualComponent } from './components/common/report-filter/report-equal/report-equal.component';
 
-import { ReportService } from './services';
+import { ReportService, ExpenseDetailService } from './services';
 @NgModule({
   declarations: [ReportComponent, ReportFilterComponent, ExpenseDetailComponent, ReportEqualComponent],
   providers: [
-    ReportService
+    ReportService,
+    ExpenseDetailService
   ],
   imports: [
     CommonModule,
