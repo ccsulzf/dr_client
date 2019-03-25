@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 })
 export class ReportEqualComponent implements OnInit {
   @Input() data;
-  @Output() test = new EventEmitter<string>();
+  @Output() selectEqual = new EventEmitter<any>();
 
   baseData;
   list = [];
@@ -48,7 +48,10 @@ export class ReportEqualComponent implements OnInit {
 
   del(e) {
     e.stopPropagation();
-    this.reportService.removeSelect(this.data.code);
+    this.reportService.removeSelect({
+      code: this.data.code,
+      type: this.data.type
+    });
   }
 
 
@@ -89,6 +92,10 @@ export class ReportEqualComponent implements OnInit {
       _.remove(this.selectedList, item);
       item.selected = data;
     }
+    this.selectEqual.emit({
+      code: this.data.code,
+      list: this.selectedList
+    });
     this.setPlaceHolder();
   }
 

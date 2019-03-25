@@ -39,9 +39,9 @@
     "version": "conventional-changelog -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md"
   },
   "dependencies": {
-    "ag-grid": "^18.1.2",
-    "ag-grid-angular": "^20.1.0",
-    "ag-grid-community": "^20.1.0",
+    "ag-grid-angular": "^20.2.0",
+    "ag-grid-community": "^20.2.0",
+    "ag-grid-enterprise": "^20.2.0",
     "lodash": "^4.17.11",
     "log4js": "~1.1.1",
     "moment": "^2.23.0"

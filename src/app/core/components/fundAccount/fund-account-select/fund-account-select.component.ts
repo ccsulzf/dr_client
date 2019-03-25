@@ -76,18 +76,21 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
   }
 
   getFundAccountList() {
+    let list = [];
     if (this.fundChannel) {
-      this.fundAccountList = _.filter(BaseData.fundAccountList, (item) => {
-        if (_.find(item.fundChannelList, { id: this.fundChannel.id })) {
-          return true;
-        } else {
-          return false;
-        }
-      });
+      this.fundAccountList = _.filter(
+        BaseData.fundAccountList,
+        (item) => {
+          if (_.find(item.fundChannelList, { id: this.fundChannel.id })) {
+            return true;
+          } else {
+            return false;
+          }
+        }) || [];
     }
-    if (this.filterCredit) {
+    if (this.filterCredit && this.fundAccountList.length) {
       this.fundAccountList = _.filter(this.fundAccountList, (item) => {
-        return item.isCredit == 1;
+        return item.isCredit == 0;
       });
     }
   }

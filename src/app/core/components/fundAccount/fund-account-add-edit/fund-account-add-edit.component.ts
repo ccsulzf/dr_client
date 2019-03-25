@@ -79,6 +79,11 @@ export class FundAccountAddEditComponent implements OnInit {
     this.fundAccount.balance = (this.creditAccount.creditAmount * 100 - this.creditAccount.usedAmount * 100) / 100;
   }
 
+  setCreditAmount(data) {
+    this.creditAccount.creditAmount = (data * 100) / 100;
+    this.fundAccount.balance = (data * 100) / 100;
+  }
+
   setIsCredit(data) {
     this.fundAccount.isCredit = data;
     if (!data) {

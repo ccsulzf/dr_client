@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener, AfterViewInit } from '@angular/core';
-import { GridOptions } from 'ag-grid';
+import { GridOptions } from 'ag-grid-community';
 import { ExpenseDetailService } from '../../../services';
 @Component({
   selector: 'app-expense-detail',
@@ -16,16 +16,12 @@ export class ExpenseDetailComponent implements OnInit, AfterViewInit {
       enableColResize: true,
       enableSorting: true,
       columnDefs: this.getColumnDefs(),
-      rowData: [
-        { make: 'riqi ', model: 'Celica', price: 35000 },
-        { make: 'Ford', model: 'Mondeo', price: 32000 },
-        { make: 'Porsche', model: 'Boxter', price: 72000 },
-        { make: 'Toyota', model: 'Celica', price: 35000 },
-        { make: 'Ford', model: 'Mondeo', price: 32000 },
-        { make: 'Porsche', model: 'Boxter', price: 72000 }
-      ],
-
+      rowData: [],
     };
+  }
+
+
+  ngOnInit() {
   }
 
   @HostListener('window:resize')
@@ -62,7 +58,7 @@ export class ExpenseDetailComponent implements OnInit, AfterViewInit {
 
   getColumnDefs() {
     return [
-      { headerName: '日期', field: 'expenseDate' },
+      { headerName: '日期', field: 'expenseDate', filter: true },
       { headerName: '地点', field: 'addressName', hide: true },
       { headerName: '账本', field: 'expenseBookName' },
       { headerName: '类别', field: 'expenseCategoryName' },
@@ -77,7 +73,5 @@ export class ExpenseDetailComponent implements OnInit, AfterViewInit {
     ];
   }
 
-  ngOnInit() {
-  }
 
 }

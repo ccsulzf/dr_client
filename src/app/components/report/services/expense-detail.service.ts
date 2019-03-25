@@ -41,8 +41,8 @@ export class ExpenseDetailService {
             const option = {
                 dateTime: {
                     "type": "day",
-                    "start": "2019-03-20",
-                    "end": "2019-03-20"
+                    "start": "2019-03-01",
+                    "end": "2019-03-31"
                 },
                 conditions: [],
                 pagination: {}

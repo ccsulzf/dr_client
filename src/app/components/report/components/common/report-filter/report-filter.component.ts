@@ -66,15 +66,18 @@ export class ReportFilterComponent implements OnInit, OnDestroy {
   }];
 
   public selectedConfigList = [];
+
   constructor(
     public reportService: ReportService
   ) { }
 
   ngOnInit() {
-    this.removeSelectEvent = this.reportService.removeSelectEvent.subscribe((data) => {
-      let item = _.find(this.reportConfig, { code: data });
+    this.removeSelectEvent = this.reportService.removeSelectEvent.subscribe((data: any) => {
+      let item = _.find(this.reportConfig, { code: data.code });
       item.selected = false;
-      _.remove(this.selectedConfigList, { code: data });
+      _.remove(this.selectedConfigList, { code: data.code });
+
+      this.reportService.removeConditions(data.code, data.type);
     });
   }
 
@@ -105,9 +108,7 @@ export class ReportFilterComponent implements OnInit, OnDestroy {
     }
   }
 
-  onTest(value) {
-    console.info('收到！！！');
-    console.info(value);
+  onSelectEqual(data: any) {
+    this.reportService.changeEqualConditions(data.code, data.list, 'equal');
   }
-
 }

@@ -43,7 +43,7 @@
         <label>
           信用额度:
         </label>
-        <input type="number" name="creditAmount" [(ngModel)]="creditAccount.creditAmount">
+        <input type="number" name="creditAmount" [ngModel]="creditAccount.creditAmount" (ngModelChange)="setCreditAmount($event)">
       </div>
 
       <div class="input">

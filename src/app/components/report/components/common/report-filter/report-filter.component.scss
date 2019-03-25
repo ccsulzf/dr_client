@@ -1,3 +1,7 @@
+:host {
+  z-index: 100;
+}
+
 main {
   display: flex;
   flex-direction: row;
@@ -18,6 +22,7 @@ section {
   position: relative;
   min-width: 125px;
   min-height: 40px;
+
   span {
     height: 100%;
     display: inline-flex;

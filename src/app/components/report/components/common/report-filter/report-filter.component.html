@@ -17,7 +17,7 @@
   <section>
     <ng-container *ngFor="let item of selectedConfigList">
       <ng-container [ngSwitch]="item.type">
-        <report-equal *ngSwitchCase="'equal'" [data]="item" (test)="onTest($event)"></report-equal>
+        <report-equal *ngSwitchCase="'equal'" [data]="item" (selectEqual)="onSelectEqual($event)"></report-equal>
       </ng-container>
     </ng-container>
   </section>
