@@ -1,4 +1,4 @@
-<main>
+<!-- <main>
   <h2>DailyRecord-记录点滴生活</h2>
   <form>
     <label for="nameOrEmali">用户名或邮箱</label>
@@ -7,4 +7,47 @@
     <input id="pwd" type="password" name="password" [(ngModel)]="password">
     <button (click)="login()">登 录</button>
   </form>
+</main> -->
+
+<main>
+  <div class="login">
+    <h4>DailyReocrd</h4>
+    <div class="login-info">
+      <p class="prompt-title">Log in to Your Account</p>
+      <div class="prompt-info">
+        <p>Log in your account so you can continue building</p>
+        <p>and editing your onboarding flows</p>
+      </div>
+    </div>
+    <form>
+      <div class="form-group">
+        <label class="form-label" for="nameOrEmali">Email Or Name</label>
+        <input class="form-input" type="text" id="nameOrEmali" name="nameOrEmali" [(ngModel)]="nameOrEmali"
+          placeholder="Email Or Name">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="pwd">Password</label>
+        <input class="form-input" id="pwd" type="password" name="password" [(ngModel)]="password"
+          placeholder="password">
+      </div>
+
+      <div class="form-group form-prompt">
+        <label class="form-checkbox form-inline">
+          <input type="checkbox"><i class="form-icon"></i> Remeber me
+        </label>
+        <label class="form-checkbox form-inline">
+          Forget Password
+        </label>
+      </div>
+      <button (click)="login()" class="btn btn-primary">LOGIN</button>
+    </form>
+  </div>
+
+  <div class="sign-info">
+
+    <p class="sign-title">Don't Have an Account Yet?</p>
+    <p>Let's get you all set up so you can start creating your first</p>
+    <p>onboarding experience</p>
+    <button class="btn">SIGN UP</button>
+  </div>
 </main>

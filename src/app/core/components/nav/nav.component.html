@@ -1,19 +1,53 @@
 <main>
   <p>{{user.name}}</p>
-  <ul>
-    <li>记账
-      <ul>
-        <li (click)="toExpense()">支出</li>
-        <li (click)="toIncome()">收入</li>
+
+  <ul class="nav">
+    <li class="nav-item">
+      <span>
+        <i class="fa fa-home" aria-hidden="true"></i>
+        <a href="#">首页</a>
+      </span>
+    </li>
+    <li class="nav-item active">
+      <span>
+        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+        <a href="#">记账 <i class="icon icon-arrow-down"></i></a>
+      </span>
+      <ul class="nav">
+        <li class="nav-item selected">
+          <a href="#">支出</a>
+        </li>
+        <li class="nav-item">
+          <a href="#">收入</a>
+        </li>
+        <li class="nav-item">
+          <a href="#">借还</a>
+        </li>
+        <li class="nav-item">
+          <a href="#">转账</a>
+        </li>
       </ul>
     </li>
-    <li>报表
-      <ul>
-        <li (click)="toExpenseDetail()">支出明细</li>
-        <li>支出汇总</li>
+    <li class="nav-item">
+      <span>
+        <i class="fa fa-area-chart" aria-hidden="true"></i>
+        <a href="#">报表 <i class="icon icon-arrow-right"></i></a>
+      </span>
+      <ul class="nav d-hide" >
+        <li class="nav-item">
+          <a href="#">支出明细</a>
+        </li>
+        <li class="nav-item">
+          <a href="#">支出汇总</a>
+        </li>
       </ul>
     </li>
-    <li>设置</li>
+    <li class="nav-item">
+      <span>
+        <i class="fa fa-cog" aria-hidden="true"></i>
+        <a href="#">设置</a>
+      </span>
+    </li>
   </ul>
   <button (click)="logout()">退 出</button>
 </main>

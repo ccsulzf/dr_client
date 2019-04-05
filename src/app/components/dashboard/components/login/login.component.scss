@@ -1,23 +1,143 @@
+// main {
+//   height: 100%;
+//   width: 100%;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   flex-direction: column;
+
+//   form {
+//     display: flex;
+//     flex-direction: column;
+//     label {
+//       &:last-of-type {
+//         margin-top: 20px;
+//       }
+//     }
+
+//     button {
+//       margin-top: 20px;
+//       cursor: pointer;
+//     }
+//   }
+// }
+
+
+
 main {
+  position: relative;
+  display: flex;
   height: 100%;
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+
+  h4 {
+    color: #3457dd;
+    margin: 20px;
+    font-weight: bold;
+  }
+}
+
+
+p {
+  margin: 0;
+}
+
+.login {
+  flex-grow: 1;
 
   form {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    padding: 20px 150px;
+
     label {
-      &:last-of-type {
-        margin-top: 20px;
-      }
+      font-size: small;
+      font-weight: bold;
     }
 
     button {
-      margin-top: 20px;
-      cursor: pointer;
+      margin: 0.4rem 0;
+      background-color: #3457dd;
+      letter-spacing: 2px;
     }
   }
+
+  .form-prompt {
+    display: flex;
+    justify-content: space-between;
+
+    label {
+      font-size: small;
+      font-weight: 100;
+      color: #95a5a6;
+    }
+  }
+
+}
+
+.login-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+
+  .prompt-title {
+    font-weight: bold;
+    color: #2c3150;
+    margin: 0 0 -.2rem;
+  }
+
+  .prompt-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+    color: #95a5a6;
+  }
+}
+
+
+.sign-info {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 350px;
+  color: #fff;
+
+  .sign-title {
+    font-weight: bold;
+    margin: 0.5rem 0;
+    font-size: 16px;
+  }
+
+  p {
+    font-size: 12px;
+  }
+
+  button {
+    margin-top: 1rem;
+    width: 9rem;
+    border: 1px solid #fff;
+    color: #fff;
+    background-color: #3457dd;
+  }
+}
+
+
+
+.sign-info::before {
+  content: '';
+  position: absolute;
+  top: 0px;
+  right: 0;
+  bottom: 0;
+  left: 0px;
+  z-index: -1;
+  background: #3457dd;
+  transform: scale(1, 0.8) perspective(214px) rotateX(-5deg);
+  transform-origin: bottom right;
 }

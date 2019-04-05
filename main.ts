@@ -19,7 +19,8 @@ function createWindow() {
     minHeight: 619,
     resizable: true,
     autoHideMenuBar: true,
-    movable: true
+    movable: true,
+    frame: false
   });
 
   if (serve) {
