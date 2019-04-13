@@ -18,12 +18,10 @@ export class ExpenseBookAddEditComponent implements OnInit {
   }
 
   async add() {
-    // console.info(this.system.user);
     const expenseBook = await this.http.post('/DR/ExpenseBook', { name: this.name, memo: this.memo, userId: this.system.user.id });
     if (expenseBook) {
-      console.info(expenseBook);
       this.baseData.addExpenseBook(expenseBook);
-      this.system.done();
+      this.system.done({ model: 'expenseBook', data: expenseBook });
     }
   }
 

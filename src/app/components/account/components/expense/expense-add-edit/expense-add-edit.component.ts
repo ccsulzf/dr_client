@@ -64,7 +64,11 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
   ngOnInit() {
     this.baseData = BaseData;
     this.expenseDate = moment().format('YYYY-MM-DD');
-    this.expenseBook = this.baseData.expenseBookList[0];
+  }
+
+  onSetExpenseBook(item) {
+    this.expenseBook = item;
+    this.expenseBookId = item.id;
   }
 
   onSetAddress(addressId) {
@@ -97,9 +101,6 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
       this.expenseBookId = data.expense.expenseBookId;
       this.expenseDetailId = data.expenseDetail.id;
       this.totalAmount = data.expense.totalAmount;
-
-      this.selectExpenseBook(this.baseDataService.getExpenseBook(data.expense.expenseBookId));
-
       this.addFlag = false;
       this.editOrDelFlag = true;
 
@@ -135,9 +136,6 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     this.labelList = labelList;
   }
 
-  addExpenseBook() {
-    this.system.changeComponent({ component: 'expenseBook-add-edit' });
-  }
 
   async getParticipantList() {
     this.participantList = [];
@@ -159,10 +157,6 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
-  selectExpenseBook(item) {
-    this.expenseBook = item;
-    this.expenseBookId = item.id;
-  }
 
   select(item) {
     this.expenseDetail = item;

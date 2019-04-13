@@ -1,82 +1,93 @@
 <main>
   <div class="expense-book">
-    <ul>
+    <expense-book-list (setExpenseBook)="onSetExpenseBook($event)"></expense-book-list>
+    <!-- <ul>
       <li (click)="selectExpenseBook(item)" [style.border]="expenseBook?.id == item?.id ?'1px solid':''" *ngFor="let item of baseData?.expenseBookList">{{item?.name}}</li>
     </ul>
-    <button (click)="addExpenseBook()">添加账本</button>
+    <button (click)="addExpenseBook()">添加账本</button> -->
   </div>
-  <form>
-    <div>
-      <label for="time">日期:</label>
-      <input type="date" id="time" name="expenseDate" [(ngModel)]="expenseDate">
-    </div>
 
-    <div class="address">
-      <address-select [title]="'支出地点'" [addressId]="addressId" (setAddress)="onSetAddress($event)"></address-select>
-    </div>
+  <section [style.border]="expenseBook?.border">
+    <form>
+      <div>
+        <label for="time">日期:</label>
+        <input type="date" id="time" name="expenseDate" [(ngModel)]="expenseDate">
+      </div>
 
-    <div class="address">
-      <expenseCategory-select [title]="'支出类别'" [expenseBook]="expenseBook" (setCategory)="onSetCategory($event)"
-        [expenseCategoryId]="expenseCategoryId"></expenseCategory-select>
-    </div>
+      <div class="address">
+        <address-select [title]="'支出地点'" [addressId]="addressId" (setAddress)="onSetAddress($event)"></address-select>
+      </div>
 
-    <div class="address">
-      <fund-party-select [title]="'收款方'" [type]="1" (setFundParty)="onSetFundParty($event)" [fundPartyId]="fundPartyId"></fund-party-select>
-    </div>
+      <div class="address">
+        <expenseCategory-select [title]="'支出类别'" [expenseBook]="expenseBook" (setCategory)="onSetCategory($event)"
+          [expenseCategoryId]="expenseCategoryId"></expenseCategory-select>
+      </div>
 
-    <div class="address">
-      <fundChannel-select [title]="'付款渠道'" (setFundChannel)="onSetsetFundChannel($event)" [fundChannelId]="fundChannelId"></fundChannel-select>
-    </div>
+      <div class="address">
+        <fund-party-select [title]="'收款方'" [type]="1" (setFundParty)="onSetFundParty($event)"
+          [fundPartyId]="fundPartyId">
+        </fund-party-select>
+      </div>
 
-    <div class="address">
-      <fund-account-select [title]="'付款账户'" [fundChannelId]="fundChannelId" (setFundAccount)="onSetFundAccount($event)"
-        [filterCredit]="false" [fundAccountId]="fundAccountId"></fund-account-select>
-    </div>
+      <div class="address">
+        <fundChannel-select [title]="'付款渠道'" (setFundChannel)="onSetsetFundChannel($event)"
+          [fundChannelId]="fundChannelId"></fundChannel-select>
+      </div>
 
-    <fieldset class="detail">
-      <legend>支出明细</legend>
-      <ul>
-        <li class="detail-item" [style.border-bottom]="expenseDetail == item ? '2px solid #40a9ff':''" *ngFor="let item of expenseDetailList"
-          (click)="select(item)">{{item}}</li>
-      </ul>
-      <div class="content" *ngIf="expenseDetail == '内容'">
-        <div>
-          <label>支出内容:</label>
-          <input type="text" name="content" [(ngModel)]="content">
+      <div class="address">
+        <fund-account-select [title]="'付款账户'" [fundChannelId]="fundChannelId"
+          (setFundAccount)="onSetFundAccount($event)" [filterCredit]="false" [fundAccountId]="fundAccountId">
+        </fund-account-select>
+      </div>
+
+      <fieldset class="detail">
+        <legend>支出明细</legend>
+        <ul>
+          <li class="detail-item" [style.border-bottom]="expenseDetail == item ? '2px solid #40a9ff':''"
+            *ngFor="let item of expenseDetailList" (click)="select(item)">{{item}}</li>
+        </ul>
+        <div class="content" *ngIf="expenseDetail == '内容'">
+          <div>
+            <label>支出内容:</label>
+            <input type="text" name="content" [(ngModel)]="content">
+          </div>
+
+          <div>
+            <label>金额:</label>
+            <input type="number" name="amount" [(ngModel)]="amount">
+            <span>元</span>
+          </div>
         </div>
 
-        <div>
-          <label>金额:</label>
-          <input type="number" name="amount" [(ngModel)]="amount">
-          <span>元</span>
+        <div class="participan" [style.display]="expenseDetail == '参与人' ? 'block':'none'">
+          <participant-select [title]="'参与'" (setParticipantList)="onSetParticipantList($event)"
+            [hasParticipantList]="participantList"></participant-select>
         </div>
-      </div>
 
-      <div class="participan" [style.display]="expenseDetail == '参与人' ? 'block':'none'">
-        <participant-select [title]="'参与'" (setParticipantList)="onSetParticipantList($event)" [hasParticipantList]="participantList"></participant-select>
-      </div>
+        <div class="label" [style.display]="expenseDetail == '标签' ? 'block':'none'">
+          <label-select [title]="'标签'" [type]="'1'" (setLabelList)="onSetLabelList($event)" [hasLabelList]="labelList">
+          </label-select>
+        </div>
 
-      <div class="label" [style.display]="expenseDetail == '标签' ? 'block':'none'">
-        <label-select [title]="'标签'" [type]="'1'" (setLabelList)="onSetLabelList($event)" [hasLabelList]="labelList"></label-select>
-      </div>
+        <div class="memo" [style.display]="expenseDetail == '备注' ? 'block':'none'">
+          <textarea name="memo" [(ngModel)]="memo">
+                </textarea>
+        </div>
+      </fieldset>
+    </form>
 
-      <div class="memo" [style.display]="expenseDetail == '备注' ? 'block':'none'">
-        <textarea name="memo" [(ngModel)]="memo">
-          </textarea>
-      </div>
-    </fieldset>
-  </form>
-
-  <div class="btn-group" *ngIf="!editOrDelFlag && addFlag">
-    <button (click)="addExpense()">添加支出</button>
-    <button (click)="reset()">重置</button>
-  </div>
-
-  <div class="edit-del" *ngIf="editOrDelFlag && !addFlag">
-    <div class="btn-group">
-      <button (click)="editExpense()">编辑</button>
-      <button (click)="delExpense()">删除</button>
+    <div class="btn-group" *ngIf="!editOrDelFlag && addFlag">
+      <button (click)="addExpense()">添加支出</button>
+      <button (click)="reset()">重置</button>
     </div>
-    <a (click)="goAdd()">&gt;&gt;添加支出</a>
-  </div>
+
+    <div class="edit-del" *ngIf="editOrDelFlag && !addFlag">
+      <div class="btn-group">
+        <button (click)="editExpense()">编辑</button>
+        <button (click)="delExpense()">删除</button>
+      </div>
+      <a (click)="goAdd()">&gt;&gt;添加支出</a>
+    </div>
+  </section>
+
 </main>

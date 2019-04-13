@@ -34,13 +34,14 @@ import { ExpenseCategorySelectComponent } from './components/expense-category/ex
 import { FundChannelAddEditComponent, FundChannelSelectComponent } from './components/fund-channel';
 
 import { WebviewDirective } from './directives';
+import { ExpenseBookListComponent } from './components/expenseBook/expense-book-list/expense-book-list.component';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     HttpClientModule
   ],
-  declarations: [NavComponent, DynamicComponentDirective,WebviewDirective ,BlankClickDirective,
+  declarations: [NavComponent, DynamicComponentDirective, WebviewDirective, BlankClickDirective,
     AddressAddEditComponent, ExpenseBookAddEditComponent,
     ExpenseCategoryAddEditComponent, FundPartyAddEditComponent,
     FilterPipe, FilterListPipe, FilterNamePipe, FundWayAddEditComponent,
@@ -49,7 +50,7 @@ import { WebviewDirective } from './directives';
     ParticipantSelectComponent, LabelSelectComponent,
     FundAccountSelectComponent, IncomeCategoryAddEditComponent,
     FundPartySelectComponent, FundwaySelectComponent,
-    ExpenseCategorySelectComponent, FundChannelAddEditComponent, FundChannelSelectComponent
+    ExpenseCategorySelectComponent, FundChannelAddEditComponent, FundChannelSelectComponent, ExpenseBookListComponent
   ],
   exports: [
     NavComponent,
@@ -67,7 +68,8 @@ import { WebviewDirective } from './directives';
     BlankClickDirective,
     FilterPipe,
     FilterListPipe,
-    FilterNamePipe
+    FilterNamePipe,
+    ExpenseBookListComponent
   ],
   providers: [
     ElectronService,

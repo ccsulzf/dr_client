@@ -1,0 +1,63 @@
+:host {
+  height: 100%;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
+div {
+  /* color: #ccc; */
+  background: #ffff;
+  font-size: 14px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  /* border: 1px dashed #ccc; */
+  margin: 10px 3px;
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+
+div:hover {
+  color: #5755d9;
+  border: 1px dashed #4b48d6;
+}
+
+ul {
+  margin: 0;
+  list-style: none;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  background: #fafafa;
+  flex-grow: 1;
+  height: 200px;
+}
+
+
+li {
+  margin: 0;
+  height: 82px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  cursor: pointer;
+}
+
+.selected {
+  border-right: none;
+  z-index: 10;
+  position: sticky;
+  top: 0px;
+  bottom: 0px;
+}
+
+ul::-webkit-scrollbar {
+  display: none;
+}
