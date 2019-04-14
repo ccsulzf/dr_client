@@ -1,4 +1,4 @@
-<main>
+<!-- <main>
   <label>
     {{title}}:
   </label>
@@ -15,4 +15,25 @@
     </ul>
     <div class="add" (click)="add()">添加支出类别</div>
   </div>
+</main> -->
+<main>
+  <form>
+    <div class="form-item" #expenseCategoryListEle>
+      <label class="form-label" for="input-example-1">{{title}}</label>
+      <div class="has-icon-left">
+        <input type="text" class="form-input" placeholder="请选择支出类别" name="user" autocomplete="off" id="search-box"
+          [(ngModel)]="user">
+        <i class="form-icon fa fa-th-large" aria-hidden="true"></i>
+      </div>
+      <ul class="menu" *ngIf="ulShow">
+        <!-- <li class="divider" data-content="choice people"></li> -->
+        <li class="menu-item" *ngFor="let item of list" (click)="selectItem(item)">
+          <a>{{item.name}}</a>
+        </li>
+        <li class="menu-item add">
+          <button class="btn btn-primary btn-sm"><i class="icon icon-plus"></i> 添加</button>
+        </li>
+      </ul>
+    </div>
+  </form>
 </main>

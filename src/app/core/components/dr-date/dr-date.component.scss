@@ -1,0 +1,66 @@
+i {
+  cursor: pointer;
+}
+
+.navbar-primary span {
+  padding: 0 2px;
+  cursor: pointer;
+}
+
+
+.navbar-primary span:hover {
+  color: #5755d9;
+}
+
+
+.calendar-header {
+  padding: .2rem 0;
+}
+
+
+.calendar-month {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.calendar {
+  position: absolute;
+  width: 280px;
+  z-index: 10000;
+  background: #fff;
+}
+
+.selected {
+  background: #4b48d6 !important;
+  border-color: #3634d2 !important;
+  color: #fff !important;
+}
+
+
+.month,
+.year {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex: 0 !important;
+  max-width: 100% !important;
+
+
+  button {
+    width: auto;
+    border-radius: 0%;
+    padding: .2rem;
+  }
+}
+
+
+.panel-year {
+  color: #ccc !important;
+}
+
+
+.panel-year:active {
+  background: #ccc !important;
+  color: #fff !important;
+  border-color: #ccc !important;
+}

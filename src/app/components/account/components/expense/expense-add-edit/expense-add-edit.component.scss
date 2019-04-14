@@ -18,8 +18,10 @@ section {
   flex-grow: 1;
   position: relative;
   left: -1px;
-  padding: 20px;
-  width: 200PX;
+  padding: 10px;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
 }
 
 input[type="date"] {
@@ -34,7 +36,7 @@ main {
   height: 100%;
 
   .expense-book {
-    width: 100px;
+    width: 70px;
     height: 100%;
     float: left;
     overflow-y: hidden;
@@ -44,7 +46,7 @@ main {
     // padding: 0 20px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(7, 1fr);
+    grid-template-rows: repeat(6, 1fr);
     grid-column-gap: 10px;
     grid-row-gap: 20px;
 
@@ -55,27 +57,11 @@ main {
 
     .address {
       position: relative;
-
-      ul {
-        position: absolute;
-        top: 43px;
-        width: 100%;
-        background: #efefef;
-        border: 1px solid;
-        z-index: 9999;
-
-        li {
-          cursor: pointer;
-          display: flex;
-          justify-content: space-between;
-          padding-right: 20px;
-        }
-      }
     }
 
     .detail {
       grid-column: span 2;
-      grid-row: span 4;
+      grid-row: span 3;
       border: 1px dashed;
 
       ul {
@@ -293,7 +279,7 @@ main {
     }
   }
 
-  .btn-group {
+  .dr-btn-group {
     display: flex;
     align-items: center;
     flex-grow: 1;

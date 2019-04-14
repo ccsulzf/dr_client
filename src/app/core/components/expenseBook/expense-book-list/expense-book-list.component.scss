@@ -10,17 +10,21 @@ main {
 }
 
 div {
-  /* color: #ccc; */
   background: #ffff;
   font-size: 14px;
-  height: 30px;
+  height: 60px;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
-  /* border: 1px dashed #ccc; */
-  margin: 10px 3px;
+  justify-content: space-around;
   cursor: pointer;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
+  /* padding: 14px; */
+  box-sizing: border-box;
+  margin: 5px 2px;
+}
+
+span {
+  text-align: center;
 }
 
 div:hover {
@@ -41,13 +45,14 @@ ul {
 
 li {
   margin: 0;
-  height: 82px;
+  min-height: 82px;
   font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 15px;
   cursor: pointer;
+  height: auto;
 }
 
 .selected {

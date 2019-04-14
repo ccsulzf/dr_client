@@ -10,8 +10,9 @@
   <section [style.border]="expenseBook?.border">
     <form>
       <div>
-        <label for="time">日期:</label>
-        <input type="date" id="time" name="expenseDate" [(ngModel)]="expenseDate">
+        <dr-date></dr-date>
+        <!-- <label for="time">日期:</label>
+        <input type="date" id="time" name="expenseDate" [(ngModel)]="expenseDate"> -->
       </div>
 
       <div class="address">
@@ -76,13 +77,13 @@
       </fieldset>
     </form>
 
-    <div class="btn-group" *ngIf="!editOrDelFlag && addFlag">
+    <div class="dr-btn-group" *ngIf="!editOrDelFlag && addFlag">
       <button (click)="addExpense()">添加支出</button>
       <button (click)="reset()">重置</button>
     </div>
 
     <div class="edit-del" *ngIf="editOrDelFlag && !addFlag">
-      <div class="btn-group">
+      <div class="dr-btn-group">
         <button (click)="editExpense()">编辑</button>
         <button (click)="delExpense()">删除</button>
       </div>

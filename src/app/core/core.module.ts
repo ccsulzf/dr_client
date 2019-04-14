@@ -35,6 +35,7 @@ import { FundChannelAddEditComponent, FundChannelSelectComponent } from './compo
 
 import { WebviewDirective } from './directives';
 import { ExpenseBookListComponent } from './components/expenseBook/expense-book-list/expense-book-list.component';
+import { DrDateComponent } from './components/dr-date/dr-date.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -50,7 +51,7 @@ import { ExpenseBookListComponent } from './components/expenseBook/expense-book-
     ParticipantSelectComponent, LabelSelectComponent,
     FundAccountSelectComponent, IncomeCategoryAddEditComponent,
     FundPartySelectComponent, FundwaySelectComponent,
-    ExpenseCategorySelectComponent, FundChannelAddEditComponent, FundChannelSelectComponent, ExpenseBookListComponent
+    ExpenseCategorySelectComponent, FundChannelAddEditComponent, FundChannelSelectComponent, ExpenseBookListComponent, DrDateComponent
   ],
   exports: [
     NavComponent,
@@ -69,7 +70,8 @@ import { ExpenseBookListComponent } from './components/expenseBook/expense-book-
     FilterPipe,
     FilterListPipe,
     FilterNamePipe,
-    ExpenseBookListComponent
+    ExpenseBookListComponent,
+    DrDateComponent
   ],
   providers: [
     ElectronService,
