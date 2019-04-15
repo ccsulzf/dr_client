@@ -40,23 +40,21 @@
           (setFundAccount)="onSetFundAccount($event)" [filterCredit]="false" [fundAccountId]="fundAccountId">
         </fund-account-select>
       </div>
-
       <fieldset class="detail">
         <legend>支出明细</legend>
-        <ul>
-          <li class="detail-item" [style.border-bottom]="expenseDetail == item ? '2px solid #40a9ff':''"
-            *ngFor="let item of expenseDetailList" (click)="select(item)">{{item}}</li>
+        <ul class="tab">
+          <li class="tab-item" [class.active]="expenseDetail == item" *ngFor="let item of expenseDetailList"
+            (click)="select(item)">
+            <a>{{item}}</a>
+          </li>
         </ul>
         <div class="content" *ngIf="expenseDetail == '内容'">
-          <div>
-            <label>支出内容:</label>
-            <input type="text" name="content" [(ngModel)]="content">
+          <div class="form-group">
+            <input class="form-input" type="text" name="content" placeholder="支出内容" [(ngModel)]="content">
           </div>
-
-          <div>
-            <label>金额:</label>
-            <input type="number" name="amount" [(ngModel)]="amount">
-            <span>元</span>
+          <div class="input-group">
+            <input class="form-input" type="number" placeholder="支出金额" name="amount" [(ngModel)]="amount">
+            <span class="input-group-addon">元</span>
           </div>
         </div>
 

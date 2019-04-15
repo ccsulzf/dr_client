@@ -135,12 +135,13 @@ import * as _ from 'lodash';
 // 2.输入框输入进行过滤,没有的话显示提示信息,请添加,移除光标时,如果你输入框的值不是列表的值,则清空内容
 export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
 
+  @ViewChild('expenseCategoryListEle') expenseCategoryListEle: ElementRef;
   @Input() title;
   @Output() setCategory = new EventEmitter<string>();
 
   @Input()
   set expenseCategoryId(expenseCategoryId) {
-    this.select(_.find(BaseData.expenseCategoryList, { id: expenseCategoryId }));
+    this.selectItem(_.find(BaseData.expenseCategoryList, { id: expenseCategoryId }));
   }
 
   get expenseCategoryId(): string { return this.expenseCategory.id; }
@@ -164,25 +165,9 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
   resetEvent;
   doneEvent;
 
-  isListShow = false;
-
-  clickId = 'expenseCategory-list';
-
-  @ViewChild('expenseCategoryListEle') expenseCategoryListEle: ElementRef;
   ulShow = false;
 
-  userList = [
-    { name: 'Slack' },
-    { name: 'Hipchat' },
-    { name: 'Skype' }
-  ];
-
-
   list = [];
-
-
-  user;
-
 
   constructor(
     public el: ElementRef,
@@ -193,8 +178,8 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.list = this.userList;
-    const searchBox = document.getElementById('search-box');
+    this.list = this.expenseCategoryList;
+    const searchBox = document.getElementById('expenseCategory-list');
     const typeahead = fromEvent(searchBox, 'input').pipe(
       map((e: any) => {
         return e.target.value;
@@ -203,63 +188,62 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
         if (text.length >= 1) {
           return text.length >= 1;
         } else {
-          this.list = this.userList;
+          this.list = this.expenseCategoryList;
           this.ulShow = true;
           return false;
         }
       }),
       debounceTime(10),
-      distinctUntilChanged(),
-      // switchMap(() => ajax('/api/endpoint'))
+      distinctUntilChanged()
     );
     typeahead.subscribe(data => {
-      this.list = this.userList.filter((item) => {
+      this.list = this.expenseCategoryList.filter((item) => {
         return item.name.indexOf(data) > -1;
       });
-      // Handle the data from the API
+    });
+
+    this.resetEvent = this.system.resetEvent.subscribe(() => {
+      this.init();
+    });
+    this.doneEvent = this.system.doneEvent.subscribe((value) => {
+      if (value && value.model === 'expenseCategory') {
+        this.selectItem(value.data);
+        this.list.push(value.data);
+        this.expenseCategoryList.push(value.data)
+      }
     });
   }
 
+  init() {
+    this.expenseCategoryList = _.filter(BaseData.expenseCategoryList, { expenseBookId: this.expenseBookId });
+    this.list = this.expenseCategoryList;
+    this.selectItem(_.first(this.expenseCategoryList));
+  }
+
+  selectItem(item?) {
+    if (item) {
+      this.expenseCategoryItem = item;
+      this.expenseCategory = item.name;
+      this.ulShow = false;
+      this.setCategory.emit(this.expenseCategoryItem.id);
+    } else {
+      this.expenseCategoryItem = null;
+      this.expenseCategory = '';
+    }
+  }
 
   @HostListener('document:click', ['$event'])
   onClick() {
     if (this.expenseCategoryListEle.nativeElement.contains(event.target)) {
       this.ulShow = true;
-      this.list = this.userList;
+      this.list = this.expenseCategoryList;
     } else {
-      this.list = this.userList.filter((item) => {
-        return item.name.indexOf(this.user) > -1;
-      });
-
-
-      if (this.list && this.list.length === 0) {
-        this.user = '';
+      if (!_.find(this.list, (item) => {
+        return item.name === this.expenseCategory;
+      })) {
+        this.expenseCategory = '';
       }
       this.ulShow = false;
-    }
-  }
-
-
-  selectItem(item) {
-    this.user = item.name;
-    this.ulShow = false;
-  }
-
-  init() {
-    this.expenseCategoryList = _.filter(BaseData.expenseCategoryList, { expenseBookId: this.expenseBookId });
-    this.select(_.first(this.expenseCategoryList));
-  }
-
-  select(item?) {
-    this.expenseCategoryList = _.filter(BaseData.expenseCategoryList, { expenseBookId: this.expenseBookId });
-    this.isListShow = false;
-    if (item) {
-      this.expenseCategoryItem = item;
-      this.expenseCategory = item.name;
-      this.setCategory.emit(this.expenseCategoryItem.id);
-    } else {
-      this.expenseCategoryItem = null;
-      this.expenseCategory = '';
     }
   }
 
@@ -270,6 +254,10 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
     if (this.doneEvent) {
       this.doneEvent.unsubscribe();
     }
+  }
+
+  add() {
+    this.system.changeComponent({ component: 'expenseCategory-add-edit', data: this.expenseBook });
   }
 }
 

@@ -8,10 +8,8 @@ main {
   margin: 10px;
 }
 
-ul,
 li {
-  margin: 0;
-  padding: 0;
+  cursor: pointer;
 }
 
 section {
@@ -22,14 +20,6 @@ section {
   width: 200px;
   display: flex;
   flex-direction: column;
-}
-
-input[type="date"] {
-  height: 23px;
-  margin-top: 5px;
-  border: none;
-  border-bottom: 1px dashed;
-  outline: none;
 }
 
 main {
@@ -43,17 +33,11 @@ main {
   }
 
   form {
-    // padding: 0 20px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(6, 1fr);
     grid-column-gap: 10px;
-    grid-row-gap: 20px;
-
-    div {
-      display: flex;
-      flex-direction: column;
-    }
+    grid-row-gap: 0px;
 
     .address {
       position: relative;
@@ -62,32 +46,16 @@ main {
     .detail {
       grid-column: span 2;
       grid-row: span 3;
-      border: 1px dashed;
+      border-top: 1px dashed #4b48d6;
 
-      ul {
-        display: inline-flex;
-        width: 100%;
-        margin-bottom: 12px;
-        border-bottom: 2px solid #efefef;
+      .tab .tab-item a {
+        margin: 0 .8rem 0 0;
+      }
 
-        .detail-item {
-          height: 40px;
-          padding: 0 24px;
-          cursor: pointer;
-          box-sizing: border-box;
-          opacity: .6;
-          text-align: center;
-          display: inline-flex;
-          justify-content: center;
-          align-items: center;
-          white-space: nowrap;
-          vertical-align: top;
-          text-decoration: none;
-          position: relative;
-          overflow: hidden;
-          -webkit-tap-highlight-color: transparent;
-          cursor: pointer;
-        }
+      legend {
+        font-size: 14px;
+        font-weight: normal;
+        margin-bottom: 0;
       }
 
       .content {
@@ -95,13 +63,8 @@ main {
         flex-direction: row;
         justify-content: center;
 
-        input {
-          width: 150px;
-        }
-
         div {
-          display: flex;
-          flex-direction: row;
+          margin: 5px 2px;
         }
       }
 
@@ -109,163 +72,12 @@ main {
         display: flex;
         flex-direction: row;
         padding: 0 10px;
-
-        span {
-          margin: 0 4px;
-          border: 1px dashed #dedede;
-          padding: 5px;
-          cursor: pointer;
-          position: relative;
-
-          &:hover {
-            i {
-              display: inline-flex;
-            }
-          }
-
-          i {
-            display: none;
-            position: absolute;
-            right: -5px;
-            top: -10px;
-            font-size: 16px;
-            background: red;
-            border-radius: 50%;
-            width: 15px;
-            height: 15px;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-          }
-
-        }
-
-        .input {
-          display: flex;
-          flex-direction: column;
-          position: relative;
-
-          input {
-            border: none;
-            border-bottom: 1px solid;
-            width: 150px;
-            height: 100%;
-
-            &:focus {
-              outline: none;
-            }
-          }
-
-          ul {
-            display: flex;
-            flex-direction: column;
-            position: absolute;
-            top: 26px;
-            width: 100%;
-            background: #efefef;
-            border: 1px solid;
-            z-index: 9999;
-
-            li {
-              cursor: pointer;
-            }
-          }
-
-        }
-
       }
 
       .label {
         display: flex;
         flex-direction: row;
         padding: 0 10px;
-
-        span {
-          margin: 0 4px;
-          border: 1px dashed #dedede;
-          padding: 5px;
-          cursor: pointer;
-          position: relative;
-
-          &:hover {
-            i {
-              display: inline-flex;
-            }
-          }
-
-          i {
-            display: none;
-            position: absolute;
-            right: -5px;
-            top: -10px;
-            font-size: 16px;
-            background: red;
-            border-radius: 50%;
-            width: 15px;
-            height: 15px;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-          }
-
-        }
-
-        .input {
-          display: flex;
-          flex-direction: column;
-          position: relative;
-
-          div {
-            flex-direction: row;
-            height: 100%;
-            align-items: center;
-            position: relative;
-
-            input {
-              border: none;
-              border-bottom: 1px solid;
-              width: 120px;
-              height: 100%;
-              min-height: 32px;
-              padding: 0;
-              padding-right: 30px;
-
-              &:focus {
-                outline: none;
-              }
-            }
-
-            i {
-              width: 30px;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              right: 30px;
-              position: relative;
-              cursor: pointer;
-              height: 100%;
-              background: #efefef;
-              top: 0px;
-            }
-          }
-
-          ul {
-            display: flex;
-            flex-direction: column;
-            position: absolute;
-            top: 30px;
-            width: 100%;
-            background: #efefef;
-            border: 1px solid;
-            z-index: 9999;
-
-            li {
-              cursor: pointer;
-            }
-          }
-
-        }
-
       }
 
       .memo {

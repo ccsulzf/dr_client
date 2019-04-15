@@ -7,7 +7,7 @@ import { SystemService } from '../../../../core/providers';
 import {
   AddressAddEditComponent,
   FundPartyAddEditComponent,
-  FundWayAddEditComponent, FundAccountAddEditComponent, ParticipantAddEditComponent, IncomeCategoryAddEditComponent
+  FundAccountAddEditComponent, ParticipantAddEditComponent, IncomeCategoryAddEditComponent, FundChannelAddEditComponent
 } from '../../../../core/components';
 import { IncomeListComponent } from './income-list';
 import { AccountService } from '../../services';
@@ -50,8 +50,8 @@ export class IncomeComponent implements OnInit, AfterViewInit, OnDestroy {
         case 'fundParty-add-edit':
           this.dynamicLoad(FundPartyAddEditComponent, value.data);
           break;
-        case 'fundWay-add-edit':
-          this.dynamicLoad(FundWayAddEditComponent);
+        case 'fundChannel-add-edit':
+          this.dynamicLoad(FundChannelAddEditComponent);
           break;
         case 'fundAccount-add-edit':
           this.dynamicLoad(FundAccountAddEditComponent, value.data);

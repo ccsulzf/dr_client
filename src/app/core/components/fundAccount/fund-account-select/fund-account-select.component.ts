@@ -1,8 +1,10 @@
 import {
   Component, OnInit, Input, OnDestroy, Output, EventEmitter,
-  HostListener, ElementRef, Renderer, ViewContainerRef
+  HostListener, ElementRef, Renderer, ViewContainerRef, ViewChild
 } from '@angular/core';
 import { SystemService, BaseData } from '../../../providers';
+import { fromEvent } from 'rxjs';
+import { map, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import * as _ from 'lodash';
 @Component({
   selector: 'fund-account-select',
@@ -10,6 +12,7 @@ import * as _ from 'lodash';
   styleUrls: ['./fund-account-select.component.scss']
 })
 export class FundAccountSelectComponent implements OnInit, OnDestroy {
+  @ViewChild('fundAccountListEle') fundAccountListEle: ElementRef;
   @Input() title;
   @Input() filterCredit;
 
@@ -32,6 +35,7 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
 
   get fundAccountId(): string { return this.fundAccount; }
 
+  list = [];
   fundAccountList = [];
   fundAccountItem;
   fundAccount;
@@ -41,7 +45,9 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
   doneEvent;
   resetEvent;
 
-  isListShow = true;
+  ulShow = false;
+
+  // isListShow = true;
 
   constructor(
     public system: SystemService,
@@ -52,6 +58,28 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.init();
+    const searchBox = document.getElementById('fundAccount-list');
+    const typeahead = fromEvent(searchBox, 'input').pipe(
+      map((e: any) => {
+        return e.target.value;
+      }),
+      filter(text => {
+        if (text.length >= 1) {
+          return text.length >= 1;
+        } else {
+          this.list = this.fundAccountList;
+          this.ulShow = true;
+          return false;
+        }
+      }),
+      debounceTime(10),
+      distinctUntilChanged()
+    );
+    typeahead.subscribe(data => {
+      this.list = this.fundAccountList.filter((item) => {
+        return item.name.indexOf(data) > -1;
+      });
+    });
     this.doneEvent = this.system.doneEvent.subscribe((value) => {
       if (value && value.model === 'fundAccount') {
         this.fundChannel = value.fundChannel;
@@ -76,7 +104,6 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
   }
 
   getFundAccountList() {
-    let list = [];
     if (this.fundChannel) {
       this.fundAccountList = _.filter(
         BaseData.fundAccountList,
@@ -93,14 +120,21 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
         return item.isCredit == 0;
       });
     }
+    this.list = this.fundAccountList;
   }
 
   @HostListener('document:click', ['$event'])
   onClick() {
-    if (this.el.nativeElement.contains(event.target)) {
-      this.isListShow = !this.isListShow;
+    if (this.fundAccountListEle.nativeElement.contains(event.target)) {
+      this.ulShow = true;
+      this.list = this.fundAccountList;
     } else {
-      this.isListShow = false;
+      if (!_.find(this.list, (item) => {
+        return item.name === this.fundAccount;
+      })) {
+        this.fundAccount = '';
+      }
+      this.ulShow = false;
     }
   }
 
@@ -111,7 +145,6 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
 
   select(item?) {
     this.getFundAccountList();
-    this.isListShow = false;
     if (item) {
       this.fundAccountItem = item;
       this.fundAccount = item.name;

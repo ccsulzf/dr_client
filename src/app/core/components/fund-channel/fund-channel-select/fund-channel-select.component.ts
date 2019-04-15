@@ -1,8 +1,10 @@
 import {
   Component, OnInit, Input, OnDestroy, Output, EventEmitter,
-  HostListener, ElementRef, Renderer, ViewContainerRef
+  HostListener, ElementRef, Renderer, ViewContainerRef, ViewChild
 } from '@angular/core';
 import { SystemService, BaseData } from '../../../providers';
+import { fromEvent } from 'rxjs';
+import { map, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 @Component({
@@ -11,7 +13,7 @@ import * as _ from 'lodash';
   styleUrls: ['./fund-channel-select.component.scss']
 })
 export class FundChannelSelectComponent implements OnInit, OnDestroy {
-
+  @ViewChild('fundChannelListEle') fundChannelListEle: ElementRef;
   @Input() title;
   @Output() setFundChannel = new EventEmitter<string>();
 
@@ -22,6 +24,7 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy {
 
   get fundChannelId(): string { return this.fundChannel; }
 
+  list = [];
   fundChannelList = [];
   fundChannelItem;
   fundChannel;
@@ -29,7 +32,7 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy {
   resetEvent;
   doneEvent;
 
-  isListShow = false;
+  ulShow = false;
 
   constructor(
     public system: SystemService,
@@ -41,6 +44,30 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.init();
+
+    const searchBox = document.getElementById('fundChannel-list');
+    const typeahead = fromEvent(searchBox, 'input').pipe(
+      map((e: any) => {
+        return e.target.value;
+      }),
+      filter(text => {
+        if (text.length >= 1) {
+          return text.length >= 1;
+        } else {
+          this.list = this.fundChannelList;
+          this.ulShow = true;
+          return false;
+        }
+      }),
+      debounceTime(10),
+      distinctUntilChanged()
+    );
+    typeahead.subscribe(data => {
+      this.list = this.fundChannelList.filter((item) => {
+        return item.name.indexOf(data) > -1;
+      });
+    });
+
 
     this.resetEvent = this.system.resetEvent.subscribe(() => {
       this.init();
@@ -55,15 +82,22 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy {
 
   init() {
     this.fundChannelList = BaseData.fundChannelList;
-    this.select();
+    this.list = this.fundChannelList;
+    this.select(_.first(this.fundChannelList));
   }
 
   @HostListener('document:click', ['$event'])
   onClick() {
-    if (this.el.nativeElement.contains(event.target)) {
-      this.isListShow = !this.isListShow;
+    if (this.fundChannelListEle.nativeElement.contains(event.target)) {
+      this.ulShow = true;
+      this.list = this.fundChannelList;
     } else {
-      this.isListShow = false;
+      if (!_.find(this.list, (item) => {
+        return item.name === this.fundChannel;
+      })) {
+        this.fundChannel = '';
+      }
+      this.ulShow = false;
     }
   }
 
@@ -77,7 +111,6 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy {
   }
 
   select(item?) {
-    this.isListShow = false;
     if (item) {
       this.fundChannelItem = item;
       this.fundChannel = item.name;

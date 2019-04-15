@@ -1,8 +1,10 @@
 import {
   Component, OnInit, Input, OnDestroy, Output, EventEmitter,
-  HostListener, ElementRef, Renderer, ViewContainerRef
+  HostListener, ElementRef, Renderer, ViewContainerRef, ViewChild
 } from '@angular/core';
 import { SystemService, BaseData } from '../../../providers';
+import { fromEvent } from 'rxjs';
+import { map, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import * as _ from 'lodash';
 @Component({
   selector: 'fund-party-select',
@@ -10,7 +12,7 @@ import * as _ from 'lodash';
   styleUrls: ['./fund-party-select.component.scss']
 })
 export class FundPartySelectComponent implements OnInit, OnDestroy {
-
+  @ViewChild('fundPartyListEle') fundPartyListEle: ElementRef;
   @Input() title;
   @Input() type;
   @Output() setFundParty = new EventEmitter<string>();
@@ -22,6 +24,7 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
 
   get fundPartyId(): string { return this.fundParty; }
 
+  list = [];
   fundPartyList = [];
   fundPartyItem;
   fundParty;
@@ -29,7 +32,7 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
   resetEvent;
   doneEvent;
 
-  isListShow = false;
+  ulShow = false;
 
   constructor(
     public system: SystemService,
@@ -39,6 +42,30 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.init();
+    const searchBox = document.getElementById('fundParty-list');
+    const typeahead = fromEvent(searchBox, 'input').pipe(
+      map((e: any) => {
+        return e.target.value;
+      }),
+      filter(text => {
+        if (text.length >= 1) {
+          return text.length >= 1;
+        } else {
+          this.list = this.fundPartyList;
+          this.ulShow = true;
+          return false;
+        }
+      }),
+      debounceTime(10),
+      distinctUntilChanged()
+    );
+    typeahead.subscribe(data => {
+      this.list = this.fundPartyList.filter((item) => {
+        return item.name.indexOf(data) > -1;
+      });
+    });
+
     this.resetEvent = this.system.resetEvent.subscribe(() => {
       this.init();
     });
@@ -46,25 +73,32 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
     this.doneEvent = this.system.doneEvent.subscribe((value) => {
       if (value && value.model === 'fundParty') {
         this.select(value.data);
-      } else {
-        this.fundPartyList = _.filter(BaseData.fundPartyList, { type: this.type });
-        // this.select(_.first(this.fundPartyList));
+        this.list.push(value.data);
+        this.fundPartyList.push(value.data);
       }
     });
+
   }
 
   @HostListener('document:click', ['$event'])
   onClick() {
-    if (this.el.nativeElement.contains(event.target)) {
-      this.isListShow = !this.isListShow;
+    if (this.fundPartyListEle.nativeElement.contains(event.target)) {
+      this.ulShow = true;
+      this.list = this.fundPartyList;
     } else {
-      this.isListShow = false;
+      if (!_.find(this.list, (item) => {
+        return item.name === this.fundParty;
+      })) {
+        this.fundParty = '';
+      }
+      this.ulShow = false;
     }
   }
 
   init() {
     this.fundPartyList = _.filter(BaseData.fundPartyList, { type: this.type });
-    this.select();
+    this.list = this.fundPartyList;
+    // this.select(_.first(this.fundPartyList));
   }
 
   ngOnDestroy() {
@@ -77,8 +111,6 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
   }
 
   select(item?) {
-    this.fundPartyList = _.filter(BaseData.fundPartyList, { type: this.type });
-    this.isListShow = false;
     if (item) {
       this.fundPartyItem = item;
       this.fundParty = item.name;

@@ -1,37 +1,18 @@
-<!-- <main>
-  <label>
-    {{title}}:
-  </label>
-  <div class="select">
-    <input type="text" name="expenseCategory" [(ngModel)]="expenseCategory" disabled placeholder="请选择支出类别">
-    <i class="down-triangle"></i>
-  </div>
-
-  <div class="ul-select" *ngIf="isListShow">
-    <ul>
-      <li (click)="select(item)" *ngFor="let item of expenseCategoryList">
-        {{item?.name}}
-      </li>
-    </ul>
-    <div class="add" (click)="add()">添加支出类别</div>
-  </div>
-</main> -->
 <main>
   <form>
-    <div class="form-item" #expenseCategoryListEle>
+    <div class="form-item">
       <label class="form-label" for="input-example-1">{{title}}</label>
-      <div class="has-icon-left">
-        <input type="text" class="form-input" placeholder="请选择支出类别" name="user" autocomplete="off" id="search-box"
-          [(ngModel)]="user">
+      <div class="has-icon-left" #expenseCategoryListEle>
+        <input type="text" class="form-input" placeholder="请选择支出类别" name="expenseCategory" [(ngModel)]="expenseCategory"
+          autocomplete="off" id="expenseCategory-list">
         <i class="form-icon fa fa-th-large" aria-hidden="true"></i>
       </div>
       <ul class="menu" *ngIf="ulShow">
-        <!-- <li class="divider" data-content="choice people"></li> -->
         <li class="menu-item" *ngFor="let item of list" (click)="selectItem(item)">
-          <a>{{item.name}}</a>
+          <a>{{item?.name}}</a>
         </li>
         <li class="menu-item add">
-          <button class="btn btn-primary btn-sm"><i class="icon icon-plus"></i> 添加</button>
+          <button class="btn btn-primary btn-sm" (click)="add()"><i class="icon icon-plus"></i> 添加支出类别</button>
         </li>
       </ul>
     </div>

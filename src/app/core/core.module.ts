@@ -18,7 +18,7 @@ import { ExpenseBookAddEditComponent } from './components/expenseBook/expense-bo
 import { ExpenseCategoryAddEditComponent } from './components/expense-category/expenseCategory-add-edit/expenseCategory-add-edit.component';
 import { FundPartyAddEditComponent } from './components/fund-party/fund-party-add-edit/fund-party-add-edit.component';
 import { FilterPipe, FilterListPipe, FilterNamePipe } from './pipes';
-import { FundWayAddEditComponent } from './components/fund-way/fund-way-add-edit/fund-way-add-edit.component';
+// import { FundWayAddEditComponent } from './components/fund-way/fund-way-add-edit/fund-way-add-edit.component';
 import { FundAccountAddEditComponent } from './components/fundAccount/fund-account-add-edit/fund-account-add-edit.component';
 import { ParticipantAddEditComponent } from './components/participant/participant-add-edit/participant-add-edit.component';
 import { AddressSelectComponent } from './components/addreess/address-select/address-select.component';
@@ -28,7 +28,7 @@ import { LabelSelectComponent } from './components/label/label-select/label-sele
 import { FundAccountSelectComponent } from './components/fundAccount/fund-account-select/fund-account-select.component';
 import { IncomeCategoryAddEditComponent } from './components/income-category/income-category-add-edit/income-category-add-edit.component';
 import { FundPartySelectComponent } from './components/fund-party/fund-party-select/fund-party-select.component';
-import { FundwaySelectComponent } from './components/fund-way/fundway-select/fundway-select.component';
+// import { FundwaySelectComponent } from './components/fund-way/fundway-select/fundway-select.component';
 import { ExpenseCategorySelectComponent } from './components/expense-category/expense-category-select/expense-category-select.component';
 
 import { FundChannelAddEditComponent, FundChannelSelectComponent } from './components/fund-channel';
@@ -45,12 +45,12 @@ import { DrDateComponent } from './components/dr-date/dr-date.component';
   declarations: [NavComponent, DynamicComponentDirective, WebviewDirective, BlankClickDirective,
     AddressAddEditComponent, ExpenseBookAddEditComponent,
     ExpenseCategoryAddEditComponent, FundPartyAddEditComponent,
-    FilterPipe, FilterListPipe, FilterNamePipe, FundWayAddEditComponent,
+    FilterPipe, FilterListPipe, FilterNamePipe, 
     FundAccountAddEditComponent, ParticipantAddEditComponent,
     AddressSelectComponent, IncomeCategorySelectComponent,
     ParticipantSelectComponent, LabelSelectComponent,
     FundAccountSelectComponent, IncomeCategoryAddEditComponent,
-    FundPartySelectComponent, FundwaySelectComponent,
+    FundPartySelectComponent,
     ExpenseCategorySelectComponent, FundChannelAddEditComponent, FundChannelSelectComponent, ExpenseBookListComponent, DrDateComponent
   ],
   exports: [
@@ -60,7 +60,7 @@ import { DrDateComponent } from './components/dr-date/dr-date.component';
     ParticipantSelectComponent,
     LabelSelectComponent,
     FundPartySelectComponent,
-    FundwaySelectComponent,
+    // FundwaySelectComponent,
     FundAccountSelectComponent,
     ExpenseCategorySelectComponent,
     FundChannelSelectComponent,
@@ -85,7 +85,7 @@ import { DrDateComponent } from './components/dr-date/dr-date.component';
     ExpenseBookAddEditComponent,
     ExpenseCategoryAddEditComponent,
     FundPartyAddEditComponent,
-    FundWayAddEditComponent,
+    // FundWayAddEditComponent,
     FundAccountAddEditComponent,
     ParticipantAddEditComponent,
     IncomeCategoryAddEditComponent,

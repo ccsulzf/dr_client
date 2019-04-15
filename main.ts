@@ -15,8 +15,8 @@ function createWindow() {
   win = new BrowserWindow({
     x: 0,
     y: 0,
-    minWidth: 980,
-    minHeight: 700,
+    minWidth: 930,
+    minHeight: 650,
     resizable: true,
     autoHideMenuBar: true,
     movable: true,

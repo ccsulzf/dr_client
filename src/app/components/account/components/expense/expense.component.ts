@@ -7,7 +7,7 @@ import { SystemService } from '../../../../core/providers';
 import {
   AddressAddEditComponent, ExpenseBookAddEditComponent,
   ExpenseCategoryAddEditComponent, FundPartyAddEditComponent,
-  FundWayAddEditComponent, FundAccountAddEditComponent, ParticipantAddEditComponent,
+  FundAccountAddEditComponent, ParticipantAddEditComponent,
   FundChannelAddEditComponent
 } from '../../../../core/components';
 import { ExpenseListComponent, ExpenseDetailComponent } from '../expense';
