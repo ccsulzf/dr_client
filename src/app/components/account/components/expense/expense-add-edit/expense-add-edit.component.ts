@@ -136,6 +136,10 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     this.labelList = labelList;
   }
 
+  onSetMemo(memo) {
+    this.memo = memo;
+  }
+
 
   async getParticipantList() {
     this.participantList = [];

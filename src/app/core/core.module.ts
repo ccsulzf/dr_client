@@ -36,6 +36,7 @@ import { FundChannelAddEditComponent, FundChannelSelectComponent } from './compo
 import { WebviewDirective } from './directives';
 import { ExpenseBookListComponent } from './components/expenseBook/expense-book-list/expense-book-list.component';
 import { DrDateComponent } from './components/dr-date/dr-date.component';
+import { MemoComponent } from './components/memo/memo.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -45,13 +46,13 @@ import { DrDateComponent } from './components/dr-date/dr-date.component';
   declarations: [NavComponent, DynamicComponentDirective, WebviewDirective, BlankClickDirective,
     AddressAddEditComponent, ExpenseBookAddEditComponent,
     ExpenseCategoryAddEditComponent, FundPartyAddEditComponent,
-    FilterPipe, FilterListPipe, FilterNamePipe, 
+    FilterPipe, FilterListPipe, FilterNamePipe,
     FundAccountAddEditComponent, ParticipantAddEditComponent,
     AddressSelectComponent, IncomeCategorySelectComponent,
     ParticipantSelectComponent, LabelSelectComponent,
     FundAccountSelectComponent, IncomeCategoryAddEditComponent,
     FundPartySelectComponent,
-    ExpenseCategorySelectComponent, FundChannelAddEditComponent, FundChannelSelectComponent, ExpenseBookListComponent, DrDateComponent
+    ExpenseCategorySelectComponent, FundChannelAddEditComponent, FundChannelSelectComponent, ExpenseBookListComponent, DrDateComponent, MemoComponent
   ],
   exports: [
     NavComponent,
@@ -71,7 +72,8 @@ import { DrDateComponent } from './components/dr-date/dr-date.component';
     FilterListPipe,
     FilterNamePipe,
     ExpenseBookListComponent,
-    DrDateComponent
+    DrDateComponent,
+    MemoComponent
   ],
   providers: [
     ElectronService,

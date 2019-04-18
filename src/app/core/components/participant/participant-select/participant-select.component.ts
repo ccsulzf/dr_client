@@ -1,5 +1,11 @@
-import { Component, OnInit, OnDestroy, Input, EventEmitter, Output } from '@angular/core';
-import { SystemService, BaseDataService, BaseData } from '../../../providers';
+import {
+  Component, OnInit, OnDestroy, Input,
+  EventEmitter, Output, ViewChild,
+  ElementRef, HostListener
+} from '@angular/core';
+import { SystemService, BaseData } from '../../../providers';
+import { fromEvent } from 'rxjs';
+import { map, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import * as _ from 'lodash';
 @Component({
   selector: 'participant-select',
@@ -7,6 +13,8 @@ import * as _ from 'lodash';
   styleUrls: ['./participant-select.component.scss']
 })
 export class ParticipantSelectComponent implements OnInit, OnDestroy {
+  @ViewChild('participantListEle') participantListEle: ElementRef;
+  @ViewChild('contentEle') contentEle: ElementRef;
   @Input() title;
   @Output() setParticipantList = new EventEmitter<any>();
   // 已选择的
@@ -20,15 +28,15 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
 
   get hasParticipantList(): string { return this.selectedParticipantList; }
 
-
   participantList = [];
+  list = [];
 
-  isListShow = false;
+  top = 0;
+  filterParticipant = '';
+  ulShow = false;
 
-  showListEvent;
   doneEvent;
 
-  clickId = 'participant-select';
   constructor(
     public system: SystemService
   ) { }
@@ -36,28 +44,62 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.init();
 
-    this.showListEvent = this.system.showListEvent.subscribe((data) => {
-      if (this.clickId === data.id) {
-        this.isListShow = !this.isListShow;
-      } else {
-        if (data.id) {
-          this.isListShow = false;
+    const searchBox = document.getElementById('participant-list');
+    const typeahead = fromEvent(searchBox, 'input').pipe(
+      map((e: any) => {
+        return e.target.value;
+      }),
+      filter(text => {
+        if (text.length >= 1) {
+          return text.length >= 1;
+        } else {
+          this.list = this.participantList;
+          this.ulShow = true;
+          return false;
         }
-      }
+      }),
+      debounceTime(10),
+      distinctUntilChanged()
+    );
+    typeahead.subscribe(data => {
+      this.list = this.participantList.filter((item) => {
+        return item.name.indexOf(data) > -1;
+      });
     });
-
     this.doneEvent = this.system.doneEvent.subscribe((value) => {
       if (value && value.model === 'participant') {
-        this.select(value.data);
+        value.data.selected = true;
+        this.selectedParticipantList.push(value.data);
+        this.list.push(value.data);
+        this.top = this.contentEle.nativeElement.clientHeight;
       }
     });
   }
 
-  ngOnDestroy() {
-    if (this.showListEvent) {
-      this.showListEvent.unsubscribe();
-    }
 
+  @HostListener('document:click', ['$event'])
+  onClick() {
+    if (this.participantListEle.nativeElement.contains(event.target)) {
+      if (event.srcElement.id === 'participant-list') {
+        this.ulShow = !this.ulShow;
+      } else {
+        this.ulShow = true;
+        this.list = this.participantList;
+      }
+
+      if (!this.ulShow) {
+        const searchBox = document.getElementById('participant-list');
+        searchBox.blur();
+        this.filterParticipant = '';
+      }
+    } else {
+      this.ulShow = false;
+      this.filterParticipant = '';
+    }
+    this.top = this.contentEle.nativeElement.clientHeight;
+  }
+
+  ngOnDestroy() {
     if (this.doneEvent) {
       this.doneEvent.unsubscribe();
     }
@@ -65,28 +107,40 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
 
   init() {
     this.participantList = BaseData.participantList;
-    this.select(_.find(BaseData.participantList, { isMyself: true }));
+    for (let item of this.participantList) {
+      item.selected = false;
+    }
+    const mySelf = _.find(this.participantList, { isMyself: true });
+    mySelf.selected = true;
+    this.selectedParticipantList.push(mySelf);
+    this.list = this.participantList;
+    this.top = this.contentEle.nativeElement.clientHeight;
   }
 
-  select(item?) {
-    this.isListShow = false;
-    if (item) {
-      this.participantList = BaseData.participantList;
+
+  select(item) {
+    this.ulShow = true;
+    this.filterParticipant = '';
+    item.selected = !item.selected;
+    if (item.selected) {
       this.selectedParticipantList.push(item);
-      this.participantList = _.differenceBy(this.participantList, this.selectedParticipantList, 'name');
-      this.setParticipantList.emit(this.selectedParticipantList);
+    } else {
+      _.remove(this.selectedParticipantList, { name: item.name });
     }
+    this.setParticipantList.emit(this.selectedParticipantList);
+
+    this.top = this.contentEle.nativeElement.clientHeight;
   }
 
   add() {
-    this.select();
+    this.ulShow = false;
     this.system.changeComponent({ component: 'participant-add-edit' });
   }
 
   delete(item) {
-    this.participantList = BaseData.participantList;
-    _.remove(this.selectedParticipantList, item);
-    this.participantList = _.differenceBy(this.participantList, this.selectedParticipantList, 'name');
+    item.selected = false;
+    _.remove(this.selectedParticipantList, { name: item.name });
     this.setParticipantList.emit(this.selectedParticipantList);
+    this.top = this.contentEle.nativeElement.clientHeight;
   }
 }
