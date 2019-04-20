@@ -9,14 +9,7 @@ import * as _ from 'lodash';
   styleUrls: ['./expense-list.component.scss']
 })
 export class ExpenseListComponent implements AfterViewInit, OnInit, OnDestroy, AfterViewChecked {
-
-  public changeDateEvent;
-
-  public showDate;
-
-  public isShowCal = false;
-
-  public selectDate;
+  public date;
   constructor(
     public accountService: AccountService,
     public http: HttpClientService,
@@ -28,11 +21,11 @@ export class ExpenseListComponent implements AfterViewInit, OnInit, OnDestroy, A
   }
 
   ngAfterViewChecked() {
-    this.cd.detectChanges();
+    // this.cd.detectChanges();
   }
 
   ngOnInit() {
-
+    this.date = this.expenseService.expneseListDate;
   }
 
   ngAfterViewInit() {
@@ -40,38 +33,18 @@ export class ExpenseListComponent implements AfterViewInit, OnInit, OnDestroy, A
   }
 
   ngOnDestroy() {
-    if (this.changeDateEvent) {
-      this.changeDateEvent.unsubscribe();
-    }
+
   }
 
-  changeDate(data) {
-    this.isShowCal = !this.isShowCal;
-    this.getListByDate(data);
+  changeDate(date) {
+    this.date = date;
+    this.getListByDate(date);
   }
 
-  getCal() {
-    this.isShowCal = !this.isShowCal;
-  }
-
-  dateShow(expenseDate) {
-    switch (moment().diff(moment(expenseDate), 'days')) {
-      case 0:
-        this.showDate = '今日支出';
-        break;
-      case 1:
-        this.showDate = '昨日支出';
-        break;
-      default:
-        this.showDate = expenseDate;
-        break;
-    }
-  }
 
   getListByDate(expenseDate) {
-    this.dateShow(expenseDate);
     this.expenseService.expneseListDate = expenseDate;
-    this.http.get('/DR/Expense?expenseDate=' + expenseDate).then((data: any) => {
+    this.http.get('/DR/Expense?expenseDate=' + moment(expenseDate).format('YYYY-MM-DD')).then((data: any) => {
       this.expenseService.expenseList = [];
       if (data && data.length) {
         for (const item of data) {

@@ -1,9 +1,6 @@
 <main>
   <div class="day-expense">
-    <span (click)="getCal()" *ngIf="!isShowCal">
-      {{showDate}}
-    </span>
-    <input type="date" [hidden]="!isShowCal" name="selectDate" [ngModel]="selectDate" (ngModelChange)="changeDate($event)">
+    <dr-date [type]="'text'" [viewType]="'day'" [initDate]="date" (setDate)="changeDate($event)"></dr-date>
     <span>
       总计:-{{expenseService?.totalDayAmount}}元
     </span>

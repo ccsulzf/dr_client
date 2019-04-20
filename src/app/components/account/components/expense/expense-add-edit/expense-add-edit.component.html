@@ -1,17 +1,13 @@
 <main>
   <div class="expense-book">
     <expense-book-list (setExpenseBook)="onSetExpenseBook($event)"></expense-book-list>
-    <!-- <ul>
-      <li (click)="selectExpenseBook(item)" [style.border]="expenseBook?.id == item?.id ?'1px solid':''" *ngFor="let item of baseData?.expenseBookList">{{item?.name}}</li>
-    </ul>
-    <button (click)="addExpenseBook()">添加账本</button> -->
   </div>
 
-  <section [style.border]="expenseBook?.border">
+  <section>
     <form>
       <div class="columns">
         <div class="column col-6">
-          <dr-date></dr-date>
+          <dr-date [type]="'input'" [viewType]="'day'" [initDate]="expenseDate" (setDate)="onSetDate($event)"></dr-date>
         </div>
         <div class="column col-6">
           <address-select [title]="'支出地点'" [addressId]="addressId" (setAddress)="onSetAddress($event)"></address-select>
@@ -49,7 +45,7 @@
           </div>
           <div class="column col-6">
             <div class="input-group">
-              <input class="form-input" type="text" placeholder="支出金额" name="amount" [(ngModel)]="amount">
+              <input class="form-input" type="number" placeholder="支出金额" name="amount" [(ngModel)]="amount">
               <span class="input-group-addon">元</span>
             </div>
           </div>
@@ -67,18 +63,30 @@
         </div>
       </fieldset>
     </form>
-
+    <!-- *ngIf="!editOrDelFlag && addFlag" -->
     <div class="dr-btn-group" *ngIf="!editOrDelFlag && addFlag">
-      <button (click)="addExpense()">添加支出</button>
-      <button (click)="reset()">重置</button>
+      <button class="btn btn-primary" (click)="addExpense()">
+        <i class="icon icon-plus"></i> 添加
+      </button>
+      <button class="btn btn-Secondary" (click)="reset()">
+        <i class="icon icon-refresh"></i> 重置
+      </button>
     </div>
 
+    <!-- *ngIf="editOrDelFlag && !addFlag" -->
     <div class="edit-del" *ngIf="editOrDelFlag && !addFlag">
       <div class="dr-btn-group">
-        <button (click)="editExpense()">编辑</button>
-        <button (click)="delExpense()">删除</button>
+        <button class="btn btn-primary" (click)="editExpense()">
+          <i class="icon icon-edit"></i> 编辑
+        </button>
+        <button class="btn btn-error" (click)="delExpense()">
+          <i class="icon icon-delete"></i> 删除
+        </button>
       </div>
-      <a (click)="goAdd()">&gt;&gt;添加支出</a>
+      <!-- <a (click)="goAdd()">&gt;&gt;添加支出</a> -->
+      <button class="btn btn-link go-add" (click)="editExpense()">
+        <i class="icon icon-share"></i> 添加支出
+      </button>
     </div>
   </section>
 

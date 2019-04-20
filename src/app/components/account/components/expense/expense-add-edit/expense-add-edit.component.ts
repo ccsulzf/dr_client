@@ -41,18 +41,13 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
 
   public content;
   public amount;
-  public memo;
+  public memo = '';
 
   public expenseId;
   public expenseDetailId;
   public expenseBookId;
   public totalAmount;
 
-  public expenseDetailList = [
-    '内容', '参与人', '标签', '备注'
-  ];
-
-  public expenseDetail = this.expenseDetailList[0];
   constructor(
     public accountService: AccountService,
     public http: HttpClientService,
@@ -64,6 +59,10 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
   ngOnInit() {
     this.baseData = BaseData;
     this.expenseDate = moment().format('YYYY-MM-DD');
+  }
+
+  onSetDate(date) {
+    this.expenseDate = moment(date).format('YYYY-MM-DD');
   }
 
   onSetExpenseBook(item) {
@@ -118,7 +117,7 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
 
       this.content = data.expenseDetail.content;
 
-      this.amount = data.expenseDetail.amount;
+      this.amount = Number(data.expenseDetail.amount);
 
       await this.getLableList();
 
@@ -161,14 +160,8 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
-
-  select(item) {
-    this.expenseDetail = item;
-  }
-
   init() {
-    this.expenseDetail = '内容',
-      this.content = '';
+    this.content = '';
     this.amount = '';
     this.memo = '';
     this.participantList = [];

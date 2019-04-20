@@ -4,7 +4,8 @@
   </label>
 
   <div class="content">
-    <textarea class="form-input" placeholder="请填写备注信息" rows="3"></textarea>
-    <span *ngIf="maxNumber">0/{{maxNumber}}</span>
+    <textarea class="form-input" maxlength="{{maxNumber}}" placeholder="请填写备注信息" rows="3" name="memo" [ngModel]="memo"
+      (ngModelChange)="getMemo($event)"></textarea>
+    <span *ngIf="maxNumber">{{memoLength}}/{{maxNumber}}</span>
   </div>
 </main>

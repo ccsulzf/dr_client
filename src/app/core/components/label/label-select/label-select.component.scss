@@ -25,12 +25,16 @@ ul {
   flex-wrap: wrap;
   padding: 8px 0;
 
+  li {
+    margin: 0;
+  }
+
   input {
     border: 1px solid #d9d9d9;
     margin: 2px 4px;
     border-radius: 4px;
     width: 75px;
-    height: 22px;
+    height: 25px;
     padding-left: 4px;
 
     &:focus {
@@ -67,7 +71,7 @@ ul {
       margin-left: 3px;
       align-items: center;
       justify-content: center;
-
+      font-style: normal;
       &:hover {
         border-radius: 50%;
         background: #000;

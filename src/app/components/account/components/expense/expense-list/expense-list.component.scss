@@ -3,14 +3,23 @@ main {
   flex-direction: column;
   height: 100%;
   background: #fff;
+  -webkit-app-region: no-drag;
+  border: 1px solid #5755d9;
+}
+
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .day-expense {
   height: 44px;
   display: flex;
-  background: #40a9ff;
-  border-radius: 4px 4px 0px 0;
-  border: 1px solid #40a9ff;
+  background: #5755d9;
+  /* border-radius: 4px 4px 0px 0; */
+  border: 1px solid #5755d9;
   color: #fff;
   font-size: 15px;
   font-weight: bolder;

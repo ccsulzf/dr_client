@@ -10,9 +10,28 @@ export class MemoComponent implements OnInit {
   @Input() maxNumber;
 
   @Output() setMemo = new EventEmitter<any>();
+
+  public memo = '';
+  public memoLength = 0;
   constructor() { }
 
   ngOnInit() {
+  }
+
+  getMemo(memo) {
+    if (memo) {
+      this.memoLength = memo.length;
+      if (this.memoLength <= this.maxNumber) {
+        this.memo = memo;
+        this.setMemo.emit(memo);
+      } else {
+        this.memoLength = this.maxNumber;
+      }
+    } else {
+      this.memoLength = 0;
+      this.memo = '';
+      this.setMemo.emit(memo);
+    }
   }
 
 }

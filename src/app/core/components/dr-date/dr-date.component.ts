@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, HostListener } from '@angular/core';
 
 @Component({
   selector: 'dr-date',
@@ -7,21 +7,25 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class DrDateComponent implements OnInit {
   // input 和 text两种类型
-  // @Input() type;
+  @Input() type;
 
-  // @Output() setDate = new EventEmitter<string>();
+  @Input() viewType;
+
+  @Input() initDate;
+  @Output() setDate = new EventEmitter<string>();
+
+  @ViewChild('drDateEle') drDateEle: ElementRef;
   public show = false;
 
-  public viewType = 'day';
-
   public viewTypeList = [];
-
 
   public month;
   public year;
   public day;
   public monthDays;
   public daysList = [];
+
+
 
   public yearsList = [];
   public startYear;
@@ -58,15 +62,15 @@ export class DrDateComponent implements OnInit {
 
 
   ngOnInit() {
-    this.getMonth(new Date().getMonth() + 1);
+    this.date = this.initDate || new Date();
+    this.getMonth(new Date(this.date).getMonth() + 1);
     this.getYear();
-    this.getDay();
+    this.getDay(this.date);
     this.getYearList(this.year);
     this.monthDays = this.getMonthDays();
     this.getViewTypeList(this.viewType);
     this.getList();
   }
-
 
   getViewTypeList(viewType) {
     switch (viewType) {
@@ -85,11 +89,22 @@ export class DrDateComponent implements OnInit {
       default:
         break;
     }
+
+  }
+
+
+  @HostListener('document:click', ['$event'])
+  onClick() {
+    if (this.drDateEle.nativeElement.contains(event.target)) {
+      this.show = true;
+    } else {
+      this.show = false;
+    }
   }
 
 
   getYear() {
-    this.year = new Date().getFullYear();
+    this.year = new Date(this.date).getFullYear();
   }
 
 
@@ -174,34 +189,52 @@ export class DrDateComponent implements OnInit {
     * 如果是星期一,则不需要往前推,否则就往前推(weekDay-1)天
     * 再看月份的最后一天是星期几
     * 如果是星期日,则不需要进行处理,否则就往后推(7-weekDay)天
+    * {
+    *   year
+    *   month
+    *   day
+    *   value
+    * }
     */
     const monthFirst = this.getWeekDay(`${this.year}-${this.month.number}-1`);
     const monthLast = this.getWeekDay(`${this.year}-${this.month.number}-${this.monthDays}`);
 
-
     const prevMonthDays = this.getPrevMonthDays(this.month);
-
 
     let list = [];
     if (monthFirst !== 1) {
+      const prevMonth = (this.month.number - 1 === 0) ? 12 : (this.month.number - 1);
+      const year = (this.month.number - 1 === 0) ? this.year - 1 : this.year;
       for (let i = 0; i < (monthFirst - 1); i++) {
-        list.push(prevMonthDays - i);
+        list.push({
+          year: year,
+          month: prevMonth,
+          day: prevMonthDays - i,
+        });
       }
       list = list.reverse();
     }
 
 
     for (let i = 1; i <= this.monthDays; i++) {
-      list.push(i);
+      list.push({
+        year: this.year,
+        month: this.month.number,
+        day: i,
+      });
     }
-
 
     if (monthLast !== 7) {
+      const lastMonth = this.month.number === 12 ? 1 : (this.month.number + 1);
+      const year = this.month.number === 12 ? this.year + 1 : this.year;
       for (let i = 1; i <= (7 - monthLast); i++) {
-        list.push(i);
+        list.push({
+          year: year,
+          month: lastMonth,
+          day: i,
+        });
       }
     }
-
 
     this.daysList = list;
   }
@@ -218,7 +251,6 @@ export class DrDateComponent implements OnInit {
     } else if (this.viewType === 'year') {
       this.getYearList(this.startYear - 1);
     }
-
 
   }
 
@@ -258,6 +290,7 @@ export class DrDateComponent implements OnInit {
       this.date = '' + this.year + '/' + this.month.value;
       this.show = false;
     }
+    this.setDate.emit(this.date);
   }
 
 
@@ -265,6 +298,7 @@ export class DrDateComponent implements OnInit {
     this.day = day;
     this.date = '' + this.year + '/' + this.month.value + '/' + (this.day < 10 ? '0' + this.day : this.day);
     this.show = false;
+    this.setDate.emit(this.date);
   }
 
 
@@ -277,6 +311,7 @@ export class DrDateComponent implements OnInit {
       this.date = '' + this.year;
       this.show = false;
     }
+    this.setDate.emit(this.date);
   }
 
 }

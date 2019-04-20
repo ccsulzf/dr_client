@@ -9,8 +9,6 @@ export class ExpenseService {
 
     public editEvent = new Subject<object>();
 
-    public changeDateEvent = new Subject<string>();
-
     public totalDayAmount = 0;
 
     public expneseListDate = moment().format('YYYY-MM-DD');
@@ -39,9 +37,6 @@ export class ExpenseService {
         this.editEvent.next(value);
     }
 
-    changeDate(value: string) {
-        this.changeDateEvent.next(value);
-    }
 
     changeExpenseDetail(item) {
         const expenseCategory = this.baseDataService.getExpenseCategory(item.expenseCategoryId);
@@ -84,14 +79,14 @@ export class ExpenseService {
 
             const fundAccount = this.baseDataService.getFundAccount(this.expenseDetail.fundAccountId);
 
-            fundAccount.balance = (fundAccount.balance * 100 - this.expenseDetail.amount * 100) / 100;
+            fundAccount.balance = (Number(fundAccount.balance) * 100 - Number(this.expenseDetail.amount) * 100) / 100;
 
             const expense = _.find(this.expenseList, { expenseBookId: this.expense.expenseBookId });
 
             this.totalDayAmount += this.expenseDetail.amount;
 
             if (expense) {
-                expense.totalAmount += this.expenseDetail.amount;
+                expense.totalAmount += Number(this.expenseDetail.amount);
             } else {
                 const expenseBook = this.baseDataService.getExpenseBook(this.expense.expenseBookId);
                 this.expenseList.push({
@@ -120,9 +115,9 @@ export class ExpenseService {
             const prevFundAccount = this.baseDataService.getFundAccount(prevExpenseDetail.fundAccountId);
             const nowFundAccount = this.baseDataService.getFundAccount(this.expenseDetail.fundAccountId);
 
-            prevFundAccount.balance = (prevFundAccount.balance * 100 + prevExpenseDetail.amount * 100) / 100;
+            prevFundAccount.balance = (Number(prevFundAccount.balance) * 100 + Number(prevExpenseDetail.amount) * 100) / 100;
 
-            nowFundAccount.balance = (nowFundAccount.balance * 100 - this.expenseDetail.amount * 100) / 100;
+            nowFundAccount.balance = (Number(nowFundAccount.balance) * 100 - Number(this.expenseDetail.amount) * 100) / 100;
 
         } catch (error) {
             throw error;
@@ -134,8 +129,8 @@ export class ExpenseService {
         try {
             await this.http.delete('/DR/delExpense?expenseDetailId=' + expenseDetailId);
             const fundAccount = this.baseDataService.getFundAccount(this.expenseDetail.fundAccountId);
-            fundAccount.balance = (fundAccount.balance * 100 + this.expenseDetail.amount * 100) / 100;
-            this.totalDayAmount = (this.totalDayAmount * 100 - this.expenseDetail.amount * 100) / 100;
+            fundAccount.balance = (Number(fundAccount.balance) * 100 + Number(this.expenseDetail.amount) * 100) / 100;
+            this.totalDayAmount = (Number(this.totalDayAmount) * 100 - Number(this.expenseDetail.amount) * 100) / 100;
         } catch (error) {
             throw error;
         }

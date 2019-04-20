@@ -17,6 +17,7 @@ section {
   width: 200px;
   display: flex;
   flex-direction: column;
+  border: 1px solid #4b48d6;
 }
 
 main {
@@ -30,7 +31,7 @@ main {
   }
 
   form {
-    flex-grow: 1;
+    // flex-grow: 1;
     display: flex;
     flex-direction: column;
 
@@ -46,8 +47,6 @@ main {
       }
 
       .detail {
-        padding-left: .4rem;
-        padding-right: .4rem;
         margin: 10px 0;
       }
     }
@@ -61,20 +60,25 @@ main {
 
     button {
       margin-right: 20px;
+      font-size: 14px;
+      // width: 100px;
     }
   }
 
   .edit-del {
     display: flex;
     align-items: center;
-    margin: 0 20px;
+    // margin: 0 20px;
+    justify-content: center;
 
     .btn-group {
       margin: 10px 0px;
     }
+  }
 
-    a {
-      cursor: pointer;
-    }
+  .go-add {
+    position: absolute;
+    right: 0;
+    font-size: 14px;
   }
 }
