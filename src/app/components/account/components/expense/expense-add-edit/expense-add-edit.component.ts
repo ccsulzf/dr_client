@@ -15,7 +15,7 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
 
   public addressId;
 
-  public expenseCategoryId = 3;
+  public expenseCategoryId;
 
   public fundPartyId;
 
@@ -66,8 +66,10 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   onSetExpenseBook(item) {
-    this.expenseBook = item;
-    this.expenseBookId = item.id;
+    if (item) {
+      this.expenseBook = item;
+      this.expenseBookId = item.id;
+    }
   }
 
   onSetAddress(addressId) {
@@ -160,21 +162,24 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
+  // 添加账目的时候把内容和金额进行充值，免得重复选择其他东西
   init() {
     this.content = '';
     this.amount = '';
     this.memo = '';
     this.participantList = [];
     this.participantList.push(_.find(BaseData.participantList, { isMyself: true }));
+    this.labelList = [];
   }
 
 
   reset() {
-    this.expenseDate = '';
+    this.expenseBookId = '';
+    this.addressId = '';
+    this.fundAccountId = '';
+    this.fundPartyId = '';
     this.init();
     this.expenseDate = moment().format('YYYY-MM-DD');
-    this.expenseBook = this.baseData.expenseBookList[0];
-    this.system.reset();
   }
 
   goAdd() {

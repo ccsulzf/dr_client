@@ -11,7 +11,14 @@ export class DrDateComponent implements OnInit {
 
   @Input() viewType;
 
-  @Input() initDate;
+  @Input()
+  set initDate(initDate) {
+    this.date = initDate || new Date();
+  }
+
+  get initDate() {
+    return this.date;
+  }
   @Output() setDate = new EventEmitter<string>();
 
   @ViewChild('drDateEle') drDateEle: ElementRef;
@@ -24,8 +31,6 @@ export class DrDateComponent implements OnInit {
   public day;
   public monthDays;
   public daysList = [];
-
-
 
   public yearsList = [];
   public startYear;
@@ -76,10 +81,10 @@ export class DrDateComponent implements OnInit {
     switch (viewType) {
       case 'day':
         this.viewTypeList = ['year', 'month', 'day'];
-        this.date = '' + this.year + '/' + this.month.value + '/' + (this.day < 10 ? '0' + this.day : this.day);
+        this.date = '' + this.year + '-' + this.month.value + '-' + (this.day < 10 ? '0' + this.day : this.day);
         break;
       case 'month':
-        this.date = '' + this.year + '/' + this.month.value;
+        this.date = '' + this.year + '-' + this.month.value;
         this.viewTypeList = ['year', 'month'];
         break;
       case 'year':
@@ -165,17 +170,12 @@ export class DrDateComponent implements OnInit {
   }
 
 
-  // 2019-01
-  // 2018-12
   getPrevMonthDays(month) {
     const prevMonth = (month.number - 1 === 0) ? 12 : (month.number - 1);
     const year = (month.number - 1 === 0) ? this.year - 1 : this.year;
     return this.getMonthDays(year, prevMonth);
   }
 
-
-  // 2018-12
-  // 2019-01
   getLastMonthDays(month) {
     const lastMonth = month.number === 12 ? 1 : (month.number + 1);
     const year = month.number === 12 ? this.year + 1 : this.year;
@@ -287,7 +287,7 @@ export class DrDateComponent implements OnInit {
       this.getList();
     } else {
       this.month = item;
-      this.date = '' + this.year + '/' + this.month.value;
+      this.date = '' + this.year + '-' + this.month.value;
       this.show = false;
     }
     this.setDate.emit(this.date);
@@ -296,7 +296,7 @@ export class DrDateComponent implements OnInit {
 
   selectDay(day) {
     this.day = day;
-    this.date = '' + this.year + '/' + this.month.value + '/' + (this.day < 10 ? '0' + this.day : this.day);
+    this.date = '' + this.year + '-' + this.month.value + '-' + (this.day < 10 ? '0' + this.day : this.day);
     this.show = false;
     this.setDate.emit(this.date);
   }

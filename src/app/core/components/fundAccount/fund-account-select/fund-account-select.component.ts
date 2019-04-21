@@ -33,7 +33,7 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
     this.select(_.find(BaseData.fundAccountList, { id: fundAccountId }));
   }
 
-  get fundAccountId(): string { return this.fundAccount; }
+  get fundAccountId(): string { return this.fundAccount.id; }
 
   list = [];
   fundAccountList = [];

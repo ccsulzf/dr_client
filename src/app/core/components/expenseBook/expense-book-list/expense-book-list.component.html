@@ -1,8 +1,10 @@
 <main>
   <ul>
-    <li (click)="select(item)" *ngFor="let item of expenseBookList;" [class.selected]="item.selected"
-      [style.background]="item.selected ? '#fff':''" [style.border]="item.selected ? item.border:''"
-      [style.border-right]="item.selected ? 'none':''">
+    <li (click)="select(item)" *ngFor="let item of expenseBookList;"
+      [class.selected]="selectedExpenseBook?.id===item?.id"
+      [style.background]="(selectedExpenseBook?.id===item?.id) ? '#fff':''"
+      [style.border]="(selectedExpenseBook?.id===item?.id) ? item.border:''"
+      [style.border-right]="(selectedExpenseBook?.id===item?.id) ? 'none':''">
       <span [style.color]="item.backgroundColor">
         {{item.name}}
       </span>
@@ -10,7 +12,6 @@
   </ul>
 
   <div (click)="addExpenseBook()">
-    <!-- <i class="icon icon-plus"></i> -->
     <span>
       添加账本
     </span>

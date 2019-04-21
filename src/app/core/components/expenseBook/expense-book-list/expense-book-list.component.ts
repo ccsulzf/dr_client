@@ -1,5 +1,6 @@
-import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { BaseData, SystemService } from '../../../providers';
+import * as _ from 'lodash';
 @Component({
   selector: 'expense-book-list',
   templateUrl: './expense-book-list.component.html',
@@ -7,11 +8,28 @@ import { BaseData, SystemService } from '../../../providers';
 })
 export class ExpenseBookListComponent implements OnInit, OnDestroy {
   public baseData;
+  // @Input() expenseBookId;
   @Output() setExpenseBook = new EventEmitter<any>();
 
+  @Input()
+  set expenseBookId(expenseBookId) {
+    if (expenseBookId) {
+      this.select(_.find(BaseData.expenseBookList, { id: expenseBookId }));
+    } else {
+      this.select(BaseData.expenseBookList[0]);
+    }
+
+  }
+
+  get expenseBookId() { return this.selectedExpenseBook.id; }
+
   public expenseBookList;
+
+  public selectedExpenseBook;
+
   doneEvent;
   resetEvent;
+
   constructor(
     public system: SystemService
   ) { }
@@ -20,13 +38,11 @@ export class ExpenseBookListComponent implements OnInit, OnDestroy {
     this.baseData = BaseData;
     this.expenseBookList = [];
     for (let item of this.baseData.expenseBookList) {
-
       let temp = {
         name: item.name,
         id: item.id,
         backgroundColor: '#5755d9',
         border: '1px solid #4b48d6',
-        selected: false
       }
       this.expenseBookList.push(temp)
     }
@@ -38,7 +54,6 @@ export class ExpenseBookListComponent implements OnInit, OnDestroy {
           id: value.data.id,
           backgroundColor: '#5755d9',
           border: '1px solid #4b48d6',
-          selected: false
         }
         this.expenseBookList.push(item);
         this.select(item);
@@ -47,14 +62,8 @@ export class ExpenseBookListComponent implements OnInit, OnDestroy {
   }
 
   select(data) {
-    for (const item of this.expenseBookList) {
-      if (item.name === data.name) {
-        item.selected = true;
-        this.setExpenseBook.emit(item);
-      } else {
-        item.selected = false;
-      }
-    }
+    this.selectedExpenseBook = data;
+    this.setExpenseBook.emit(this.selectedExpenseBook);
   }
 
   addExpenseBook() {

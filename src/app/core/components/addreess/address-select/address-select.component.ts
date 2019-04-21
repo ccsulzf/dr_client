@@ -19,7 +19,12 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
 
   @Input()
   set addressId(addressId) {
-    this.select(_.find(BaseData.addressList, { id: addressId }));
+    if (addressId) {
+      this.select(_.find(BaseData.addressList, { id: addressId }));
+    } else {
+      this.select(_.find(this.addressList, { isCurrenLive: 1 }));
+    }
+
   }
 
   get addressId(): string { return this.address; }
