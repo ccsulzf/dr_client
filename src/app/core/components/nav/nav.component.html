@@ -2,6 +2,26 @@
   <p>{{user.name}}</p>
 
   <ul class="nav">
+    <li class="nav-item" (click)="clickItem(item)" [class.active]="item?.name === selectedItem?.name"
+      *ngFor="let item of NAV_CONFIG">
+      <span>
+        <i [class]="'fa ' +item.icon" aria-hidden="true"></i>
+        <a>
+          {{item.name}}
+          <i *ngIf="item.subList && item.subList.length" [class]="(item?.name === selectedItem?.name) ? 'icon icon-arrow-down':'
+          icon icon-arrow-right'"></i>
+        </a>
+      </span>
+
+      <ul *ngIf="item.subList && item.subList.length" [style.display]="(item?.name === selectedItem?.name) ? 'block':'none'" class="nav">
+        <li class="nav-item" [class.selected]="subItem?.name === selectedSubItem?.name" *ngFor="let subItem of item.subList"
+          (click)="clickSubItem(item,subItem,$event)">
+          <a>{{subItem.name}}</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+  <!-- <ul class="nav">
     <li class="nav-item">
       <span>
         <i class="fa fa-home" aria-hidden="true"></i>
@@ -48,6 +68,6 @@
         <a>设置</a>
       </span>
     </li>
-  </ul>
+  </ul> -->
   <button (click)="logout()">退 出</button>
 </main>
