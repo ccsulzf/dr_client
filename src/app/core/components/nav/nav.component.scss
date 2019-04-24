@@ -1,8 +1,26 @@
 main {
   width: 160px;
   height: 100%;
-  background-color: #fafafa;
-  -webkit-app-region: no-drag;
+  background: #f7f8f9;
+  // -webkit-app-region: no-drag;
+  display: flex;
+  flex-direction: column;
+
+  .avatar-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    flex-direction: column;
+
+    p {
+      width: 100%;
+      align-items: center;
+      justify-content: space-evenly;
+      display: flex;
+      margin: 20px 0;
+    }
+  }
 
   li,
   button {
@@ -25,6 +43,7 @@ main {
 
 main>ul {
   padding-left: 10px;
+  flex-grow: 1
 }
 
 .nav-item {

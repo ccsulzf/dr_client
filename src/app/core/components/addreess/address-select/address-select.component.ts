@@ -27,7 +27,7 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
 
   }
 
-  get addressId(): string { return this.address; }
+  get addressId(): string { return this.address.id; }
 
   list = [];
   addressList = [];
@@ -40,9 +40,6 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
 
   ulShow = false;
 
-  // isListShow = false;
-
-  // clickId = 'address-select';
   constructor(
     public system: SystemService,
     public el: ElementRef,
@@ -74,9 +71,9 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
         return (item.province.indexOf(data) > -1 || item.city.indexOf(data) > -1 || item.area.indexOf(data) > -1);
       });
     });
-    this.resetEvent = this.system.resetEvent.subscribe(() => {
-      this.init();
-    });
+    // this.resetEvent = this.system.resetEvent.subscribe(() => {
+    //   this.init();
+    // });
 
     this.doneEvent = this.system.doneEvent.subscribe((value) => {
       if (value && value.model === 'address') {

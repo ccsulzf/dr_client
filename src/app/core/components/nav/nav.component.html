@@ -1,5 +1,16 @@
 <main>
-  <p>{{user.name}}</p>
+  <div class="avatar-header">
+    <figure class="avatar avatar-lg mr-2" data-initial="志锋"></figure>
+    <p>
+      <span class="badge">
+        <i class="icon icon-message"></i>
+      </span>
+
+      <span class="badge" data-badge="2">
+        <i class="icon icon-mail"></i>
+      </span>
+    </p>
+  </div>
 
   <ul class="nav">
     <li class="nav-item" (click)="clickItem(item)" [class.active]="item?.name === selectedItem?.name"
@@ -13,61 +24,17 @@
         </a>
       </span>
 
-      <ul *ngIf="item.subList && item.subList.length" [style.display]="(item?.name === selectedItem?.name) ? 'block':'none'" class="nav">
-        <li class="nav-item" [class.selected]="subItem?.name === selectedSubItem?.name" *ngFor="let subItem of item.subList"
-          (click)="clickSubItem(item,subItem,$event)">
+      <ul *ngIf="item.subList && item.subList.length"
+        [style.display]="(item?.name === selectedItem?.name) ? 'block':'none'" class="nav">
+        <li class="nav-item" [class.selected]="subItem?.name === selectedSubItem?.name"
+          *ngFor="let subItem of item.subList" (click)="clickSubItem(item,subItem,$event)">
           <a>{{subItem.name}}</a>
         </li>
       </ul>
     </li>
   </ul>
-  <!-- <ul class="nav">
-    <li class="nav-item">
-      <span>
-        <i class="fa fa-home" aria-hidden="true"></i>
-        <a>首页</a>
-      </span>
-    </li>
-    <li class="nav-item active">
-      <span>
-        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-        <a>记账 <i class="icon icon-arrow-down"></i></a>
-      </span>
-      <ul class="nav">
-        <li class="nav-item selected" (click)="toExpense()">
-          <a>支出</a>
-        </li>
-        <li class="nav-item" (click)="toIncome()">
-          <a>收入</a>
-        </li>
-        <li class="nav-item">
-          <a>借还</a>
-        </li>
-        <li class="nav-item">
-          <a>转账</a>
-        </li>
-      </ul>
-    </li>
-    <li class="nav-item">
-      <span>
-        <i class="fa fa-area-chart" aria-hidden="true"></i>
-        <a>报表 <i class="icon icon-arrow-right"></i></a>
-      </span>
-      <ul class="nav d-hide">
-        <li class="nav-item">
-          <a>支出明细</a>
-        </li>
-        <li class="nav-item">
-          <a>支出汇总</a>
-        </li>
-      </ul>
-    </li>
-    <li class="nav-item">
-      <span>
-        <i class="fa fa-cog" aria-hidden="true"></i>
-        <a>设置</a>
-      </span>
-    </li>
-  </ul> -->
-  <button (click)="logout()">退 出</button>
+
+  <button (click)="logout()" class="btn btn-link">
+    <i class="icon icon-shutdown"></i>
+    退 出</button>
 </main>

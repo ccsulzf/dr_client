@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, HostListener } from '@angular/core';
 import { AccountService } from '../../../services';
 import { BaseDataService, SystemService } from '../../../../../core/providers';
 import { BaseData } from '../../../../../core/providers/base-data';
@@ -102,6 +102,7 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
       this.expenseBookId = data.expense.expenseBookId;
       this.expenseDetailId = data.expenseDetail.id;
       this.totalAmount = data.expense.totalAmount;
+
       this.addFlag = false;
       this.editOrDelFlag = true;
 
@@ -125,6 +126,15 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
 
       await this.getParticipantList();
     });
+  }
+
+  @HostListener('body:keyup', ['$event'])
+  keyUp(e) {
+    // table
+    if (e.keyCode === 9) {
+      console.info(document.activeElement);
+    }
+    // console.log(e);
   }
 
   ngOnDestroy() {
@@ -255,7 +265,6 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
       alert('编辑账目失败:' + error);
     }
   }
-
 
   async delExpense() {
     try {

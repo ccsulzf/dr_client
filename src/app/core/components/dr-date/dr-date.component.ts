@@ -9,6 +9,7 @@ export class DrDateComponent implements OnInit {
   // input 和 text两种类型
   @Input() type;
 
+  // 视图类型年月日
   @Input() viewType;
 
   @Input()
@@ -19,6 +20,7 @@ export class DrDateComponent implements OnInit {
   get initDate() {
     return this.date;
   }
+
   @Output() setDate = new EventEmitter<string>();
 
   @ViewChild('drDateEle') drDateEle: ElementRef;
@@ -30,14 +32,13 @@ export class DrDateComponent implements OnInit {
   public year;
   public day;
   public monthDays;
-  public daysList = [];
+  public date;
 
-  public yearsList = [];
   public startYear;
   public endYear;
 
-  public date;
-
+  public daysList = [];
+  public yearsList = [];
   public monthsList = [
     { name: '一月', number: 1, value: '01' },
     { name: '二月', number: 2, value: '02' },
@@ -53,7 +54,6 @@ export class DrDateComponent implements OnInit {
     { name: '十二月', number: 12, value: '12' }
   ];
 
-
   public weekList = [
     { name: '一', value: 1 },
     { name: '二', value: 2 },
@@ -64,7 +64,6 @@ export class DrDateComponent implements OnInit {
     { name: '日', value: 7 },
   ];
   constructor() { }
-
 
   ngOnInit() {
     this.date = this.initDate || new Date();
@@ -133,18 +132,14 @@ export class DrDateComponent implements OnInit {
     this.yearsList = [];
     year = year + '';
 
-
     const list = year.slice(0, 3).split('');
     list.push('0');
-
 
     this.startYear = +list.join('');
     list.pop();
 
-
     list.push('9');
     this.endYear = +list.join('');
-
 
     for (let i = (this.startYear - 1); i <= (this.endYear + 1); i++) {
       this.yearsList.push(i);
