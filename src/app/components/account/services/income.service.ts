@@ -17,7 +17,7 @@ export class IncomeService {
 
     public groupIncomeList = [];
 
-    public incomeListDate = moment().format('YYYY-MM-DD');
+    public incomeListDate = moment().format('YYYY-MM');
 
     public totalMonthAmount = 0;
     constructor(

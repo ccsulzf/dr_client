@@ -3,14 +3,16 @@ main {
   flex-direction: column;
   height: 100%;
   background: #fff;
+  -webkit-app-region: no-drag;
+  border: 1px solid #5755d9;
 }
 
-ul {
+ul,
+li {
   margin: 0;
   padding: 0;
   list-style: none;
 }
-
 
 main>ul {
   flex-grow: 1;
@@ -24,8 +26,8 @@ main>ul {
 .month-income {
   height: 44px;
   display: flex;
-  background: #40a9ff;
-  border: 1px solid #40a9ff;
+  background: #5755d9;
+  border: 1px solid #5755d9;
   color: #fff;
   font-size: 15px;
   font-weight: bolder;
@@ -33,22 +35,33 @@ main>ul {
   justify-content: space-between;
   padding: 0px 7px;
 
-  span {
-    &:first-of-type {
-      cursor: pointer;
-    }
+}
+
+.month-income>span:first-of-type {
+  display: inline-flex;
+  cursor: pointer;
+  align-items: center;
+
+  i {
+    margin-right: 5px;
   }
 }
+
+
 
 .income-list ul {
   border: 1px solid #dedede;
   border-bottom: none;
-
-  &:first-of-type,
-  &:last-of-type {
-    border-top: none;
-  }
 }
+
+.income-list ul:first-of-type {
+  border-top: none;
+}
+
+.income-list ul:last-of-type {
+  border-bottom: none;
+}
+
 
 .income-list>li {
   display: flex;
@@ -59,11 +72,13 @@ main>ul {
   border-top: none;
 }
 
+
 .income-category {
-  padding: 0 10px;
-  width: 40px;
+  padding: 0 5px;
+  width: 70px;
   font-weight: bold;
   font-size: 16px;
+  text-align: center;
 }
 
 
@@ -105,4 +120,11 @@ main>ul {
       }
     }
   }
+}
+
+.no-income {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  margin-top: 20%;
 }

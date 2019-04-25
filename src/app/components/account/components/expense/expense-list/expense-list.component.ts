@@ -36,9 +36,9 @@ export class ExpenseListComponent implements AfterViewInit, OnInit, OnDestroy, A
 
   }
 
-  changeDate(date) {
-    this.date = date;
-    this.getListByDate(date);
+  changeDate(data) {
+    this.date = data.date;
+    this.getListByDate(data.date);
   }
 
 

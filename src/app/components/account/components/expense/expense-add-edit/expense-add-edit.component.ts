@@ -61,8 +61,8 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     this.expenseDate = moment().format('YYYY-MM-DD');
   }
 
-  onSetDate(date) {
-    this.expenseDate = moment(date).format('YYYY-MM-DD');
+  onSetDate(data) {
+    this.expenseDate = moment(data.date).format('YYYY-MM-DD');
   }
 
   onSetExpenseBook(item) {

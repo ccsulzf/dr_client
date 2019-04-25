@@ -6,6 +6,9 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, 
   styleUrls: ['./dr-date.component.scss']
 })
 export class DrDateComponent implements OnInit {
+
+  @Input() name;
+
   // input 和 text两种类型
   @Input() type;
 
@@ -21,7 +24,7 @@ export class DrDateComponent implements OnInit {
     return this.date;
   }
 
-  @Output() setDate = new EventEmitter<string>();
+  @Output() setDate = new EventEmitter<Object>();
 
   @ViewChild('drDateEle') drDateEle: ElementRef;
   public show = false;
@@ -93,9 +96,7 @@ export class DrDateComponent implements OnInit {
       default:
         break;
     }
-
   }
-
 
   @HostListener('document:click', ['$event'])
   onClick() {
@@ -246,9 +247,7 @@ export class DrDateComponent implements OnInit {
     } else if (this.viewType === 'year') {
       this.getYearList(this.startYear - 1);
     }
-
   }
-
 
   next() {
     if (this.viewType === 'day') {
@@ -285,7 +284,10 @@ export class DrDateComponent implements OnInit {
       this.date = '' + this.year + '-' + this.month.value;
       this.show = false;
     }
-    this.setDate.emit(this.date);
+    this.setDate.emit({
+      name: this.name,
+      date: this.date
+    });
   }
 
 
@@ -293,7 +295,10 @@ export class DrDateComponent implements OnInit {
     this.day = day;
     this.date = '' + this.year + '-' + this.month.value + '-' + (this.day < 10 ? '0' + this.day : this.day);
     this.show = false;
-    this.setDate.emit(this.date);
+    this.setDate.emit({
+      name: this.name,
+      date: this.date
+    });
   }
 
 
@@ -306,7 +311,10 @@ export class DrDateComponent implements OnInit {
       this.date = '' + this.year;
       this.show = false;
     }
-    this.setDate.emit(this.date);
+    this.setDate.emit({
+      name: this.name,
+      date: this.date
+    });
   }
 
 }

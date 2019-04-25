@@ -1,15 +1,15 @@
 <main>
   <div>
     <ng-container *ngIf="type==='input'">
-      <label class="form-label">日期</label>
-      <div class="input-group"  #drDateEle>
+      <label class="form-label">{{name}}</label>
+      <div class="input-group" #drDateEle>
         <input type="text" class="form-input" name="date" [(ngModel)]="date">
         <i class="input-group-addon form-icon fa fa-calendar" (click)="show = !show"></i>
       </div>
     </ng-container>
 
     <ng-container *ngIf="type==='text'">
-      <span style="cursor:pointer"  #drDateEle (click)="show = !show">
+      <span style="cursor:pointer" #drDateEle (click)="show = !show">
         {{date}}
       </span>
     </ng-container>

@@ -9,107 +9,41 @@ li {
   padding: 0;
 }
 
-input[type="date"] {
-  height: 23px;
-  margin-top: 5px;
-  border: none;
-  border-bottom: 1px dashed;
-  outline: none;
-}
-
-
 form {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: repeat(6, auto);
-  grid-column-gap: 10px;
-  grid-row-gap: 15px;
-  padding: 20px;
+  padding: 5px 20px;
 
-  input {
-    width: 98%;
-    margin-top: 2px;
-  }
-
-  .amount {
-    display: flex;
-    align-items: center;
-    position: relative;
-
-    input {
-      margin-top: 5px;
-      outline: none;
-      border: none;
-      border-bottom: 1px dashed;
-      height: 20px;
-      padding-right: 15px;
-    }
-
-    span {
-      position: absolute;
-      right: 5px;
-    }
-  }
-
-
-  .row-3 {
-    grid-column: span 3;
-  }
-
-  .row-6 {
-    grid-column: span 6;
-  }
-
-  .participant,
-  .label {
-    margin-top: -15px;
-  }
-
-  .period {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-column-gap: 10px;
-  }
-
-
-  .memo {
-    display: flex;
-    flex-direction: row;
-
-    textarea {
-      border: 1px solid #dedede;
-      height: 60px;
-      flex-grow: 1;
-      margin-left: 4px;
-    }
-
+  .detail {
+    margin: 10px 0;
   }
 
 }
 
-
-.btn-group {
+.dr-btn-group {
   display: flex;
   align-items: center;
-  flex-grow: 1;
   margin: 10px 20px;
   justify-content: center;
 
   button {
     margin-right: 20px;
+    font-size: 14px;
+    // width: 100px;
   }
 }
 
 .edit-del {
   display: flex;
   align-items: center;
-  margin: 0 20px;
+  // margin: 0 20px;
+  justify-content: center;
 
   .btn-group {
     margin: 10px 0px;
   }
+}
 
-  a {
-    cursor: pointer;
-  }
+.go-add {
+  position: absolute;
+  right: 0;
+  font-size: 14px;
 }

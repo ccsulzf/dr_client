@@ -1,6 +1,6 @@
 <main>
   <div class="day-expense">
-    <dr-date [type]="'text'" [viewType]="'day'" [initDate]="date" (setDate)="changeDate($event)"></dr-date>
+    <dr-date [type]="'text'" [viewType]="'day'" [name]="" [initDate]="date" (setDate)="changeDate($event)"></dr-date>
     <span>
       总计:-{{expenseService?.totalDayAmount}}元
     </span>

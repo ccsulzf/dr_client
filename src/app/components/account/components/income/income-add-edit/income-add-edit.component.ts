@@ -21,8 +21,8 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy {
   // fundWayId;
   fundChannelId;
   fundAccountId;
-  startDate;
-  endDate;
+  startDate = moment().format('YYYY-MM-DD');
+  endDate = moment().format('YYYY-MM-DD');
   memo;
 
   participantList = [];
@@ -93,6 +93,10 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy {
     this.fundPartyId = fundPartyId;
   }
 
+  onSetMemo(memo) {
+    this.memo = memo;
+  }
+
   onSetParticipantList(participantList) {
     this.participantList = participantList;
   }
@@ -107,6 +111,15 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy {
 
   onSetFundAccount(fundAccountId) {
     this.fundAccountId = fundAccountId;
+  }
+
+  onSetDate(data) {
+    if (data.name === '开始日期') {
+      this.startDate = data.date;
+    }
+    if (data.name === '结束日期') {
+      this.endDate = data.date;
+    }
   }
 
   async add() {
@@ -151,8 +164,8 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy {
 
   reset() {
     this.amount = '';
-    this.startDate = '';
-    this.endDate = '';
+    this.startDate = moment().format('YYYY-MM-DD');
+    this.endDate = moment().format('YYYY-MM-DD');
     this.systemService.reset();
   }
 
