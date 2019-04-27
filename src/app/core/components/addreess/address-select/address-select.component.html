@@ -3,16 +3,17 @@
     <div class="form-item">
       <label class="form-label">{{title}}</label>
       <div class="has-icon-left" #addressListEle>
-        <input type="text" class="form-input" placeholder="请选择地点" name="address" [(ngModel)]="address"
+        <input type="text" #addressInputEle class="form-input" placeholder="请选择地点" name="address" [(ngModel)]="address"
           autocomplete="off" id="address-list">
         <i class="form-icon icon icon-location" aria-hidden="true"></i>
       </div>
-      <ul class="menu" *ngIf="ulShow">
-        <li class="menu-item" *ngFor="let item of list" (click)="select(item)">
-          <a>{{item?.province}}|{{item?.city}}|{{item?.area}}</a>
+      <ul id="address-ul" class="menu" *ngIf="ulShow">
+        <li [id]="item.id" class="menu-item" *ngFor="let item of list" (click)="select(item)">
+          <a [class.li-selected]="address === item.alias_name">{{item?.province}}|{{item?.city}}|{{item?.area}}</a>
         </li>
         <li class="menu-item add">
-          <button class="btn btn-primary btn-sm" (click)="add()"><i class="icon icon-plus"></i> 添加地点</button>
+          <button tabindex="-1" class="btn btn-primary btn-sm" (click)="add()"><i class="icon icon-plus"></i>
+            添加地点</button>
         </li>
       </ul>
     </div>

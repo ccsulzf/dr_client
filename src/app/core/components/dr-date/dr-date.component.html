@@ -3,7 +3,7 @@
     <ng-container *ngIf="type==='input'">
       <label class="form-label">{{name}}</label>
       <div class="input-group" #drDateEle>
-        <input type="text" class="form-input" name="date" [(ngModel)]="date">
+        <input type="text" #dateInput class="form-input" id="date" name="date" [(ngModel)]="date">
         <i class="input-group-addon form-icon fa fa-calendar" (click)="show = !show"></i>
       </div>
     </ng-container>
@@ -17,7 +17,7 @@
 
   <div class="calendar" [class.calendar-text]="type==='text'" [style.display]="show?'block':'none'">
     <div class="calendar-nav navbar">
-      <button class="btn btn-action btn-link btn-lg" (click)="prev()"><i class="icon icon-arrow-left"></i></button>
+      <button tabindex="-1"  class="btn btn-action btn-link btn-lg" (click)="prev()"><i class="icon icon-arrow-left"></i></button>
       <div class="navbar-primary" *ngIf="viewType === 'day'">
         <span class="text-dark" (click)="viewYear()">{{year}}年</span>
         <span class="text-dark" (click)="viewMonth()">{{month?.name}}</span>
@@ -29,7 +29,7 @@
         <span class="text-dark">{{startYear}}</span> -
         <span class="text-dark">{{endYear}}</span>
       </div>
-      <button class="btn btn-action btn-link btn-lg" (click)="next()"><i class="icon icon-arrow-right"></i></button>
+      <button tabindex="-1"  class="btn btn-action btn-link btn-lg" (click)="next()"><i class="icon icon-arrow-right"></i></button>
     </div>
     <div class="calendar-container">
       <div class="calendar-header" *ngIf="viewType === 'day'">
@@ -38,24 +38,24 @@
       <div class="calendar-body" [class.calendar-month]="viewType === 'month' || viewType === 'year'">
         <ng-container *ngIf="viewType === 'day'">
           <div class="calendar-date" *ngFor="let item of daysList">
-            <button class="date-item" [class.selected]="(item.day == day && item.month==month.number)"
+            <button class="date-item" tabindex="-1" [class.selected]="(item.day == day && item.month==month.number)"
               (click)="selectDay(item.day)">{{item.day}}</button>
           </div>
         </ng-container>
 
         <ng-container *ngIf="viewType === 'month'">
           <div class="calendar-date month" *ngFor="let item of monthsList">
-            <button (click)="selectMonth(item)" [class.selected]="item.name === month.name"
+            <button (click)="selectMonth(item)" tabindex="-1" [class.selected]="item.name === month.name"
               class="date-item">{{item.name}}</button>
           </div>
         </ng-container>
 
         <ng-container *ngIf="viewType === 'year'">
           <div class="calendar-date year" *ngFor="let item of yearsList;let i=index">
-            <button *ngIf="i===0" (click)="prev()" class="date-item panel-year">{{item}}</button>
-            <button *ngIf="(i!==0) && (i!==(yearsList.length-1))" (click)="selectYear(item)"
+            <button *ngIf="i===0"  tabindex="-1" (click)="prev()" class="date-item panel-year">{{item}}</button>
+            <button *ngIf="(i!==0) && (i!==(yearsList.length-1))" tabindex="-1" (click)="selectYear(item)"
               class="date-item">{{item}}</button>
-            <button *ngIf="i===(yearsList.length-1)" (click)="prev()" class="date-item panel-year">{{item}}</button>
+            <button tabindex="-1" *ngIf="i===(yearsList.length-1)" (click)="prev()" class="date-item panel-year">{{item}}</button>
           </div>
         </ng-container>
       </div>

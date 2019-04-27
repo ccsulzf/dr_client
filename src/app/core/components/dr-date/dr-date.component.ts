@@ -1,11 +1,13 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, HostListener } from '@angular/core';
-
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, HostListener, OnDestroy } from '@angular/core';
+import { SystemService } from '../../providers';
+import * as _ from 'lodash';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'dr-date',
   templateUrl: './dr-date.component.html',
   styleUrls: ['./dr-date.component.scss']
 })
-export class DrDateComponent implements OnInit {
+export class DrDateComponent implements OnInit, OnDestroy {
 
   @Input() name;
 
@@ -27,10 +29,12 @@ export class DrDateComponent implements OnInit {
   @Output() setDate = new EventEmitter<Object>();
 
   @ViewChild('drDateEle') drDateEle: ElementRef;
+  @ViewChild("dateInput") dateInput: ElementRef;
+
+  public changeTabViewEvent: Subscription;
+
   public show = false;
-
   public viewTypeList = [];
-
   public month;
   public year;
   public day;
@@ -66,7 +70,12 @@ export class DrDateComponent implements OnInit {
     { name: '六', value: 6 },
     { name: '日', value: 7 },
   ];
-  constructor() { }
+
+  constructor(
+    private system: SystemService
+  ) {
+
+  }
 
   ngOnInit() {
     this.date = this.initDate || new Date();
@@ -77,6 +86,26 @@ export class DrDateComponent implements OnInit {
     this.monthDays = this.getMonthDays();
     this.getViewTypeList(this.viewType);
     this.getList();
+    if (this.name) {
+      this.system.tabViewList.add(this.name);
+    }
+    this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
+      if (value === this.name) {
+        this.show = true;
+        this.system.selectedTabView = value;
+      } else {
+        this.show = false;
+        if (this.dateInput && this.dateInput.nativeElement) {
+          this.dateInput.nativeElement.blur();
+        }
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.changeTabViewEvent) {
+      this.changeTabViewEvent.unsubscribe();
+    }
   }
 
   getViewTypeList(viewType) {
@@ -102,10 +131,15 @@ export class DrDateComponent implements OnInit {
   onClick() {
     if (this.drDateEle.nativeElement.contains(event.target)) {
       this.show = true;
+      if (this.type === 'input') {
+        this.dateInput.nativeElement.focus();
+        this.system.selectedTabView = this.name;
+      }
     } else {
       this.show = false;
     }
   }
+
 
 
   getYear() {
@@ -284,6 +318,10 @@ export class DrDateComponent implements OnInit {
       this.date = '' + this.year + '-' + this.month.value;
       this.show = false;
     }
+    if (this.viewType === 'input') {
+      this.dateInput.nativeElement.focus();
+      this.system.selectedTabView = this.name;
+    }
     this.setDate.emit({
       name: this.name,
       date: this.date
@@ -295,6 +333,10 @@ export class DrDateComponent implements OnInit {
     this.day = day;
     this.date = '' + this.year + '-' + this.month.value + '-' + (this.day < 10 ? '0' + this.day : this.day);
     this.show = false;
+    if (this.viewType === 'input') {
+      this.dateInput.nativeElement.focus();
+      this.system.selectedTabView = this.name;
+    }
     this.setDate.emit({
       name: this.name,
       date: this.date
@@ -310,6 +352,10 @@ export class DrDateComponent implements OnInit {
       this.year = item;
       this.date = '' + this.year;
       this.show = false;
+    }
+    if (this.viewType === 'input') {
+      this.dateInput.nativeElement.focus();
+      this.system.selectedTabView = this.name;
     }
     this.setDate.emit({
       name: this.name,

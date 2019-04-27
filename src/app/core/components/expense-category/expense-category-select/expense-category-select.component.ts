@@ -115,7 +115,7 @@ import {
   HostListener, ElementRef, Renderer, ViewContainerRef, ViewChild
 } from '@angular/core';
 
-import { fromEvent } from 'rxjs';
+import { fromEvent, Subscription } from 'rxjs';
 
 import { map, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
@@ -135,6 +135,7 @@ import * as _ from 'lodash';
 export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
 
   @ViewChild('expenseCategoryListEle') expenseCategoryListEle: ElementRef;
+  @ViewChild('expenseCategoryInputEle') expenseCategoryInputEle: ElementRef;
   @Input() title;
   @Output() setCategory = new EventEmitter<string>();
 
@@ -168,6 +169,7 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
 
   list = [];
 
+  public changeTabViewEvent: Subscription;
   constructor(
     public el: ElementRef,
     public renderer: Renderer,
@@ -178,6 +180,7 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.list = this.expenseCategoryList;
+    this.system.tabViewList.add(this.title);
     const searchBox = document.getElementById('expenseCategory-list');
     const typeahead = fromEvent(searchBox, 'input').pipe(
       map((e: any) => {
@@ -209,6 +212,16 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
         this.selectItem(value.data);
         this.list.push(value.data);
         this.expenseCategoryList.push(value.data)
+      }
+    });
+
+    this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
+      if (value === this.title) {
+        this.ulShow = true;
+        this.system.selectedTabView = value;
+      } else {
+        this.expenseCategoryInputEle.nativeElement.blur();
+        this.ulShow = false;
       }
     });
   }
@@ -252,6 +265,9 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
     }
     if (this.doneEvent) {
       this.doneEvent.unsubscribe();
+    }
+    if (this.changeTabViewEvent) {
+      this.changeTabViewEvent.unsubscribe();
     }
   }
 

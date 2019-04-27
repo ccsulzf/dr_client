@@ -5,7 +5,7 @@ import {
 import { SystemService, BaseDataService, BaseData } from '../../../providers';
 import * as _ from 'lodash';
 
-import { fromEvent } from 'rxjs';
+import { fromEvent, Subscription } from 'rxjs';
 import { map, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 @Component({
   selector: 'address-select',
@@ -14,6 +14,7 @@ import { map, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs
 })
 export class AddressSelectComponent implements OnInit, OnDestroy {
   @ViewChild('addressListEle') addressListEle: ElementRef;
+  @ViewChild('addressInputEle') addressInputEle: ElementRef;
   @Input() title;
   @Output() setAddress = new EventEmitter<string>();
 
@@ -39,7 +40,7 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
   resetEvent;
 
   ulShow = false;
-
+  public changeTabViewEvent: Subscription;
   constructor(
     public system: SystemService,
     public el: ElementRef,
@@ -49,6 +50,7 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.init();
+    this.system.tabViewList.add(this.title);
     const searchBox = document.getElementById('address-list');
     const typeahead = fromEvent(searchBox, 'input').pipe(
       map((e: any) => {
@@ -71,15 +73,21 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
         return (item.province.indexOf(data) > -1 || item.city.indexOf(data) > -1 || item.area.indexOf(data) > -1);
       });
     });
-    // this.resetEvent = this.system.resetEvent.subscribe(() => {
-    //   this.init();
-    // });
 
     this.doneEvent = this.system.doneEvent.subscribe((value) => {
       if (value && value.model === 'address') {
         this.select(value.data);
         this.list.push(value.data);
         this.addressList.push(value.data);
+      }
+    });
+    this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
+      if (value === this.title) {
+        this.ulShow = true;
+        this.system.selectedTabView = value;
+      } else {
+        this.addressInputEle.nativeElement.blur();
+        this.ulShow = false;
       }
     });
   }
@@ -97,6 +105,15 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
       }
       this.ulShow = false;
     }
+  }
+
+  @HostListener('body:keyup', ['$event'])
+  keyUp() {
+    var list = document.getElementById("address-ul"),
+      targetLi = document.getElementById(this.addressItem.id); // id tag of the <li> element
+
+      console.info(list);
+    list.scrollTop = (targetLi.offsetTop - 8);
   }
 
   init() {
@@ -128,12 +145,11 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
       this.resetEvent.unsubscribe();
     }
 
-    if (this.showListEvent) {
-      this.showListEvent.unsubscribe();
-    }
-
     if (this.doneEvent) {
       this.doneEvent.unsubscribe();
+    }
+    if (this.changeTabViewEvent) {
+      this.changeTabViewEvent.unsubscribe();
     }
   }
 

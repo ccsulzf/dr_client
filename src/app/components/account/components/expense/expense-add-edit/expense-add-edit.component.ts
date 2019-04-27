@@ -130,11 +130,19 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
 
   @HostListener('body:keyup', ['$event'])
   keyUp(e) {
-    // table
     if (e.keyCode === 9) {
-      console.info(document.activeElement);
+      let array = Array.from(this.system.tabViewList);
+      if (this.system.selectedTabView) {
+        let index = _.findIndex(array, (item) => {
+          return item === this.system.selectedTabView;
+        });
+        if ((index > -1) && (index <= array.length - 1)) {
+          this.system.changeTabView(array[index + 1] || array[0]);
+        }
+      } else {
+        this.system.changeTabView(array[0]);
+      }
     }
-    // console.log(e);
   }
 
   ngOnDestroy() {

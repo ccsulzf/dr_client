@@ -17,6 +17,12 @@ export class SystemService {
     // 重置
     public resetEvent = new Subject();
 
+
+    public tabViewList = new Set();
+
+    public changeTabViewEvent = new Subject<any>();
+
+    public selectedTabView = null;
     done(value?) {
         this.doneEvent.next(value);
     }
@@ -27,6 +33,11 @@ export class SystemService {
 
     changeComponent(value: object) {
         this.changeComponentEvent.next(value);
+    }
+
+    changeTabView(value) {
+        console.info(value);
+        this.changeTabViewEvent.next(value);
     }
 
     reset() {
