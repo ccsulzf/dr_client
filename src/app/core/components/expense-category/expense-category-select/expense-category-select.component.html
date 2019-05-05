@@ -7,12 +7,16 @@
           autocomplete="off" id="expenseCategory-list">
         <i class="form-icon fa fa-th-large" aria-hidden="true"></i>
       </div>
-      <ul class="menu" *ngIf="ulShow">
-        <li class="menu-item" *ngFor="let item of list" (click)="selectItem(item)">
-          <a>{{item?.name}}</a>
+      <ul class="menu" id="expenseCategory-ul" [style.display]="ulShow === true ? 'block':'none'">
+        <li [id]="item.id" class="menu-item" *ngFor="let item of list" (click)="selectItem(item)">
+          <a class="text-ellipsis" [class.li-selected]="expenseCategory === item.name">{{item?.name}}</a>
+          <p class="add-edit">
+            <i class="icon icon-edit"></i>
+            <i class="icon icon-delete"></i>
+          </p>
         </li>
         <li class="menu-item add">
-          <button class="btn btn-primary btn-sm" (click)="add()"><i class="icon icon-plus"></i> 添加支出类别</button>
+          <button class="btn btn-primary btn-sm" (click)="add($event)"><i class="icon icon-plus"></i> 添加支出类别</button>
         </li>
       </ul>
     </div>

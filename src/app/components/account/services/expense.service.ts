@@ -1,5 +1,5 @@
 import { Injectable, Component } from '@angular/core';
-import { HttpClientService, BaseDataService, SystemService } from '../../../core/providers';
+import { HttpClientService, BaseDataService, SystemService, BaseData } from '../../../core/providers';
 
 import { Subject } from 'rxjs';
 import * as moment from 'moment';
@@ -77,16 +77,17 @@ export class ExpenseService {
 
             this.groupDetailList();
 
-            const fundAccount = this.baseDataService.getFundAccount(this.expenseDetail.fundAccountId);
+            // const fundAccount = this.baseDataService.getFundAccount(this.expenseDetail.fundAccountId);
 
-            fundAccount.balance = (Number(fundAccount.balance) * 100 - Number(this.expenseDetail.amount) * 100) / 100;
+            // fundAccount.balance = (Number(fundAccount.balance) * 100 - Number(this.expenseDetail.amount) * 100) / 100;
+            BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
 
             const expense = _.find(this.expenseList, { expenseBookId: this.expense.expenseBookId });
 
-            this.totalDayAmount += this.expenseDetail.amount;
 
+            this.totalDayAmount = (Number(this.totalDayAmount) * 100 + Number(this.expenseDetail.amount) * 100) / 100;
             if (expense) {
-                expense.totalAmount += Number(this.expenseDetail.amount);
+                expense.totalAmount = (Number(expense.totalAmount) * 100 + Number(this.expenseDetail.amount) * 100) / 100;
             } else {
                 const expenseBook = this.baseDataService.getExpenseBook(this.expense.expenseBookId);
                 this.expenseList.push({
@@ -111,13 +112,15 @@ export class ExpenseService {
                 participantList: participantList,
                 labelList: labelList
             };
-            const prevExpenseDetail: any = await this.http.post('/DR/editExpense', data);
-            const prevFundAccount = this.baseDataService.getFundAccount(prevExpenseDetail.fundAccountId);
-            const nowFundAccount = this.baseDataService.getFundAccount(this.expenseDetail.fundAccountId);
+            await this.http.post('/DR/editExpense', data);
 
-            prevFundAccount.balance = (Number(prevFundAccount.balance) * 100 + Number(prevExpenseDetail.amount) * 100) / 100;
+            BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
+            // const prevFundAccount = this.baseDataService.getFundAccount(prevExpenseDetail.fundAccountId);
+            // const nowFundAccount = this.baseDataService.getFundAccount(this.expenseDetail.fundAccountId);
 
-            nowFundAccount.balance = (Number(nowFundAccount.balance) * 100 - Number(this.expenseDetail.amount) * 100) / 100;
+            // prevFundAccount.balance = (Number(prevFundAccount.balance) * 100 + Number(prevExpenseDetail.amount) * 100) / 100;
+
+            // nowFundAccount.balance = (Number(nowFundAccount.balance) * 100 - Number(this.expenseDetail.amount) * 100) / 100;
 
         } catch (error) {
             throw error;
@@ -128,8 +131,9 @@ export class ExpenseService {
     async deleteExpenseDetail(expenseDetailId) {
         try {
             await this.http.delete('/DR/delExpense?expenseDetailId=' + expenseDetailId);
-            const fundAccount = this.baseDataService.getFundAccount(this.expenseDetail.fundAccountId);
-            fundAccount.balance = (Number(fundAccount.balance) * 100 + Number(this.expenseDetail.amount) * 100) / 100;
+            BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
+            // const fundAccount = this.baseDataService.getFundAccount(this.expenseDetail.fundAccountId);
+            // fundAccount.balance = (Number(fundAccount.balance) * 100 + Number(this.expenseDetail.amount) * 100) / 100;
             this.totalDayAmount = (Number(this.totalDayAmount) * 100 - Number(this.expenseDetail.amount) * 100) / 100;
         } catch (error) {
             throw error;

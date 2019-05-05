@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { SystemService, HttpClientService, BaseDataService } from '../../../providers';
 import { HttpClient } from '@angular/common/http';
 import * as _ from 'lodash';
@@ -8,6 +8,7 @@ import * as _ from 'lodash';
   styleUrls: ['./address-add-edit.component.scss']
 })
 export class AddressAddEditComponent implements OnInit {
+  @Input() data;
   public province = '';
   public city = '';
   public area = '';
@@ -16,7 +17,7 @@ export class AddressAddEditComponent implements OnInit {
 
   public cityList = [];
   public areaList = [];
-  public data;
+  public addressData;
   constructor(
     public httpClient: HttpClient,
     public system: SystemService,
@@ -27,13 +28,13 @@ export class AddressAddEditComponent implements OnInit {
   ngOnInit() {
     this.httpClient.get('assets/province.json')
       .subscribe((data) => {
-        this.data = data;
+        this.addressData = data;
       });
   }
 
   selectProvince(data) {
     this.province = data;
-    const temp = _.find(this.data, (item) => {
+    const temp = _.find(this.addressData, (item) => {
       return item.name === data;
     });
     this.cityList = temp.cityList;
@@ -60,7 +61,7 @@ export class AddressAddEditComponent implements OnInit {
   }
 
   cancel() {
-    this.system.done();
+    this.system.done({ model: 'address', data: null });
   }
 
 }

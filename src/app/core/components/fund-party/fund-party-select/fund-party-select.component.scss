@@ -165,6 +165,21 @@
 
     li {
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      &:hover {
+        background: #f1f1fc;
+        color: #5755d9;
+  
+        p {
+          display: inline-flex;
+        }
+      }
+    }
+
+    a {
+      flex-grow: 1;
     }
 
     .add {
@@ -178,6 +193,34 @@
   }
 }
 
+
+.li-selected {
+  background: #f1f1fc;
+  color: #5755d9;
+}
+
+.add-edit {
+  display: none;
+  flex-direction: row;
+  margin: 0;
+  padding: 0;
+  justify-content: space-between;
+  height: 100%;
+
+  i {
+    margin: 0 3px;
+  }
+}
+
+
 ul::-webkit-scrollbar {
   display: none;
+}
+
+.menu .menu-item {
+  padding: 0;
+
+  a {
+    margin: 0;
+  }
 }

@@ -5,7 +5,7 @@
       <label>省/直辖市</label>
       <select name="province" [ngModel]="province" (ngModelChange)="selectProvince($event)">
         <option value="">--请选择省或直辖市--</option>
-        <option *ngFor="let item of data" [value]="item.name">{{item?.name}}</option>
+        <option *ngFor="let item of addressData" [value]="item.name">{{item?.name}}</option>
       </select>
     </div>
     <div>

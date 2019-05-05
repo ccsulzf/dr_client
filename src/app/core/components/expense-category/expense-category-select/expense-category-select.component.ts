@@ -129,9 +129,6 @@ import * as _ from 'lodash';
   styleUrls: ['./expense-category-select.component.scss']
 })
 
-// 输入框获得光标的时候,显示ul
-// 1.选择列表元素,input显示选择的值,ul消失
-// 2.输入框输入进行过滤,没有的话显示提示信息,请添加,移除光标时,如果你输入框的值不是列表的值,则清空内容
 export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
 
   @ViewChild('expenseCategoryListEle') expenseCategoryListEle: ElementRef;
@@ -160,6 +157,7 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
 
   expenseCategoryList: any;
   expenseCategoryItem;
+  selectedExpenseCategoryItem;
   expenseCategory;
 
   resetEvent;
@@ -207,6 +205,7 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
     this.resetEvent = this.system.resetEvent.subscribe(() => {
       this.init();
     });
+    
     this.doneEvent = this.system.doneEvent.subscribe((value) => {
       if (value && value.model === 'expenseCategory') {
         this.selectItem(value.data);
@@ -217,13 +216,48 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
 
     this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
       if (value === this.title) {
+        this.expenseCategoryInputEle.nativeElement.focus();
         this.ulShow = true;
         this.system.selectedTabView = value;
+        this.showULExpenseCategory();
       } else {
         this.expenseCategoryInputEle.nativeElement.blur();
         this.ulShow = false;
       }
     });
+  }
+
+  @HostListener('body:keyup', ['$event'])
+  keyUp(e?) {
+    if (this.ulShow && e) {
+      let index = _.findIndex(this.list, { id: this.expenseCategoryItem.id });
+      let nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
+      let prevIndex = (index === 0) ? this.list.length - 1 : index - 1;
+      switch (e.keyCode) {
+        case 38: //上
+          this.expenseCategoryItem = this.list[prevIndex];
+          this.expenseCategory = this.expenseCategoryItem.name;
+          this.showULExpenseCategory();
+          break;
+        case 40://下
+          this.expenseCategoryItem = this.list[nextIndex];
+          this.expenseCategory = this.expenseCategoryItem.name;
+          this.showULExpenseCategory();
+          break;
+        case 27: //esc
+          this.ulShow = false;
+          this.selectItem(this.selectedExpenseCategoryItem);
+        default:
+          break;
+      }
+    }
+  }
+
+  // 滚动条滚到相应的元素位置
+  showULExpenseCategory() {
+    const list = document.getElementById("expenseCategory-ul");
+    let targetLi = document.getElementById(this.expenseCategoryItem.id);
+    list.scrollTop = (targetLi.offsetTop - 8);
   }
 
   init() {
@@ -234,6 +268,7 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
 
   selectItem(item?) {
     if (item) {
+      this.selectedExpenseCategoryItem = item;
       this.expenseCategoryItem = item;
       this.expenseCategory = item.name;
       this.ulShow = false;
@@ -247,6 +282,7 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
   @HostListener('document:click', ['$event'])
   onClick() {
     if (this.expenseCategoryListEle.nativeElement.contains(event.target)) {
+      this.system.selectedTabView = this.title;
       this.ulShow = true;
       this.list = this.expenseCategoryList;
     } else {
@@ -271,8 +307,23 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
     }
   }
 
-  add() {
-    this.system.changeComponent({ component: 'expenseCategory-add-edit', data: this.expenseBook });
+  add(event?) {
+    // 只能用event来判断是enter还是click
+    if (event.screenX === 0 && event.screenY === 0) {
+      if (this.ulShow) {
+        this.selectItem(this.expenseCategoryItem);
+      } else {
+        // 不知道为什么不用setTimeOut就不行
+        setTimeout(()=>{
+          this.ulShow = true;
+          this.selectedExpenseCategoryItem = this.expenseCategoryItem;
+          this.showULExpenseCategory();
+        });
+      }
+    } else {
+      this.selectItem();
+      this.system.changeComponent({ component: 'expenseCategory-add-edit', data: this.expenseBook });
+    }
   }
 }
 

@@ -5,47 +5,55 @@
 
   <section>
     <form>
+      <!-- 日期&支出地点 -->
       <div class="columns">
         <div class="column col-6">
-          <dr-date [type]="'input'" [name]="'日期'" [viewType]="'day'" [initDate]="expenseDate" (setDate)="onSetDate($event)"></dr-date>
+          <dr-date [type]="'input'" [name]="'日期'" [viewType]="'day'" [initDate]="expenseDate"
+            (setDate)="onSetDate($event)"></dr-date>
         </div>
         <div class="column col-6">
           <address-select [title]="'支出地点'" [addressId]="addressId" (setAddress)="onSetAddress($event)"></address-select>
         </div>
       </div>
 
+      <!-- 支出类别&收款方 -->
       <div class="columns">
         <div class="column col-6">
-          <expenseCategory-select [title]="'支出类别'" [expenseBook]="expenseBook" (setCategory)="onSetCategory($event)"
+          <expenseCategory-select [title]="'类别'" [expenseBook]="expenseBook" (setCategory)="onSetCategory($event)"
             [expenseCategoryId]="expenseCategoryId"></expenseCategory-select>
         </div>
         <div class="column col-6">
-          <fund-party-select [title]="'收款方'" [type]="1" (setFundParty)="onSetFundParty($event)"
+          <fund-party-select [title]="'商家'" [type]="1" (setFundParty)="onSetFundParty($event)"
             [fundPartyId]="fundPartyId">
           </fund-party-select>
         </div>
       </div>
 
+      <!-- 付款渠道&付款账户 -->
       <div class="columns">
         <div class="column col-6">
-          <fundChannel-select [title]="'付款渠道'" (setFundChannel)="onSetsetFundChannel($event)"
+          <fundChannel-select [title]="'渠道'" (setFundChannel)="onSetsetFundChannel($event)"
             [fundChannelId]="fundChannelId"></fundChannel-select>
         </div>
         <div class="column col-6">
-          <fund-account-select [title]="'付款账户'" [fundChannelId]="fundChannelId"
+          <fund-account-select [title]="'账户'" [fundChannelId]="fundChannelId"
             (setFundAccount)="onSetFundAccount($event)" [filterCredit]="false" [fundAccountId]="fundAccountId">
           </fund-account-select>
         </div>
       </div>
+
+
       <fieldset>
         <legend>支出明细</legend>
         <div class="columns">
           <div class="form-group column col-6">
-            <input class="form-input" type="text" name="content" placeholder="支出内容" [(ngModel)]="content">
+            <input class="form-input" type="text" name="content" placeholder="支出内容" #contentInputEle
+              [(ngModel)]="content">
           </div>
           <div class="column col-6">
             <div class="input-group">
-              <input class="form-input" type="number" step="0.01" placeholder="支出金额" name="amount" [(ngModel)]="amount">
+              <input class="form-input" type="number" step="0.01" placeholder="支出金额" #amountInputEle name="amount"
+                #amountInputEle [(ngModel)]="amount">
               <span class="input-group-addon">元</span>
             </div>
           </div>
@@ -64,23 +72,23 @@
       </fieldset>
     </form>
     <div class="dr-btn-group" *ngIf="!editOrDelFlag && addFlag">
-      <button class="btn btn-primary" (click)="addExpense()">
+      <button tabindex="-1" class="btn btn-primary" (click)="addExpense()">
         <i class="icon icon-plus"></i> 添加
       </button>
-      <button class="btn btn-Secondary" (click)="reset()">
+      <button tabindex="-1" class="btn btn-Secondary" (click)="reset()">
         <i class="icon icon-refresh"></i> 重置
       </button>
     </div>
     <div class="edit-del" *ngIf="editOrDelFlag && !addFlag">
       <div class="dr-btn-group">
-        <button class="btn btn-primary" (click)="editExpense()">
+        <button tabindex="-1" class="btn btn-primary" (click)="editExpense()">
           <i class="icon icon-edit"></i> 编辑
         </button>
-        <button class="btn btn-error" (click)="delExpense()">
+        <button tabindex="-1" class="btn btn-error" (click)="delExpense()">
           <i class="icon icon-delete"></i> 删除
         </button>
       </div>
-      <button class="btn btn-link go-add" (click)="goAdd()">
+      <button tabindex="-1" class="btn btn-link go-add" (click)="goAdd()">
         <i class="icon icon-share"></i> 添加支出
       </button>
     </div>

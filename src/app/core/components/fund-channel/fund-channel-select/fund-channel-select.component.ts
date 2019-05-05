@@ -3,7 +3,7 @@ import {
   HostListener, ElementRef, Renderer, ViewContainerRef, ViewChild
 } from '@angular/core';
 import { SystemService, BaseData } from '../../../providers';
-import { fromEvent } from 'rxjs';
+import { fromEvent, Subscription } from 'rxjs';
 import { map, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import * as _ from 'lodash';
 
@@ -14,6 +14,7 @@ import * as _ from 'lodash';
 })
 export class FundChannelSelectComponent implements OnInit, OnDestroy {
   @ViewChild('fundChannelListEle') fundChannelListEle: ElementRef;
+  @ViewChild('fundChannelInputEle') fundChannelInputEle: ElementRef;
   @Input() title;
   @Output() setFundChannel = new EventEmitter<string>();
 
@@ -27,13 +28,14 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy {
   list = [];
   fundChannelList = [];
   fundChannelItem;
+  selectedFundChannelItem;
   fundChannel;
 
   resetEvent;
   doneEvent;
 
   ulShow = false;
-
+  public changeTabViewEvent: Subscription;
   constructor(
     public system: SystemService,
     public el: ElementRef,
@@ -44,7 +46,7 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.init();
-
+    this.system.tabViewList.add(this.title);
     const searchBox = document.getElementById('fundChannel-list');
     const typeahead = fromEvent(searchBox, 'input').pipe(
       map((e: any) => {
@@ -78,6 +80,50 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy {
         this.select(value.data);
       }
     });
+    this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
+      if (value === this.title) {
+        this.fundChannelInputEle.nativeElement.focus();
+        this.ulShow = true;
+        this.system.selectedTabView = value;
+        this.showULFundChannel();
+      } else {
+        this.fundChannelInputEle.nativeElement.blur();
+        this.ulShow = false;
+      }
+    });
+  }
+
+  @HostListener('body:keyup', ['$event'])
+  keyUp(e?) {
+    if (this.ulShow && e) {
+      let index = _.findIndex(this.list, { id: this.fundChannelItem.id });
+      let nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
+      let prevIndex = (index === 0) ? this.list.length - 1 : index - 1;
+      switch (e.keyCode) {
+        case 38: //上
+          this.fundChannelItem = this.list[prevIndex];
+          this.fundChannel = this.fundChannelItem.name;
+          this.showULFundChannel();
+          break;
+        case 40://下
+          this.fundChannelItem = this.list[nextIndex];
+          this.fundChannel = this.fundChannelItem.name;
+          this.showULFundChannel();
+          break;
+        case 27: //esc
+          this.ulShow = false;
+          this.select(this.selectedFundChannelItem);
+        default:
+          break;
+      }
+    }
+  }
+
+  // 滚动条滚到相应的元素位置
+  showULFundChannel() {
+    const list = document.getElementById("fundChannel-ul");
+    let targetLi = document.getElementById(this.fundChannelItem.id);
+    list.scrollTop = (targetLi.offsetTop - 8);
   }
 
   init() {
@@ -89,6 +135,7 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy {
   @HostListener('document:click', ['$event'])
   onClick() {
     if (this.fundChannelListEle.nativeElement.contains(event.target)) {
+      this.system.selectedTabView = this.title;
       this.ulShow = true;
       this.list = this.fundChannelList;
     } else {
@@ -108,10 +155,14 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy {
     if (this.doneEvent) {
       this.doneEvent.unsubscribe();
     }
+    if (this.changeTabViewEvent) {
+      this.changeTabViewEvent.unsubscribe();
+    }
   }
 
   select(item?) {
     if (item) {
+      this.selectedFundChannelItem = this.fundChannelItem;
       this.fundChannelItem = item;
       this.fundChannel = item.name;
       this.setFundChannel.emit(this.fundChannelItem.id);
@@ -121,9 +172,23 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy {
     }
   }
 
-  add() {
-    this.select();
-    this.system.changeComponent({ component: 'fundChannel-add-edit' });
-  }
 
+  add(event?) {
+    // 只能用event来判断是enter还是click
+    if (event.screenX === 0 && event.screenY === 0) {
+      if (this.ulShow) {
+        this.select(this.fundChannelItem);
+      } else {
+        // 不知道为什么不用setTimeOut就不行
+        setTimeout(()=>{
+          this.ulShow = true;
+          this.selectedFundChannelItem = this.fundChannelItem;
+          this.showULFundChannel();
+        });
+      }
+    } else {
+      this.select();
+      this.system.changeComponent({ component: 'fundChannel-add-edit' });
+    }
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { AccountService } from '../../../services/account.service';
 import { IncomeService } from '../../../services/income.service';
 import { SystemService, HttpClientService, BaseData } from '../../../../../core/providers';
@@ -18,7 +18,6 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy {
   incomeCategoryId;
   fundPartyId;
   amount;
-  // fundWayId;
   fundChannelId;
   fundAccountId;
   startDate = moment().format('YYYY-MM-DD');
@@ -34,7 +33,7 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy {
   constructor(
     public accountService: AccountService,
     public incomeService: IncomeService,
-    public systemService: SystemService,
+    public system: SystemService,
     public http: HttpClientService
   ) { }
 
@@ -73,6 +72,21 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy {
       this.addFlag = false;
       this.editOrDelFlag = true;
     });
+  }
+
+  @HostListener('body:keyup', ['$event'])
+  keyUp(e) {
+    if (e.keyCode === 9) {
+      let array = Array.from(this.system.tabViewList);
+      if (this.system.selectedTabView) {
+        let index = _.findIndex(array, (item) => {
+          return item === this.system.selectedTabView;
+        });
+        if ((index > -1) && (index <= array.length - 1)) {
+          this.system.changeTabView(array[index + 1] || array[0]);
+        }
+      }
+    }
   }
 
   ngOnDestroy() {
@@ -124,7 +138,7 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy {
 
   async add() {
     this.incomeService.income = {
-      userId: this.systemService.user.id,
+      userId: this.system.user.id,
       addressId: this.addressId,
       incomeCategoryId: this.incomeCategoryId,
       fundPartyId: this.fundPartyId,
@@ -142,7 +156,7 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy {
   async edit() {
     this.incomeService.income = {
       id: this.incomeId,
-      userId: this.systemService.user.id,
+      userId: this.system.user.id,
       addressId: this.addressId,
       incomeCategoryId: this.incomeCategoryId,
       fundPartyId: this.fundPartyId,
@@ -166,7 +180,7 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy {
     this.amount = '';
     this.startDate = moment().format('YYYY-MM-DD');
     this.endDate = moment().format('YYYY-MM-DD');
-    this.systemService.reset();
+    this.system.reset();
   }
 
   goAdd() {

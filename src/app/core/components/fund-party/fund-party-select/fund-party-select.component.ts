@@ -3,7 +3,7 @@ import {
   HostListener, ElementRef, Renderer, ViewContainerRef, ViewChild
 } from '@angular/core';
 import { SystemService, BaseData } from '../../../providers';
-import { fromEvent } from 'rxjs';
+import { fromEvent, Subscription } from 'rxjs';
 import { map, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import * as _ from 'lodash';
 @Component({
@@ -13,6 +13,7 @@ import * as _ from 'lodash';
 })
 export class FundPartySelectComponent implements OnInit, OnDestroy {
   @ViewChild('fundPartyListEle') fundPartyListEle: ElementRef;
+  @ViewChild('fundPartyInputEle') fundPartyInputEle: ElementRef;
   @Input() title;
   @Input() type;
   @Output() setFundParty = new EventEmitter<string>();
@@ -27,6 +28,7 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
   list = [];
   fundPartyList = [];
   fundPartyItem;
+  selectedFundPartyItem;
   fundParty;
 
   resetEvent;
@@ -34,6 +36,7 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
 
   ulShow = false;
 
+  public changeTabViewEvent: Subscription;
   constructor(
     public system: SystemService,
     public el: ElementRef,
@@ -43,6 +46,7 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.init();
+    this.system.tabViewList.add(this.title);
     const searchBox = document.getElementById('fundParty-list');
     const typeahead = fromEvent(searchBox, 'input').pipe(
       map((e: any) => {
@@ -57,7 +61,7 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
           return false;
         }
       }),
-      debounceTime(10),
+      // debounceTime(10),
       distinctUntilChanged()
     );
     typeahead.subscribe(data => {
@@ -78,13 +82,30 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
+      if (value === this.title) {
+        this.fundPartyItem = this.list[0] || null;
+        this.fundParty = this.fundPartyItem.name || '';
+        this.ulShow = true;
+        this.fundPartyInputEle.nativeElement.focus();
+        this.system.selectedTabView = value;
+        this.showULFundParty();
+      } else {
+        this.select(this.fundPartyItem);
+        this.fundPartyInputEle.nativeElement.blur();
+        this.ulShow = false;
+      }
+    });
   }
 
   @HostListener('document:click', ['$event'])
   onClick() {
     if (this.fundPartyListEle.nativeElement.contains(event.target)) {
+      this.system.selectedTabView = this.title;
       this.ulShow = true;
       this.list = this.fundPartyList;
+      this.fundPartyItem = this.list[0] || null;
+      this.fundParty = this.fundPartyItem.name || '';
     } else {
       if (!_.find(this.list, (item) => {
         return item.name === this.fundParty;
@@ -92,6 +113,40 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
         this.fundParty = '';
       }
       this.ulShow = false;
+    }
+  }
+
+  @HostListener('body:keyup', ['$event'])
+  keyUp(e?) {
+    if (this.ulShow && e) {
+      let index = _.findIndex(this.list, { id: this.fundPartyItem.id });
+      let nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
+      let prevIndex = (index === 0) ? this.list.length - 1 : index - 1;
+      switch (e.keyCode) {
+        case 38: //上
+          this.fundPartyItem = this.list[prevIndex];
+          this.fundParty = this.fundPartyItem.name;
+          this.showULFundParty();
+          break;
+        case 40://下
+          this.fundPartyItem = this.list[nextIndex];
+          this.fundParty = this.fundPartyItem.name;
+          this.showULFundParty();
+          break;
+        case 27: //esc
+          this.ulShow = false;
+          this.select(this.selectedFundPartyItem);
+        default:
+          break;
+      }
+    }
+  }
+
+  showULFundParty() {
+    if (this.fundPartyItem) {
+      const list = document.getElementById("fundParty-ul");
+      let targetLi = document.getElementById(this.fundPartyItem.id);
+      list.scrollTop = (targetLi.offsetTop - 8);
     }
   }
 
@@ -108,10 +163,14 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
     if (this.doneEvent) {
       this.doneEvent.unsubscribe();
     }
+    if (this.changeTabViewEvent) {
+      this.changeTabViewEvent.unsubscribe();
+    }
   }
 
   select(item?) {
     if (item) {
+      this.selectedFundPartyItem = item;
       this.fundPartyItem = item;
       this.fundParty = item.name;
       this.setFundParty.emit(this.fundPartyItem.id);
@@ -121,9 +180,26 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
     }
   }
 
-
-  add() {
-    this.select();
-    this.system.changeComponent({ component: 'fundParty-add-edit', data: this.type });
+  add(event?) {
+    // 只能用event来判断是enter还是click
+    if (event.screenX === 0 && event.screenY === 0) {
+      if (this.ulShow) {
+        this.select(this.fundPartyItem);
+      } else {
+        // 不知道为什么不用setTimeOut就不行
+        setTimeout(() => {
+          this.ulShow = true;
+          this.fundPartyItem = this.list[0] || null;
+          this.fundParty = this.fundPartyItem.name || '';
+          if(this.selectedFundPartyItem){
+            this.showULFundParty();
+          }
+        });
+      }
+    } else {
+      this.select();
+      this.system.changeComponent({ component: 'fundParty-add-edit', data: this.type });
+    }
   }
+
 }

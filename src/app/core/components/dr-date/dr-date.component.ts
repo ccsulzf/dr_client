@@ -91,6 +91,7 @@ export class DrDateComponent implements OnInit, OnDestroy {
     }
     this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
       if (value === this.name) {
+        this.dateInput.nativeElement.focus();
         this.show = true;
         this.system.selectedTabView = value;
       } else {

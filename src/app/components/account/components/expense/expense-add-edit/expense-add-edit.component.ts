@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { AccountService } from '../../../services';
 import { BaseDataService, SystemService } from '../../../../../core/providers';
 import { BaseData } from '../../../../../core/providers/base-data';
@@ -6,13 +6,16 @@ import { HttpClientService } from '../../../../../core/providers';
 import { ExpenseService } from '../../../services';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'expense-add-edit',
   templateUrl: './expense-add-edit.component.html',
   styleUrls: ['./expense-add-edit.component.scss']
 })
 export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy {
-
+  @ViewChild('contentInputEle') contentInputEle: ElementRef;
+  @ViewChild('amountInputEle') amountInputEle: ElementRef;
   public addressId;
 
   public expenseCategoryId;
@@ -48,6 +51,7 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
   public expenseBookId;
   public totalAmount;
 
+  public changeTabViewEvent: Subscription;
   constructor(
     public accountService: AccountService,
     public http: HttpClientService,
@@ -126,7 +130,37 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
 
       await this.getParticipantList();
     });
+
+    this.system.tabViewList.add('支出内容');
+    this.system.tabViewList.add('支出金额');
+
+    this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
+      if (value === '支出内容') {
+        this.system.selectedTabView = value;
+        this.contentInputEle.nativeElement.focus();
+        this.amountInputEle.nativeElement.blur();
+      } else if (value === '支出金额') {
+        this.system.selectedTabView = value;
+        this.amountInputEle.nativeElement.focus();
+        this.contentInputEle.nativeElement.blur();
+      } else {
+        this.contentInputEle.nativeElement.blur();
+        this.amountInputEle.nativeElement.blur();
+      }
+    });
   }
+
+  @HostListener('document:click', ['$event'])
+  onClick() {
+    if (this.contentInputEle.nativeElement.contains(event.target)) {
+      this.system.selectedTabView = '支出内容';
+    }
+
+    if (this.amountInputEle.nativeElement.contains(event.target)) {
+      this.system.selectedTabView = '支出金额'
+    }
+  }
+
 
   @HostListener('body:keyup', ['$event'])
   keyUp(e) {
@@ -139,8 +173,6 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
         if ((index > -1) && (index <= array.length - 1)) {
           this.system.changeTabView(array[index + 1] || array[0]);
         }
-      } else {
-        this.system.changeTabView(array[0]);
       }
     }
   }
@@ -148,6 +180,9 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
   ngOnDestroy() {
     if (this.editEvent) {
       this.editEvent.unsubscribe();
+    }
+    if (this.changeTabViewEvent) {
+      this.changeTabViewEvent.unsubscribe();
     }
   }
 
@@ -158,7 +193,6 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
   onSetMemo(memo) {
     this.memo = memo;
   }
-
 
   async getParticipantList() {
     this.participantList = [];

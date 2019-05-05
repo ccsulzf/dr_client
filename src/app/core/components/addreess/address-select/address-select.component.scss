@@ -76,6 +76,7 @@
 //     }
 //   }
 // }
+
 .form-item {
   position: relative;
 
@@ -88,6 +89,22 @@
 
     li {
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+
+      a {
+        flex-grow: 1;
+        text-align: center;
+      }
+
+      &:hover {
+        background: #f1f1fc;
+        color: #5755d9;
+        p {
+          display: inline-flex;
+        }
+      }
     }
 
     .add {
@@ -101,12 +118,47 @@
   }
 }
 
+.li-selected {
+  background: #f1f1fc;
+  color: #5755d9;
+}
+
+
+.add-edit {
+  display: none;
+  flex-direction: row;
+  margin: 0;
+  padding: 0;
+  justify-content: space-between;
+  height: 100%;
+
+  i {
+    margin: 0 3px;
+  }
+}
+
+.menu .menu-item {
+  padding: 0;
+
+  a {
+    margin: 0;
+  }
+}
+
 ul::-webkit-scrollbar {
   display: none;
 }
 
 
-.li-selected {
-  background: #f1f1fc;
-  color: #5755d9;
-}
+// ul::-webkit-scrollbar {
+//   width: 0.2em;
+// }
+
+// ul::-webkit-scrollbar-track {
+//   -webkit-box-shadow: inset 0 0 4px #5755d9;
+// }
+
+// ul::-webkit-scrollbar-thumb {
+// background-color: #5755d9;
+// outline: 1px solid #5755d9;
+// }

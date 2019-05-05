@@ -23,16 +23,20 @@
     <div class="form-item">
       <label class="form-label" for="input-example-1">{{title}}</label>
       <div class="has-icon-left" #fundChannelListEle>
-        <input type="text" class="form-input" placeholder="请选择付款方式" name="fundChannel" [(ngModel)]="fundChannel"
+        <input type="text" #fundChannelInputEle class="form-input" placeholder="请选择付款方式" name="fundChannel" [(ngModel)]="fundChannel"
           autocomplete="off" id="fundChannel-list">
         <i class="form-icon fa fa-map-signs" aria-hidden="true"></i>
       </div>
-      <ul class="menu" *ngIf="ulShow">
-        <li class="menu-item" *ngFor="let item of list" (click)="select(item)">
-          <a>{{item?.name}}</a>
+      <ul  id="fundChannel-ul" class="menu" [style.display]="ulShow === true ? 'block':'none'">
+        <li [id]="item.id" class="menu-item" *ngFor="let item of list" (click)="select(item)">
+          <a class="text-ellipsis" [class.li-selected]="fundChannel === item.name">{{item?.name}}</a>
+          <p class="add-edit">
+            <i class="icon icon-edit"></i>
+            <i class="icon icon-delete"></i>
+          </p>
         </li>
         <li class="menu-item add">
-          <button class="btn btn-primary btn-sm" (click)="add()"><i class="icon icon-plus"></i> 添加付款方式</button>
+          <button class="btn btn-primary btn-sm" (click)="add($event)"><i class="icon icon-plus"></i> 添加付款方式</button>
         </li>
       </ul>
     </div>

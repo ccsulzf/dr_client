@@ -36,7 +36,7 @@ export class SystemService {
     }
 
     changeTabView(value) {
-        console.info(value);
+        // this.selectedTabView = value;
         this.changeTabViewEvent.next(value);
     }
 
