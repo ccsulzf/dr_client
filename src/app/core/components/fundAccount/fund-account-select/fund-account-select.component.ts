@@ -69,7 +69,7 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
         if (text.length >= 1) {
           return text.length >= 1;
         } else {
-          this.list = this.fundAccountList;
+          this.list = _.cloneDeep(this.fundAccountList);
           this.ulShow = true;
           return false;
         }
@@ -97,8 +97,8 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
 
     this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
       if (value === this.title) {
-        this.fundAccountItem = this.list[0] || null;
-        this.fundAccount = this.fundAccountItem.name || '';
+        // this.fundAccountItem = this.list[0] || null;
+        // this.fundAccount = this.fundAccountItem.name || '';
         this.ulShow = true;
         this.fundAccountInputEle.nativeElement.focus();
         this.system.selectedTabView = value;
@@ -137,16 +137,16 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
     }
     if (this.filterCredit && this.fundAccountList.length) {
       this.fundAccountList = _.filter(this.fundAccountList, (item) => {
-        return item.isCredit == 0;
+        return item.isCredit === 0;
       });
     }
-    this.list = this.fundAccountList;
+    this.list = _.cloneDeep(this.fundAccountList);
   }
 
   showULFundAccount() {
     if (this.fundAccountItem) {
-      const list = document.getElementById("fundAccount-ul");
-      let targetLi = document.getElementById(this.fundAccountItem.id);
+      const list = document.getElementById('fundAccount-ul');
+      const targetLi = document.getElementById(this.fundAccountItem.id);
       list.scrollTop = (targetLi.offsetTop - 8);
     }
   }
@@ -154,10 +154,10 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
   @HostListener('document:click', ['$event'])
   onClick() {
     if (this.fundAccountListEle.nativeElement.contains(event.target)) {
-      this.getFundAccountList();
+      // this.getFundAccountList();
       this.ulShow = true;
-      this.list = this.fundAccountList;
-      this.fundAccountItem = this.list[0] || null;
+      // this.list = this.fundAccountList;
+      // this.fundAccountItem = this.list[0] || null;
       this.fundAccount = this.fundAccountItem.name || '';
     } else {
       if (!_.find(this.list, (item) => {
@@ -172,23 +172,33 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
   @HostListener('body:keyup', ['$event'])
   keyUp(e?) {
     if (this.ulShow && e) {
-      let index = _.findIndex(this.list, { id: this.fundAccountItem.id });
-      let nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
-      let prevIndex = (index === 0) ? this.list.length - 1 : index - 1;
+      let index = -1;
+      let nextIndex = 0;
+      let prevIndex = 0;
+      if (this.fundAccountItem) {
+        index = _.findIndex(this.list, { id: this.fundAccountItem.id });
+        nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
+        prevIndex = (index === 0) ? this.list.length - 1 : index - 1;
+      } else {
+        nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
+        prevIndex = this.list.length - 1;
+      }
+
       switch (e.keyCode) {
-        case 38: //上
+        case 38: // 上
           this.fundAccountItem = this.list[prevIndex];
           this.fundAccount = this.fundAccountItem.name;
           this.showULFundAccount();
           break;
-        case 40://下
+        case 40: // 下
           this.fundAccountItem = this.list[nextIndex];
           this.fundAccount = this.fundAccountItem.name;
           this.showULFundAccount();
           break;
-        case 27: //esc
+        case 27: // esc
           this.ulShow = false;
           this.select(this.selectedFundAccountItem);
+          break;
         default:
           break;
       }
@@ -197,11 +207,11 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
 
   init() {
     this.getFundAccountList();
-    this.select();
+    // this.select();
   }
 
   select(item?) {
-    this.getFundAccountList();
+    // this.getFundAccountList();
     if (item) {
       this.selectedFundAccountItem = this.fundAccountItem;
       this.fundAccountItem = item;
@@ -224,9 +234,9 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
         // 不知道为什么不用setTimeOut就不行
         setTimeout(() => {
           this.ulShow = true;
-          this.fundAccountItem = this.list[0] || null;
-          this.fundAccount = this.fundAccountItem.name || '';
-          if(this.selectedFundAccountItem){
+          // this.fundAccountItem = this.list[0] || null;
+          // this.fundAccount = this.fundAccountItem.name || '';
+          if (this.selectedFundAccountItem) {
             this.showULFundAccount();
           }
         });

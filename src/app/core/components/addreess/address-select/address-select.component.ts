@@ -3,8 +3,8 @@ import {
   HostListener, ElementRef, Renderer, ViewContainerRef, ViewChild
 } from '@angular/core';
 import { SystemService, BaseDataService, BaseData } from '../../../providers';
-import * as _ from 'lodash';
 
+import * as _ from 'lodash';
 import { fromEvent, Subscription } from 'rxjs';
 import { map, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 @Component({
@@ -23,15 +23,13 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
     if (addressId) {
       this.select(_.find(BaseData.addressList, { id: addressId }));
     } else {
-      this.select(_.find(this.addressList, { isCurrenLive: 1 }));
+      this.select(_.find(BaseData.addressList, { isCurrenLive: 1 }));
     }
-
   }
 
   get addressId(): string { return this.address.id; }
 
   list = [];
-  addressList = [];
   addressItem;
   selectedAddressItem;
   address;
@@ -60,17 +58,16 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
         if (text.length >= 1) {
           return true;
         } else {
-          this.list = _.cloneDeep(this.addressList);
+          this.list = _.cloneDeep(BaseData.addressList);
           this.ulShow = true;
           return false;
         }
       }),
-      // debounceTime(10),
       distinctUntilChanged()
     );
     typeahead.subscribe(data => {
-      this.list = this.addressList.filter((item) => {
-        return (item.province.indexOf(data) > -1 || item.city.indexOf(data) > -1 || item.area.indexOf(data) > -1);
+      this.list = BaseData.addressList.filter((item) => {
+        return item.alias_name.indexOf(data) > -1 || this.system.filterByPY(item, 'alias_name', data);
       });
     });
 
@@ -78,8 +75,7 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
       if (value && value.model === 'address') {
         if (value.data) {
           this.select(value.data);
-          this.list.push(value.data);
-          this.addressList.push(value.data);
+          this.list = _.cloneDeep(BaseData.addressList);
         } else {
           this.select(this.selectedAddressItem);
         }
@@ -97,7 +93,6 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
         this.ulShow = false;
       }
     });
-
   }
 
   @HostListener('document:click', ['$event'])
@@ -105,13 +100,10 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
     if (this.addressListEle.nativeElement.contains(event.target)) {
       this.system.selectedTabView = this.title;
       this.ulShow = true;
-      this.list = this.addressList;
-      this.addressItem = this.list[0] || null;
-      this.address = this.address.alias_name || '';
       this.showULAddress();
     } else {
       if (!_.find(this.list, (item) => {
-        return `${item.province}|${item.city}|${item.area}` === this.address;
+        return item.alias_name === this.address;
       })) {
         this.address = '';
       }
@@ -119,26 +111,29 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
     }
   }
 
+
+
   @HostListener('body:keyup', ['$event'])
   keyUp(e?) {
     if (this.ulShow && e) {
-      let index = _.findIndex(this.list, { id: this.addressItem.id });
-      let nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
-      let prevIndex = (index === 0) ? this.list.length - 1 : index - 1;
+      const index = _.findIndex(this.list, { id: this.addressItem.id });
+      const nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
+      const prevIndex = (index === 0) ? this.list.length - 1 : index - 1;
       switch (e.keyCode) {
-        case 38: //上
+        case 38: // 上
           this.addressItem = this.list[prevIndex];
           this.address = `${this.addressItem.province}|${this.addressItem.city}|${this.addressItem.area}`;
           this.showULAddress();
           break;
-        case 40://下
+        case 40: // 下
           this.addressItem = this.list[nextIndex];
           this.address = `${this.addressItem.province}|${this.addressItem.city}|${this.addressItem.area}`;
           this.showULAddress();
           break;
-        case 27: //esc
+        case 27: // esc
           this.ulShow = false;
           this.select(this.selectedAddressItem);
+          break;
         default:
           break;
       }
@@ -147,22 +142,21 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
 
   // 滚动条滚到相应的元素位置
   showULAddress() {
-    const list = document.getElementById("address-ul");
-    let targetLi = document.getElementById(this.addressItem.id);
+    const list = document.getElementById('address-ul');
+    const targetLi = document.getElementById(this.addressItem.id);
     list.scrollTop = (targetLi.offsetTop - 8);
   }
 
   init() {
-    this.addressList = BaseData.addressList;
-    this.list = this.addressList;
-    this.select(_.find(this.addressList, { isCurrenLive: 1 }));
+    this.list = _.cloneDeep(BaseData.addressList);
+    this.select(_.find(this.list, { isCurrenLive: 1 }));
   }
 
   select(item?) {
     if (item) {
       this.addressItem = item;
       this.selectedAddressItem = item;
-      this.address = item.province + '|' + item.city + '|' + item.area;
+      this.address = item.alias_name;
       this.setAddress.emit(this.addressItem.id);
       this.ulShow = false;
     } else {

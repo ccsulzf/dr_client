@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import * as _ from 'lodash';
+import * as PY from 'pinyin';
 @Injectable()
 export class SystemService {
 
@@ -54,6 +56,17 @@ export class SystemService {
 
     public deleteUser() {
         localStorage.removeItem('user');
+    }
+
+
+    public filterByPY(item, attr, filterContent) {
+        filterContent = _.trim(filterContent);
+        const firstLetterList = PY(item[attr], {
+            style: PY.STYLE_FIRST_LETTER,
+        });
+        let firstLetterString: String = _.join(_.flattenDepth(firstLetterList, 2), '');
+        firstLetterString = firstLetterString.replace(/[^a-zA-Z]/gi, '');
+        return firstLetterString.indexOf(filterContent) > -1;
     }
 }
 

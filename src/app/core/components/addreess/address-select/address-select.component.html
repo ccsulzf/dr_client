@@ -10,7 +10,7 @@
       <ul id="address-ul" class="menu" [style.display]="ulShow === true ? 'block':'none'">
         <li [id]="item.id" class="menu-item" *ngFor="let item of list" (click)="select(item)">
           <a class="text-ellipsis"
-            [class.li-selected]="address === item.alias_name">{{item?.province}}|{{item?.city}}|{{item?.area}}</a>
+            [class.li-selected]="address === item.alias_name">{{item.alias_name}}</a>
           <p class="add-edit">
             <i class="icon icon-edit" (click)="edit($event,item)"></i>
             <i class="icon icon-delete" (click)="delete($event,item)"></i>

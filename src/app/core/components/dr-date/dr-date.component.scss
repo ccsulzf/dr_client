@@ -2,6 +2,7 @@ main {
   position: relative;
 }
 
+
 i {
   cursor: pointer;
 }
@@ -9,6 +10,7 @@ i {
 .navbar-primary span {
   padding: 0 2px;
   cursor: pointer;
+  font-weight: lighter;
 }
 
 
@@ -19,11 +21,17 @@ i {
 
 .calendar-header {
   padding: .2rem 0;
+  font-size: .6rem;
 }
 
 .calendar-text {
   right: -142px;
   top: 32px;
+}
+
+.calendar .calendar-nav {
+  font-size: .8rem;
+  padding: .2rem .4rem;
 }
 
 

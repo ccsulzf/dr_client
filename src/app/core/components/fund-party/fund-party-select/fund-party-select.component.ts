@@ -26,7 +26,7 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
   get fundPartyId(): string { return this.fundParty; }
 
   list = [];
-  fundPartyList = [];
+  // fundPartyList = [];
   fundPartyItem;
   selectedFundPartyItem;
   fundParty;
@@ -56,7 +56,7 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
         if (text.length >= 1) {
           return text.length >= 1;
         } else {
-          this.list = this.fundPartyList;
+          this.list = _.filter(BaseData.fundPartyList, { type: this.type });
           this.ulShow = true;
           return false;
         }
@@ -65,8 +65,8 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
       distinctUntilChanged()
     );
     typeahead.subscribe(data => {
-      this.list = this.fundPartyList.filter((item) => {
-        return item.name.indexOf(data) > -1;
+      this.list = BaseData.fundPartyList.filter((item) => {
+        return item.name.indexOf(data) > -1 || this.system.filterByPY(item, 'name', data);
       });
     });
 
@@ -77,15 +77,12 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
     this.doneEvent = this.system.doneEvent.subscribe((value) => {
       if (value && value.model === 'fundParty') {
         this.select(value.data);
-        this.list.push(value.data);
-        this.fundPartyList.push(value.data);
+        this.list = _.filter(BaseData.fundPartyList, { type: this.type });
       }
     });
 
     this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
       if (value === this.title) {
-        this.fundPartyItem = this.list[0] || null;
-        this.fundParty = this.fundPartyItem.name || '';
         this.ulShow = true;
         this.fundPartyInputEle.nativeElement.focus();
         this.system.selectedTabView = value;
@@ -103,9 +100,6 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
     if (this.fundPartyListEle.nativeElement.contains(event.target)) {
       this.system.selectedTabView = this.title;
       this.ulShow = true;
-      this.list = this.fundPartyList;
-      this.fundPartyItem = this.list[0] || null;
-      this.fundParty = this.fundPartyItem.name || '';
     } else {
       if (!_.find(this.list, (item) => {
         return item.name === this.fundParty;
@@ -119,23 +113,33 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
   @HostListener('body:keyup', ['$event'])
   keyUp(e?) {
     if (this.ulShow && e) {
-      let index = _.findIndex(this.list, { id: this.fundPartyItem.id });
-      let nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
-      let prevIndex = (index === 0) ? this.list.length - 1 : index - 1;
+      let index = -1;
+      let nextIndex = 0;
+      let prevIndex = 0;
+      if (this.fundPartyItem) {
+        index = _.findIndex(this.list, { id: this.fundPartyItem.id });
+        nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
+        prevIndex = (index === 0) ? this.list.length - 1 : index - 1;
+      } else {
+        nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
+        prevIndex = this.list.length - 1;
+      }
+
       switch (e.keyCode) {
-        case 38: //上
+        case 38: // 上
           this.fundPartyItem = this.list[prevIndex];
           this.fundParty = this.fundPartyItem.name;
           this.showULFundParty();
           break;
-        case 40://下
+        case 40: // 下
           this.fundPartyItem = this.list[nextIndex];
           this.fundParty = this.fundPartyItem.name;
           this.showULFundParty();
           break;
-        case 27: //esc
+        case 27: // esc
           this.ulShow = false;
           this.select(this.selectedFundPartyItem);
+          break;
         default:
           break;
       }
@@ -144,15 +148,14 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
 
   showULFundParty() {
     if (this.fundPartyItem) {
-      const list = document.getElementById("fundParty-ul");
-      let targetLi = document.getElementById(this.fundPartyItem.id);
+      const list = document.getElementById('fundParty-ul');
+      const targetLi = document.getElementById(this.fundPartyItem.id);
       list.scrollTop = (targetLi.offsetTop - 8);
     }
   }
 
   init() {
-    this.fundPartyList = _.filter(BaseData.fundPartyList, { type: this.type });
-    this.list = this.fundPartyList;
+    this.list = _.filter(BaseData.fundPartyList, { type: this.type });
     // this.select(_.first(this.fundPartyList));
   }
 
@@ -189,9 +192,9 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
         // 不知道为什么不用setTimeOut就不行
         setTimeout(() => {
           this.ulShow = true;
-          this.fundPartyItem = this.list[0] || null;
-          this.fundParty = this.fundPartyItem.name || '';
-          if(this.selectedFundPartyItem){
+          // this.fundPartyItem = this.list[0] || null;
+          // this.fundParty = this.fundPartyItem.name || '';
+          if (this.selectedFundPartyItem) {
             this.showULFundParty();
           }
         });

@@ -1,7 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, HostListener, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, HostListener, OnDestroy, Renderer2 } from '@angular/core';
 import { SystemService } from '../../providers';
-import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
+
+import { monthsList, weekList } from './da-date.comfig';
+import * as _ from 'lodash';
 @Component({
   selector: 'dr-date',
   templateUrl: './dr-date.component.html',
@@ -28,8 +30,8 @@ export class DrDateComponent implements OnInit, OnDestroy {
 
   @Output() setDate = new EventEmitter<Object>();
 
-  @ViewChild('drDateEle') drDateEle: ElementRef;
-  @ViewChild("dateInput") dateInput: ElementRef;
+  @ViewChild('drDateLabelEle') drDateLabelEle: ElementRef;
+  @ViewChild('dateInput') dateInput: ElementRef;
 
   public changeTabViewEvent: Subscription;
 
@@ -46,35 +48,15 @@ export class DrDateComponent implements OnInit, OnDestroy {
 
   public daysList = [];
   public yearsList = [];
-  public monthsList = [
-    { name: '一月', number: 1, value: '01' },
-    { name: '二月', number: 2, value: '02' },
-    { name: '三月', number: 3, value: '03' },
-    { name: '四月', number: 4, value: '04' },
-    { name: '五月', number: 5, value: '05' },
-    { name: '六月', number: 6, value: '06' },
-    { name: '七月', number: 7, value: '07' },
-    { name: '八月', number: 8, value: '08' },
-    { name: '九月', number: 9, value: '09' },
-    { name: '十月', number: 10, value: '10' },
-    { name: '十一月', number: 11, value: '11' },
-    { name: '十二月', number: 12, value: '12' }
-  ];
 
-  public weekList = [
-    { name: '一', value: 1 },
-    { name: '二', value: 2 },
-    { name: '三', value: 3 },
-    { name: '四', value: 4 },
-    { name: '五', value: 5 },
-    { name: '六', value: 6 },
-    { name: '日', value: 7 },
-  ];
-
+  public weekList = [];
+  public monthsList = [];
   constructor(
-    private system: SystemService
+    private system: SystemService,
+    public el: ElementRef
   ) {
-
+    this.weekList = weekList;
+    this.monthsList = monthsList;
   }
 
   ngOnInit() {
@@ -86,14 +68,15 @@ export class DrDateComponent implements OnInit, OnDestroy {
     this.monthDays = this.getMonthDays();
     this.getViewTypeList(this.viewType);
     this.getList();
+
     if (this.name) {
       this.system.tabViewList.add(this.name);
     }
     this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
       if (value === this.name) {
+        this.system.selectedTabView = value;
         this.dateInput.nativeElement.focus();
         this.show = true;
-        this.system.selectedTabView = value;
       } else {
         this.show = false;
         if (this.dateInput && this.dateInput.nativeElement) {
@@ -130,29 +113,34 @@ export class DrDateComponent implements OnInit, OnDestroy {
 
   @HostListener('document:click', ['$event'])
   onClick() {
-    if (this.drDateEle.nativeElement.contains(event.target)) {
-      this.show = true;
-      if (this.type === 'input') {
-        this.dateInput.nativeElement.focus();
-        this.system.selectedTabView = this.name;
+    if (this.el.nativeElement.contains(event.target)) {
+      if (this.el.nativeElement.contains(this.drDateLabelEle.nativeElement)) {
+        this.show = !this.show;
+        if (this.show) {
+          this.system.selectedTabView = this.name;
+        }
+      } else {
+        this.show = true;
+        this.viewType = this.viewTypeList[this.viewTypeList.length - 1];
+        if (this.type === 'input') {
+          this.dateInput.nativeElement.focus();
+          this.system.selectedTabView = this.name;
+        }
       }
     } else {
       this.show = false;
     }
   }
 
-
-
   getYear() {
     this.year = new Date(this.date).getFullYear();
   }
-
 
   getMonth(month?) {
     if (!month) {
       month = new Date().getMonth() + 1;
     }
-    const monthItem = this.monthsList.find((item) => {
+    const monthItem = monthsList.find((item) => {
       return item.number === month;
     });
     this.month = monthItem;
@@ -271,7 +259,8 @@ export class DrDateComponent implements OnInit, OnDestroy {
   }
 
 
-  prev() {
+  prev(e) {
+    e.stopPropagation();
     if (this.viewType === 'day') {
       const value = (this.month.number - 1 === 0) ? 12 : (this.month.number - 1);
       this.year = (this.month.number - 1 === 0) ? this.year - 1 : this.year;
@@ -284,7 +273,8 @@ export class DrDateComponent implements OnInit, OnDestroy {
     }
   }
 
-  next() {
+  next(e) {
+    e.stopPropagation();
     if (this.viewType === 'day') {
       const value = this.month.number === 12 ? 1 : (this.month.number + 1);
       this.year = this.month.number === 12 ? this.year + 1 : this.year;
@@ -297,18 +287,19 @@ export class DrDateComponent implements OnInit, OnDestroy {
     }
   }
 
-
-  viewYear() {
+  viewYear(e) {
+    e.stopPropagation();
     this.viewType = 'year';
   }
 
-
-  viewMonth() {
+  viewMonth(e) {
+    e.stopPropagation();
     this.viewType = 'month';
   }
 
 
-  selectMonth(item) {
+  selectMonth(item, e) {
+    e.stopPropagation();
     if (this.viewTypeList[this.viewTypeList.length - 1] === 'day') {
       this.month = item;
       this.viewType = 'day';
@@ -329,8 +320,13 @@ export class DrDateComponent implements OnInit, OnDestroy {
     });
   }
 
+  selectToday(e) {
+    this.selectDay(new Date().getDate(), e);
+  }
 
-  selectDay(day) {
+
+  selectDay(day, e) {
+    e.stopPropagation();
     this.day = day;
     this.date = '' + this.year + '-' + this.month.value + '-' + (this.day < 10 ? '0' + this.day : this.day);
     this.show = false;
@@ -345,7 +341,8 @@ export class DrDateComponent implements OnInit, OnDestroy {
   }
 
 
-  selectYear(item) {
+  selectYear(item, e) {
+    e.stopPropagation();
     if ((this.viewTypeList[this.viewTypeList.length - 1] === 'day') || (this.viewTypeList[this.viewTypeList.length - 1] === 'month')) {
       this.year = item;
       this.viewType = 'month';

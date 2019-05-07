@@ -155,7 +155,7 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
 
   expenseBookId;
 
-  expenseCategoryList: any;
+  // expenseCategoryList: any;
   expenseCategoryItem;
   selectedExpenseCategoryItem;
   expenseCategory;
@@ -175,9 +175,8 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
     public system: SystemService,
   ) { }
 
-
   ngOnInit() {
-    this.list = this.expenseCategoryList;
+    this.init();
     this.system.tabViewList.add(this.title);
     const searchBox = document.getElementById('expenseCategory-list');
     const typeahead = fromEvent(searchBox, 'input').pipe(
@@ -188,7 +187,7 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
         if (text.length >= 1) {
           return text.length >= 1;
         } else {
-          this.list = this.expenseCategoryList;
+          this.list = _.filter(BaseData.expenseCategoryList, { expenseBookId: this.expenseBookId });
           this.ulShow = true;
           return false;
         }
@@ -197,20 +196,19 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
       distinctUntilChanged()
     );
     typeahead.subscribe(data => {
-      this.list = this.expenseCategoryList.filter((item) => {
-        return item.name.indexOf(data) > -1;
+      this.list = _.filter(BaseData.expenseCategoryList, { expenseBookId: this.expenseBookId }).filter((item) => {
+        return item.name.indexOf(data) > -1 || this.system.filterByPY(item, 'name', data);
       });
     });
 
     this.resetEvent = this.system.resetEvent.subscribe(() => {
       this.init();
     });
-    
+
     this.doneEvent = this.system.doneEvent.subscribe((value) => {
       if (value && value.model === 'expenseCategory') {
         this.selectItem(value.data);
-        this.list.push(value.data);
-        this.expenseCategoryList.push(value.data)
+        this.list = _.filter(BaseData.expenseCategoryList, { expenseBookId: this.expenseBookId });
       }
     });
 
@@ -230,23 +228,24 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
   @HostListener('body:keyup', ['$event'])
   keyUp(e?) {
     if (this.ulShow && e) {
-      let index = _.findIndex(this.list, { id: this.expenseCategoryItem.id });
-      let nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
-      let prevIndex = (index === 0) ? this.list.length - 1 : index - 1;
+      const index = _.findIndex(this.list, { id: this.expenseCategoryItem.id });
+      const nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
+      const prevIndex = (index === 0) ? this.list.length - 1 : index - 1;
       switch (e.keyCode) {
-        case 38: //上
+        case 38: // 上
           this.expenseCategoryItem = this.list[prevIndex];
           this.expenseCategory = this.expenseCategoryItem.name;
           this.showULExpenseCategory();
           break;
-        case 40://下
+        case 40: // 下
           this.expenseCategoryItem = this.list[nextIndex];
           this.expenseCategory = this.expenseCategoryItem.name;
           this.showULExpenseCategory();
           break;
-        case 27: //esc
+        case 27: // esc
           this.ulShow = false;
           this.selectItem(this.selectedExpenseCategoryItem);
+          break;
         default:
           break;
       }
@@ -255,15 +254,14 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
 
   // 滚动条滚到相应的元素位置
   showULExpenseCategory() {
-    const list = document.getElementById("expenseCategory-ul");
-    let targetLi = document.getElementById(this.expenseCategoryItem.id);
+    const list = document.getElementById('expenseCategory-ul');
+    const targetLi = document.getElementById(this.expenseCategoryItem.id);
     list.scrollTop = (targetLi.offsetTop - 8);
   }
 
   init() {
-    this.expenseCategoryList = _.filter(BaseData.expenseCategoryList, { expenseBookId: this.expenseBookId });
-    this.list = this.expenseCategoryList;
-    this.selectItem(_.first(this.expenseCategoryList));
+    this.list = _.filter(BaseData.expenseCategoryList, { expenseBookId: this.expenseBookId });
+    this.selectItem(_.first(this.list));
   }
 
   selectItem(item?) {
@@ -284,7 +282,6 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
     if (this.expenseCategoryListEle.nativeElement.contains(event.target)) {
       this.system.selectedTabView = this.title;
       this.ulShow = true;
-      this.list = this.expenseCategoryList;
     } else {
       if (!_.find(this.list, (item) => {
         return item.name === this.expenseCategory;
@@ -314,7 +311,7 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
         this.selectItem(this.expenseCategoryItem);
       } else {
         // 不知道为什么不用setTimeOut就不行
-        setTimeout(()=>{
+        setTimeout(() => {
           this.ulShow = true;
           this.selectedExpenseCategoryItem = this.expenseCategoryItem;
           this.showULExpenseCategory();

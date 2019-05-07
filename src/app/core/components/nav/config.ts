@@ -22,6 +22,14 @@ export const NAV_CONFIG = [
                 name: '收入',
                 path: '/account/income',
                 selected: false
+            }, {
+                name: '转账',
+                path: '',
+                selected: false
+            }, {
+                name: '还款',
+                path: '',
+                selected: false
             }
         ]
     }, {
@@ -45,7 +53,13 @@ export const NAV_CONFIG = [
         selected: false,
         expanded: false,
         icon: 'fa-cog',
-        subList: []
+        subList: [
+            {
+                name: '预算设置',
+                path: '',
+                selected: false
+            }
+        ]
     }
 ];
 

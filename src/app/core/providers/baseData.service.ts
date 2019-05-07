@@ -16,7 +16,7 @@ export class BaseDataService {
 
         BaseData.addressList = <any>await this.http.get('/DR/Address?userId=' + this.system.user.id);
 
-        for (let item of BaseData.addressList) {
+        for (const item of BaseData.addressList) {
             item.alias_name = `${item.province}|${item.city}|${item.area}`;
         }
 
@@ -116,6 +116,7 @@ export class BaseDataService {
     }
 
     addAddress(item) {
+        item.alias_name = `${item.province}|${item.city}|${item.area}`;
         BaseData.addressList.push(item);
     }
 

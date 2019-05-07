@@ -1,15 +1,15 @@
 <main>
   <div>
     <ng-container *ngIf="type==='input'">
-      <label class="form-label">{{name}}</label>
-      <div class="input-group" #drDateEle>
+      <label class="form-label" #drDateLabelEle>{{name}}</label>
+      <div class="input-group">
         <input type="text" #dateInput class="form-input" id="date" name="date" [(ngModel)]="date">
         <i class="input-group-addon form-icon fa fa-calendar" (click)="show = !show"></i>
       </div>
     </ng-container>
 
     <ng-container *ngIf="type==='text'">
-      <span style="cursor:pointer" #drDateEle (click)="show = !show">
+      <span style="cursor:pointer" #drDateLabelEle>
         {{date}}
       </span>
     </ng-container>
@@ -17,19 +17,21 @@
 
   <div class="calendar" [class.calendar-text]="type==='text'" [style.display]="show?'block':'none'">
     <div class="calendar-nav navbar">
-      <button tabindex="-1"  class="btn btn-action btn-link btn-lg" (click)="prev()"><i class="icon icon-arrow-left"></i></button>
+      <button tabindex="-1" class="btn btn-action btn-link btn-lg" (click)="prev($event)"><i
+          class="icon icon-arrow-left"></i></button>
       <div class="navbar-primary" *ngIf="viewType === 'day'">
-        <span class="text-dark" (click)="viewYear()">{{year}}年</span>
-        <span class="text-dark" (click)="viewMonth()">{{month?.name}}</span>
+        <span class="text-dark" (click)="viewYear($event)">{{year}}年</span>
+        <span class="text-dark" (click)="viewMonth($event)">{{month?.name}}</span>
       </div>
       <div class="navbar-primary" *ngIf="viewType === 'month'">
-        <span class="text-dark" (click)="viewYear()">{{year}}年</span>
+        <span class="text-dark" (click)="viewYear($event)">{{year}}年</span>
       </div>
       <div class="navbar-primary" *ngIf="viewType === 'year'">
         <span class="text-dark">{{startYear}}</span> -
         <span class="text-dark">{{endYear}}</span>
       </div>
-      <button tabindex="-1"  class="btn btn-action btn-link btn-lg" (click)="next()"><i class="icon icon-arrow-right"></i></button>
+      <button tabindex="-1" class="btn btn-action btn-link btn-lg" (click)="next($event)"><i
+          class="icon icon-arrow-right"></i></button>
     </div>
     <div class="calendar-container">
       <div class="calendar-header" *ngIf="viewType === 'day'">
@@ -39,23 +41,27 @@
         <ng-container *ngIf="viewType === 'day'">
           <div class="calendar-date" *ngFor="let item of daysList">
             <button class="date-item" tabindex="-1" [class.selected]="(item.day == day && item.month==month.number)"
-              (click)="selectDay(item.day)">{{item.day}}</button>
+              (click)="selectDay(item.day,$event)">{{item.day}}</button>
+          </div>
+          <div>
+            <button class="btn btn-link" (click)="selectToday($event)">今日</button>
           </div>
         </ng-container>
 
         <ng-container *ngIf="viewType === 'month'">
           <div class="calendar-date month" *ngFor="let item of monthsList">
-            <button (click)="selectMonth(item)" tabindex="-1" [class.selected]="item.name === month.name"
+            <button (click)="selectMonth(item,$event)" tabindex="-1" [class.selected]="item.name === month.name"
               class="date-item">{{item.name}}</button>
           </div>
         </ng-container>
 
         <ng-container *ngIf="viewType === 'year'">
           <div class="calendar-date year" *ngFor="let item of yearsList;let i=index">
-            <button *ngIf="i===0"  tabindex="-1" (click)="prev()" class="date-item panel-year">{{item}}</button>
-            <button *ngIf="(i!==0) && (i!==(yearsList.length-1))" tabindex="-1" (click)="selectYear(item)"
+            <button *ngIf="i===0" tabindex="-1" (click)="prev($event)" class="date-item panel-year">{{item}}</button>
+            <button *ngIf="(i!==0) && (i!==(yearsList.length-1))" tabindex="-1" (click)="selectYear(item,$event)"
               class="date-item">{{item}}</button>
-            <button tabindex="-1" *ngIf="i===(yearsList.length-1)" (click)="prev()" class="date-item panel-year">{{item}}</button>
+            <button tabindex="-1" *ngIf="i===(yearsList.length-1)" (click)="prev($event)"
+              class="date-item panel-year">{{item}}</button>
           </div>
         </ng-container>
       </div>

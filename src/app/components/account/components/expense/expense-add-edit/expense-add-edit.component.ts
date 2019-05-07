@@ -157,7 +157,7 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     if (this.amountInputEle.nativeElement.contains(event.target)) {
-      this.system.selectedTabView = '支出金额'
+      this.system.selectedTabView = '支出金额';
     }
   }
 
@@ -165,9 +165,9 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
   @HostListener('body:keyup', ['$event'])
   keyUp(e) {
     if (e.keyCode === 9) {
-      let array = Array.from(this.system.tabViewList);
+      const array = Array.from(this.system.tabViewList);
       if (this.system.selectedTabView) {
-        let index = _.findIndex(array, (item) => {
+        const index = _.findIndex(array, (item) => {
           return item === this.system.selectedTabView;
         });
         if ((index > -1) && (index <= array.length - 1)) {
