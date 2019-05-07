@@ -84,7 +84,6 @@ export class ExpenseService {
 
             const expense = _.find(this.expenseList, { expenseBookId: this.expense.expenseBookId });
 
-
             this.totalDayAmount = (Number(this.totalDayAmount) * 100 + Number(this.expenseDetail.amount) * 100) / 100;
             if (expense) {
                 expense.totalAmount = (Number(expense.totalAmount) * 100 + Number(this.expenseDetail.amount) * 100) / 100;

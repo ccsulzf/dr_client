@@ -7,8 +7,8 @@
         {{item?.name}}
         <a class="btn btn-clear" (click)="delete(item)" aria-label="Close" role="button"></a>
       </div>
-      <input tabindex="-1" name="filterParticipant" id="participant-list" [(ngModel)]="filterParticipant" class="form-input input-sm"
-        type="text" placeholder="添加参与人">
+      <input tabindex="-1" name="filterParticipant" id="participant-list" [(ngModel)]="filterParticipant"
+        class="form-input input-sm" type="text" placeholder="添加参与人">
     </div>
     <ul class="menu" [style.top]="top+'px'" *ngIf="ulShow">
       <li class="menu-item" *ngFor="let item of list" (click)="select(item)">
@@ -21,7 +21,7 @@
 
       </li>
       <li class="menu-item add">
-        <button tabindex="-1" class="btn btn-primary btn-sm"><i class="icon icon-plus"></i>
+        <button tabindex="-1" class="btn btn-primary btn-sm" (click)="add()"><i class="icon icon-plus"></i>
           添加参与人</button>
       </li>
     </ul>

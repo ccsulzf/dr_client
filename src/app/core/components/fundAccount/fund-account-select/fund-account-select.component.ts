@@ -158,7 +158,7 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
       this.ulShow = true;
       // this.list = this.fundAccountList;
       // this.fundAccountItem = this.list[0] || null;
-      this.fundAccount = this.fundAccountItem.name || '';
+      // this.fundAccount = this.fundAccountItem.name || '';
     } else {
       if (!_.find(this.list, (item) => {
         return item.name === this.fundAccount;

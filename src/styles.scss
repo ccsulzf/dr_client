@@ -20,7 +20,7 @@ select,
 span,
 i,
 label {
-  -webkit-app-region: no-drag;
+  -webkit-app-region: no-drag !important;
 }
 
 label {

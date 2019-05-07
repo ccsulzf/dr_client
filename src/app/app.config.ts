@@ -1,5 +1,5 @@
-let serviceHost = 'http://localhost:1501';
-
+// let serviceHost = 'http://localhost:1501';
+let serviceHost = 'http://localhost:1500';
 // if (window['require']) {
 //     const require = window['require'];
 //     const fs = require('fs');
