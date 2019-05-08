@@ -1,8 +1,6 @@
 <main>
   <div class="month-income">
-    <!-- <span (click)="getCal()" *ngIf="!isShowCal">{{showDate}}</span>
-    <input type="month" [hidden]="!isShowCal" name="selectDate" [ngModel]="selectDate" (ngModelChange)="changeDate($event)"> -->
-    <dr-date [type]="'text'" [viewType]="'month'" [name]="" [initDate]="date" (setDate)="changeDate($event)"></dr-date>
+    <dr-date [type]="'text'" [viewType]="'day'" [name]="" [initDate]="date" (setDate)="changeDate($event)"></dr-date>
     <span>
       总计: {{incomeService?.totalMonthAmount}}元
     </span>

@@ -87,8 +87,9 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
         this.system.selectedTabView = value;
         this.showULIncomeCategory();
       } else {
-        this.incomeCategoryInputEle.nativeElement.blur();
+        console.info(123);
         this.ulShow = false;
+        this.incomeCategoryInputEle.nativeElement.blur();
       }
     });
   }
@@ -149,7 +150,7 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
   // 滚动条滚到相应的元素位置
   showULIncomeCategory() {
     const list = document.getElementById('incomeCategory-ul');
-    const targetLi = document.getElementById(this.incomeCategoryItem.id);
+    const targetLi = document.getElementById('incomeCategory_' + this.incomeCategoryItem.id);
     list.scrollTop = (targetLi.offsetTop - 8);
   }
 

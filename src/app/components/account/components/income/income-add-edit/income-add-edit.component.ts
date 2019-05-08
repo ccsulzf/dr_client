@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy, AfterViewInit, HostListener, ViewChild, E
 import { AccountService } from '../../../services/account.service';
 import { IncomeService } from '../../../services/income.service';
 import { SystemService, HttpClientService, BaseData } from '../../../../../core/providers';
+
+import { Subscription } from 'rxjs';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 @Component({
@@ -26,10 +28,11 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
 
   participantList = [];
   labelList = [];
-  public addFlag = true;
 
+  public addFlag = true;
   public editOrDelFlag = false;
 
+  public changeTabViewEvent: Subscription;
   constructor(
     public accountService: AccountService,
     public incomeService: IncomeService,
@@ -69,6 +72,15 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
       });
       this.addFlag = false;
       this.editOrDelFlag = true;
+    });
+
+    this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
+      if (value === '收款金额') {
+        this.system.selectedTabView = value;
+        this.amountInputEle.nativeElement.focus();
+      } else {
+        this.amountInputEle.nativeElement.blur();
+      }
     });
   }
 
