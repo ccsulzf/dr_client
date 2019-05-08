@@ -314,7 +314,7 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
     }
   }
 
-  add(event) {
+  add() {
     this.selectItem();
     this.system.changeComponent({ component: 'expenseCategory-add-edit', data: this.expenseBook });
   }

@@ -174,7 +174,7 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
     }
   }
 
-  add(event) {
+  add() {
     this.select();
     this.system.changeComponent({ component: 'address-add-edit', data: null });
   }
