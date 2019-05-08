@@ -43,6 +43,7 @@ export class ExpenseListComponent implements AfterViewInit, OnInit, OnDestroy, A
 
 
   getListByDate(expenseDate) {
+    this.expenseService.totalDayAmount = 0;
     this.expenseService.expneseListDate = expenseDate;
     this.http.get('/DR/Expense?expenseDate=' + moment(expenseDate).format('YYYY-MM-DD')).then((data: any) => {
       this.expenseService.expenseList = [];
@@ -51,12 +52,14 @@ export class ExpenseListComponent implements AfterViewInit, OnInit, OnDestroy, A
           const expenseBook = this.baseDataService.getExpenseBook(item.expenseBookId);
           item.expenseBookName = expenseBook.name;
           this.expenseService.expenseList.push(item);
+          this.expenseService.totalDayAmount = (this.expenseService.totalDayAmount * 100 + item.totalAmount * 100) / 100;
         }
+
         // 这里有问题的
-        this.expenseService.totalDayAmount = _.map(data, 'totalAmount').reduce(
-          (acc, cur) => (100 * acc + 100 * cur) / 100,
-          0
-        );
+        // this.expenseService.totalDayAmount = _.map(data, 'totalAmount').reduce(
+        //   (acc, cur) => (100 * acc + 100 * cur) / 100,
+        //   0
+        // );
       }
     });
   }

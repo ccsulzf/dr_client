@@ -111,6 +111,14 @@ export class DrDateComponent implements OnInit, OnDestroy {
     }
   }
 
+  @HostListener('keyup', ['$event'])
+  hotKeyEvent(e) {
+    if (e.keyCode === 13) {
+      e.stopPropagation();
+      this.show = !this.show;
+    }
+  }
+
   @HostListener('document:click', ['$event'])
   onClick() {
     if (this.el.nativeElement.contains(event.target)) {
@@ -233,7 +241,6 @@ export class DrDateComponent implements OnInit, OnDestroy {
       }
       list = list.reverse();
     }
-
 
     for (let i = 1; i <= this.monthDays; i++) {
       list.push({

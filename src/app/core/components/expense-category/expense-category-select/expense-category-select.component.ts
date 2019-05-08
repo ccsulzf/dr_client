@@ -225,9 +225,9 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
     });
   }
 
-  @HostListener('body:keyup', ['$event'])
-  keyUp(e?) {
-    if (this.ulShow && e) {
+  @HostListener('keyup', ['$event'])
+  hotKeyEvent(e) {
+    if (this.ulShow) {
       const index = _.findIndex(this.list, { id: this.expenseCategoryItem.id });
       const nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
       const prevIndex = (index === 0) ? this.list.length - 1 : index - 1;
@@ -246,10 +246,20 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
           this.ulShow = false;
           this.selectItem(this.selectedExpenseCategoryItem);
           break;
+        case 13:
+          e.stopPropagation();
+          this.selectItem(this.expenseCategoryItem);
+          break;
         default:
           break;
       }
+    } else if (!this.ulShow && e.keyCode === 13) {
+      e.stopPropagation();
+      this.ulShow = true;
+      this.selectedExpenseCategoryItem = this.expenseCategoryItem;
+      this.showULExpenseCategory();
     }
+
   }
 
   // 滚动条滚到相应的元素位置
@@ -304,23 +314,9 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
     }
   }
 
-  add(event?) {
-    // 只能用event来判断是enter还是click
-    if (event.screenX === 0 && event.screenY === 0) {
-      if (this.ulShow) {
-        this.selectItem(this.expenseCategoryItem);
-      } else {
-        // 不知道为什么不用setTimeOut就不行
-        setTimeout(() => {
-          this.ulShow = true;
-          this.selectedExpenseCategoryItem = this.expenseCategoryItem;
-          this.showULExpenseCategory();
-        });
-      }
-    } else {
-      this.selectItem();
-      this.system.changeComponent({ component: 'expenseCategory-add-edit', data: this.expenseBook });
-    }
+  add(event) {
+    this.selectItem();
+    this.system.changeComponent({ component: 'expenseCategory-add-edit', data: this.expenseBook });
   }
 }
 

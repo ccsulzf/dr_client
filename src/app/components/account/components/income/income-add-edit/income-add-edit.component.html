@@ -21,7 +21,8 @@
           收款金额:
         </label>
         <div class="input-group">
-          <input class="form-input" type="number" step="0.01" placeholder="收入金额" name="amount" [(ngModel)]="amount">
+          <input class="form-input" #amountInputEle type="number" step="0.01" placeholder="收入金额" name="amount"
+            [(ngModel)]="amount">
           <span class="input-group-addon">元</span>
         </div>
       </div>

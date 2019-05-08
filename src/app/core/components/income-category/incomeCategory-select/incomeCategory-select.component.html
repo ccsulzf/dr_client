@@ -1,37 +1,24 @@
-<!-- <main>
-  <label>
-    {{title}}:
-  </label>
-  <div class="select">
-    <input type="text" name="incomeCategory" [(ngModel)]="incomeCategory" disabled placeholder="请选择收入类别">
-    <i class="down-triangle"></i>
-  </div>
-
-  <div class="ul-select" *ngIf="isListShow">
-    <ul>
-      <li (click)="select(item)" *ngFor="let item of incomeCategoryList">
-        {{item?.name}}
-      </li>
-    </ul>
-    <div class="add" (click)="add()">添加收入类别</div>
-  </div>
-</main> -->
-
 <main>
   <form>
     <div class="form-item">
       <label class="form-label" for="input-example-1">{{title}}</label>
       <div class="has-icon-left" #incomeCategoryListEle>
-        <input type="text" class="form-input" placeholder="请选择收入类别" name="incomeCategory" [(ngModel)]="incomeCategory"
-          autocomplete="off" id="incomeCategory-list">
+        <input type="text" #incomeCategoryInputEle class="form-input" #incomeCategoryInputEle placeholder="请选择收入类别"
+          name="incomeCategory" [(ngModel)]="incomeCategory" autocomplete="off" id="incomeCategory-list">
         <i class="form-icon fa fa-th-large" aria-hidden="true"></i>
       </div>
-      <ul class="menu" *ngIf="ulShow">
-        <li class="menu-item" *ngFor="let item of list" (click)="selectItem(item)">
-          <a>{{item?.name}}</a>
+      <ul class="menu" id="incomeCategory-ul" [style.display]="ulShow === true ? 'block':'none'">
+        <li [id]="'incomeCategory_'+item.id" class="menu-item" *ngFor="let item of list" (click)="selectItem(item)">
+          <a class="text-ellipsis" [class.li-selected]="incomeCategory === item.name">{{item?.name}}</a>
+          <p class="add-edit">
+            <i class="icon icon-edit"></i>
+            <i class="icon icon-delete"></i>
+          </p>
         </li>
         <li class="menu-item add">
-          <button class="btn btn-primary btn-sm" (click)="add()"><i class="icon icon-plus"></i> 添加支出类别</button>
+          <button class="btn btn-primary btn-sm" type="button" tabindex="-1" (click)="add()"><i
+              class="icon icon-plus"></i>
+            添加支出类别</button>
         </li>
       </ul>
     </div>

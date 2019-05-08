@@ -150,7 +150,7 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     });
   }
 
-  @HostListener('document:click', ['$event'])
+  @HostListener('click', ['$event'])
   onClick() {
     if (this.contentInputEle.nativeElement.contains(event.target)) {
       this.system.selectedTabView = '支出内容';
@@ -161,19 +161,37 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
-
   @HostListener('body:keyup', ['$event'])
-  keyUp(e) {
-    if (e.keyCode === 9) {
-      const array = Array.from(this.system.tabViewList);
-      if (this.system.selectedTabView) {
-        const index = _.findIndex(array, (item) => {
-          return item === this.system.selectedTabView;
-        });
-        if ((index > -1) && (index <= array.length - 1)) {
-          this.system.changeTabView(array[index + 1] || array[0]);
+  hotKeyEvent(e) {
+    switch (e.keyCode) {
+      case 9:
+        const array = Array.from(this.system.tabViewList);
+        if (this.system.selectedTabView) {
+          const index = _.findIndex(array, (item) => {
+            return item === this.system.selectedTabView;
+          });
+          if ((index > -1) && (index <= array.length - 1)) {
+            this.system.changeTabView(array[index + 1] || array[0]);
+          }
         }
-      }
+        break;
+      // enter
+      case 13:
+        if (this.addFlag) {
+          this.addExpense();
+        }
+        if (this.editOrDelFlag) {
+          this.editExpense();
+        }
+        break;
+      // delete
+      case 46:
+        if (this.editOrDelFlag) {
+          this.delExpense();
+        }
+        break;
+      default:
+        break;
     }
   }
 
@@ -184,6 +202,7 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     if (this.changeTabViewEvent) {
       this.changeTabViewEvent.unsubscribe();
     }
+    this.system.tabViewList = new Set();
   }
 
   onSetLabelList(labelList) {
@@ -223,7 +242,6 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     this.participantList.push(_.find(BaseData.participantList, { isMyself: true }));
     this.labelList = [];
   }
-
 
   reset() {
     this.expenseBookId = '';

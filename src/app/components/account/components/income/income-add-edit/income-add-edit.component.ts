@@ -9,8 +9,8 @@ import * as _ from 'lodash';
   templateUrl: './income-add-edit.component.html',
   styleUrls: ['./income-add-edit.component.scss']
 })
-export class IncomeAddEditComponent implements OnInit, OnDestroy {
-
+export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('amountInputEle') amountInputEle: ElementRef;
   public editEvent;
 
   incomeId;
@@ -39,7 +39,6 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.editEvent = this.incomeService.editEvent.subscribe(async (data: any) => {
-
       this.incomeId = data.id;
       this.addressId = data.addressId;
       this.fundPartyId = data.fundPartyId;
@@ -68,18 +67,26 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy {
           }
         }
       });
-
       this.addFlag = false;
       this.editOrDelFlag = true;
     });
   }
 
+  ngAfterViewInit() {
+    const array = Array.from(this.system.tabViewList);
+    const index = _.findIndex(array, (value) => {
+      return value === '收入类别';
+    });
+    array.splice(index + 1, 0, '收款金额');
+    this.system.tabViewList = new Set(array);
+  }
+
   @HostListener('body:keyup', ['$event'])
   keyUp(e) {
     if (e.keyCode === 9) {
-      let array = Array.from(this.system.tabViewList);
+      const array = Array.from(this.system.tabViewList);
       if (this.system.selectedTabView) {
-        let index = _.findIndex(array, (item) => {
+        const index = _.findIndex(array, (item) => {
           return item === this.system.selectedTabView;
         });
         if ((index > -1) && (index <= array.length - 1)) {

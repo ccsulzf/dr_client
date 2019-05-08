@@ -93,36 +93,46 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy {
     });
   }
 
-  @HostListener('body:keyup', ['$event'])
-  keyUp(e?) {
-    if (this.ulShow && e) {
-      let index = _.findIndex(this.list, { id: this.fundChannelItem.id });
-      let nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
-      let prevIndex = (index === 0) ? this.list.length - 1 : index - 1;
+  @HostListener('keyup', ['$event'])
+  hotKeyEvent(e) {
+    if (this.ulShow) {
+      const index = _.findIndex(this.list, { id: this.fundChannelItem.id });
+      const nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
+      const prevIndex = (index === 0) ? this.list.length - 1 : index - 1;
       switch (e.keyCode) {
-        case 38: //上
+        case 38: // 上
           this.fundChannelItem = this.list[prevIndex];
           this.fundChannel = this.fundChannelItem.name;
           this.showULFundChannel();
           break;
-        case 40://下
+        case 40: // 下
           this.fundChannelItem = this.list[nextIndex];
           this.fundChannel = this.fundChannelItem.name;
           this.showULFundChannel();
           break;
-        case 27: //esc
+        case 27: // esc
           this.ulShow = false;
           this.select(this.selectedFundChannelItem);
+          break;
+        case 13:
+          e.stopPropagation();
+          this.select(this.fundChannelItem);
+          break;
         default:
           break;
       }
+    } else if (!this.ulShow && e.keyCode === 13) {
+      e.stopPropagation();
+      this.ulShow = true;
+      this.selectedFundChannelItem = this.fundChannelItem;
+      this.showULFundChannel();
     }
   }
 
   // 滚动条滚到相应的元素位置
   showULFundChannel() {
-    const list = document.getElementById("fundChannel-ul");
-    let targetLi = document.getElementById(this.fundChannelItem.id);
+    const list = document.getElementById('fundChannel-ul');
+    const targetLi = document.getElementById('fundChannel_' + this.fundChannelItem.id);
     list.scrollTop = (targetLi.offsetTop - 8);
   }
 
@@ -166,6 +176,7 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy {
       this.fundChannelItem = item;
       this.fundChannel = item.name;
       this.setFundChannel.emit(this.fundChannelItem.id);
+      this.ulShow = false;
     } else {
       this.fundChannelItem = null;
       this.fundChannel = '';
@@ -173,22 +184,8 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy {
   }
 
 
-  add(event?) {
-    // 只能用event来判断是enter还是click
-    if (event.screenX === 0 && event.screenY === 0) {
-      if (this.ulShow) {
-        this.select(this.fundChannelItem);
-      } else {
-        // 不知道为什么不用setTimeOut就不行
-        setTimeout(()=>{
-          this.ulShow = true;
-          this.selectedFundChannelItem = this.fundChannelItem;
-          this.showULFundChannel();
-        });
-      }
-    } else {
-      this.select();
-      this.system.changeComponent({ component: 'fundChannel-add-edit' });
-    }
+  add() {
+    this.select();
+    this.system.changeComponent({ component: 'fundChannel-add-edit' });
   }
 }

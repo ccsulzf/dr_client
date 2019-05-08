@@ -111,39 +111,48 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
     }
   }
 
-
-
-  @HostListener('body:keyup', ['$event'])
-  keyUp(e?) {
-    if (this.ulShow && e) {
+  @HostListener('keyup', ['$event'])
+  hotKeyEvent(e) {
+    if (this.ulShow) {
       const index = _.findIndex(this.list, { id: this.addressItem.id });
       const nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
       const prevIndex = (index === 0) ? this.list.length - 1 : index - 1;
       switch (e.keyCode) {
         case 38: // 上
           this.addressItem = this.list[prevIndex];
-          this.address = `${this.addressItem.province}|${this.addressItem.city}|${this.addressItem.area}`;
+          this.address = this.addressItem.alias_name;
           this.showULAddress();
           break;
         case 40: // 下
           this.addressItem = this.list[nextIndex];
-          this.address = `${this.addressItem.province}|${this.addressItem.city}|${this.addressItem.area}`;
+          this.address = this.addressItem.alias_name;
           this.showULAddress();
           break;
         case 27: // esc
           this.ulShow = false;
           this.select(this.selectedAddressItem);
+          this.addressInputEle.nativeElement.blur();
+          break;
+        case 13:
+          e.stopPropagation();
+          this.select(this.addressItem);
           break;
         default:
           break;
       }
+    } else if (!this.ulShow && e.keyCode === 13) {
+      e.stopPropagation();
+      this.ulShow = true;
+      this.selectedAddressItem = this.addressItem;
+      this.showULAddress();
     }
   }
+
 
   // 滚动条滚到相应的元素位置
   showULAddress() {
     const list = document.getElementById('address-ul');
-    const targetLi = document.getElementById(this.addressItem.id);
+    const targetLi = document.getElementById('address_' + this.addressItem.id);
     list.scrollTop = (targetLi.offsetTop - 8);
   }
 
@@ -165,23 +174,9 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
     }
   }
 
-  add(event?) {
-    // 只能用event来判断是enter还是click
-    if (event.screenX === 0 && event.screenY === 0) {
-      if (this.ulShow) {
-        this.select(this.addressItem);
-      } else {
-        // 不知道为什么不用setTimeOut就不行
-        setTimeout(() => {
-          this.ulShow = true;
-          this.selectedAddressItem = this.addressItem;
-          this.showULAddress();
-        });
-      }
-    } else {
-      this.select();
-      this.system.changeComponent({ component: 'address-add-edit', data: null });
-    }
+  add(event) {
+    this.select();
+    this.system.changeComponent({ component: 'address-add-edit', data: null });
   }
 
 

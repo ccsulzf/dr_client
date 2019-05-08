@@ -1,44 +1,24 @@
-<!-- <main>
-  <label>
-    {{title}}:
-  </label>
-  <div class="select">
-    <input type="text" name="fundAccount" [(ngModel)]="fundAccount" disabled placeholder="请选择资金账户">
-    <i class="down-triangle"></i>
-  </div>
-
-  <div class="ul-select" *ngIf="isListShow">
-    <ul>
-      <li (click)="select(item)" *ngFor="let item of fundAccountList">
-        <span>
-          {{item?.name}}
-        </span>
-        <span>{{item?.balance}}</span>
-      </li>
-    </ul>
-    <div class="add" (click)="add()">添加资金账户</div>
-  </div>
-</main> -->
-
 <main>
   <form>
     <div class="form-item">
       <label class="form-label" for="input-example-1">{{title}}</label>
       <div class="has-icon-left" #fundAccountListEle>
-        <input type="text" #fundAccountInputEle class="form-input" placeholder="请选择付款账户" name="fundAccount" [(ngModel)]="fundAccount"
-          autocomplete="off" id="fundAccount-list">
+        <input type="text" #fundAccountInputEle class="form-input" placeholder="请选择付款账户" name="fundAccount"
+          [(ngModel)]="fundAccount" autocomplete="off" id="fundAccount-list">
         <i class="form-icon fa fa-folder-open" aria-hidden="true"></i>
       </div>
       <ul class="menu" id="fundAccount-ul" [style.display]="ulShow === true ? 'block':'none'">
         <li [id]="item.id" class="menu-item" *ngFor="let item of list" (click)="select(item)">
-          <a class="text-ellipsis" [class.li-selected]="fundAccount === item.name">{{item?.name}} - {{item?.balance}}</a>
+          <a class="text-ellipsis" [class.li-selected]="fundAccount === item.name">{{item?.name}} -
+            {{item?.balance}}</a>
           <p class="add-edit">
             <i class="icon icon-edit"></i>
             <i class="icon icon-delete"></i>
           </p>
         </li>
         <li class="menu-item add">
-          <button class="btn btn-primary btn-sm" (click)="add($event)"><i class="icon icon-plus"></i> 添加付款账户</button>
+          <button tabindex="-1" type="button" class="btn btn-primary btn-sm" (click)="add($event)"><i
+              class="icon icon-plus"></i> 添加付款账户</button>
         </li>
       </ul>
     </div>

@@ -79,7 +79,7 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
     );
     typeahead.subscribe(data => {
       this.list = this.fundAccountList.filter((item) => {
-        return item.name.indexOf(data) > -1;
+        return item.name.indexOf(data) > -1 && this.system.filterByPY(item, 'name', data);
       });
     });
     this.doneEvent = this.system.doneEvent.subscribe((value) => {
@@ -169,9 +169,9 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
     }
   }
 
-  @HostListener('body:keyup', ['$event'])
-  keyUp(e?) {
-    if (this.ulShow && e) {
+  @HostListener('keyup', ['$event'])
+  hotKeyEvent(e) {
+    if (this.ulShow) {
       let index = -1;
       let nextIndex = 0;
       let prevIndex = 0;
@@ -183,7 +183,6 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
         nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
         prevIndex = this.list.length - 1;
       }
-
       switch (e.keyCode) {
         case 38: // 上
           this.fundAccountItem = this.list[prevIndex];
@@ -199,9 +198,18 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
           this.ulShow = false;
           this.select(this.selectedFundAccountItem);
           break;
+        case 13:
+          e.stopPropagation();
+          this.select(this.fundAccountItem);
+          break;
         default:
           break;
       }
+    } else if (!this.ulShow && e.keyCode === 13) {
+      e.stopPropagation();
+      this.ulShow = true;
+      this.selectedFundAccountItem = this.fundAccountItem;
+      this.showULFundAccount();
     }
   }
 
@@ -217,33 +225,15 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
       this.fundAccountItem = item;
       this.fundAccount = item.name;
       this.setFundAccount.emit(this.fundAccountItem.id);
+      this.ulShow = false;
     } else {
       this.fundAccountItem = null;
       this.fundAccount = '';
     }
   }
 
-
-
-  add(event?) {
-    // 只能用event来判断是enter还是click
-    if (event.screenX === 0 && event.screenY === 0) {
-      if (this.ulShow) {
-        this.select(this.fundAccountItem);
-      } else {
-        // 不知道为什么不用setTimeOut就不行
-        setTimeout(() => {
-          this.ulShow = true;
-          // this.fundAccountItem = this.list[0] || null;
-          // this.fundAccount = this.fundAccountItem.name || '';
-          if (this.selectedFundAccountItem) {
-            this.showULFundAccount();
-          }
-        });
-      }
-    } else {
-      this.select();
-      this.system.changeComponent({ component: 'fundAccount-add-edit', data: this.fundChannel });
-    }
+  add() {
+    this.select();
+    this.system.changeComponent({ component: 'fundAccount-add-edit', data: this.fundChannel });
   }
 }

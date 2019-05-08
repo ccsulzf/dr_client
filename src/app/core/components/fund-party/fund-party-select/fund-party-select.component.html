@@ -3,12 +3,12 @@
     <div class="form-item">
       <label class="form-label" for="input-example-1">{{title}}</label>
       <div class="has-icon-left" #fundPartyListEle>
-        <input type="text" #fundPartyInputEle class="form-input" [placeholder]="'请选择'+title" name="fundParty" [(ngModel)]="fundParty"
-          autocomplete="off" id="fundParty-list">
+        <input type="text" #fundPartyInputEle class="form-input" [placeholder]="'请选择'+title" name="fundParty"
+          [(ngModel)]="fundParty" autocomplete="off" id="fundParty-list">
         <i class="form-icon fa fa-share" aria-hidden="true"></i>
       </div>
       <ul class="menu" id="fundParty-ul" [style.display]="ulShow === true ? 'block':'none'">
-        <li [id]="item.id" class="menu-item" *ngFor="let item of list" (click)="select(item)">
+        <li [id]="'fundParty_'+item.id" class="menu-item" *ngFor="let item of list" (click)="select(item)">
           <a class="text-ellipsis" [class.li-selected]="fundParty === item.name">{{item?.name}}</a>
           <p class="add-edit">
             <i class="icon icon-edit"></i>
@@ -16,7 +16,8 @@
           </p>
         </li>
         <li class="menu-item add">
-          <button class="btn btn-primary btn-sm" (click)="add($event)"><i class="icon icon-plus"></i> 添加收款方</button>
+          <button type="button" tabindex="-1" class="btn btn-primary btn-sm" (click)="add()"><i class="icon icon-plus"></i>
+            添加收款方</button>
         </li>
       </ul>
     </div>

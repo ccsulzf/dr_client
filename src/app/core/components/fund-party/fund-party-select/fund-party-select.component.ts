@@ -100,6 +100,7 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
     if (this.fundPartyListEle.nativeElement.contains(event.target)) {
       this.system.selectedTabView = this.title;
       this.ulShow = true;
+      this.showULFundParty();
     } else {
       if (!_.find(this.list, (item) => {
         return item.name === this.fundParty;
@@ -110,9 +111,9 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
     }
   }
 
-  @HostListener('body:keyup', ['$event'])
-  keyUp(e?) {
-    if (this.ulShow && e) {
+  @HostListener('keyup', ['$event'])
+  hotKeyEvent(e) {
+    if (this.ulShow) {
       let index = -1;
       let nextIndex = 0;
       let prevIndex = 0;
@@ -124,7 +125,6 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
         nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
         prevIndex = this.list.length - 1;
       }
-
       switch (e.keyCode) {
         case 38: // 上
           this.fundPartyItem = this.list[prevIndex];
@@ -140,16 +140,25 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
           this.ulShow = false;
           this.select(this.selectedFundPartyItem);
           break;
+        case 13:
+          e.stopPropagation();
+          this.select(this.fundPartyItem);
+          break;
         default:
           break;
       }
+    } else if (!this.ulShow && e.keyCode === 13) {
+      e.stopPropagation();
+      this.ulShow = true;
+      this.selectedFundPartyItem = this.fundPartyItem;
+      this.showULFundParty();
     }
   }
 
   showULFundParty() {
     if (this.fundPartyItem) {
       const list = document.getElementById('fundParty-ul');
-      const targetLi = document.getElementById(this.fundPartyItem.id);
+      const targetLi = document.getElementById('fundParty_' + this.fundPartyItem.id);
       list.scrollTop = (targetLi.offsetTop - 8);
     }
   }
@@ -177,32 +186,16 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
       this.fundPartyItem = item;
       this.fundParty = item.name;
       this.setFundParty.emit(this.fundPartyItem.id);
+      this.ulShow = false;
     } else {
       this.fundPartyItem = null;
       this.fundParty = '';
     }
   }
 
-  add(event?) {
-    // 只能用event来判断是enter还是click
-    if (event.screenX === 0 && event.screenY === 0) {
-      if (this.ulShow) {
-        this.select(this.fundPartyItem);
-      } else {
-        // 不知道为什么不用setTimeOut就不行
-        setTimeout(() => {
-          this.ulShow = true;
-          // this.fundPartyItem = this.list[0] || null;
-          // this.fundParty = this.fundPartyItem.name || '';
-          if (this.selectedFundPartyItem) {
-            this.showULFundParty();
-          }
-        });
-      }
-    } else {
-      this.select();
-      this.system.changeComponent({ component: 'fundParty-add-edit', data: this.type });
-    }
+  add() {
+    this.select();
+    this.system.changeComponent({ component: 'fundParty-add-edit', data: this.type });
   }
 
 }
