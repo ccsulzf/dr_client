@@ -42,8 +42,8 @@ export class ExpenseDetailComponent implements OnInit, AfterViewInit {
       this.gridOptions.api.showLoadingOverlay();
       this.dataList = [];
       // this.gridOptions.api.setFloatingBottomRowData([]);
-      const data = await this.expenseDetailService.getData();
-      this.gridOptions.api.setRowData(data);
+      // const data = await this.expenseDetailService.getData();
+      this.gridOptions.api.setRowData([]);
       this.resize();
     } catch (error) {
 

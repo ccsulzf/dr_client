@@ -1,0 +1,49 @@
+export const FILTER_CONFIG = [{
+    code: 'expenseBook',
+    name: '账本',
+    type: 'equal',
+    limit: null,
+    selected: false
+}, {
+    code: 'expenseCategory',
+    name: '类别',
+    type: 'equal',
+    limit: 'expenseBook',
+    selected: false
+}, {
+    code: 'address',
+    name: '地点',
+    type: 'equal',
+    limit: null,
+    selected: false
+}, {
+    code: 'fundAccount',
+    name: '支付账户',
+    type: 'equal',
+    limit: null,
+    selected: false
+}, {
+    code: 'fundChannel',
+    name: '支付渠道',
+    type: 'equal',
+    limit: null,
+    selected: false
+}, {
+    code: 'participant',
+    name: '参与人',
+    type: 'equal',
+    limit: null,
+    selected: false
+}, {
+    code: 'amout',
+    name: '金额',
+    type: 'range',
+    limit: null,
+    selected: false
+}, {
+    code: 'content',
+    name: '支出内容',
+    type: 'contain',
+    limit: null,
+    selected: false
+}];

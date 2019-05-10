@@ -19,7 +19,6 @@ export class SystemService {
     // 重置
     public resetEvent = new Subject();
 
-
     public tabViewList = new Set();
 
     public changeTabViewEvent = new Subject<any>();

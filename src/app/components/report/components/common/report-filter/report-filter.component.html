@@ -1,25 +1,49 @@
 <main>
   <div class="filter">
-    <!-- 下来选择你要过滤的条件 -->
-    <span #filterClick>
-      + 查询条件
-    </span>
-    <ul #ulClick [style.display]="isListShow?'block':'none'">
-      <li *ngFor="let item of reportConfig"><input type="checkbox" name="selected" [ngModel]="item.selected"
-          (ngModelChange)="onSelect(item,$event)">{{item.name}}</li>
-      <!-- <li>
-        <em>全选</em>
-        <em>全清</em>
-      </li> -->
-    </ul>
-  </div>
-  <!-- 这就是你要过滤的条件 -->
-  <section>
-    <ng-container *ngFor="let item of selectedConfigList">
-      <ng-container [ngSwitch]="item.type">
-        <report-equal *ngSwitchCase="'equal'" [data]="item" (selectEqual)="onSelectEqual($event)"></report-equal>
-      </ng-container>
-    </ng-container>
-  </section>
+    <div class="filter-option">
+      <a class="btn btn-error btn-sm" [class.badge]="reportService.conditions.length" href="#example-modal-1"
+        data-badge><i class="icon icon-search"></i>添加查询条件</a>
+      <div class="modal" id="example-modal-1"><a class="modal-overlay" href="#modals" aria-label="Close"></a>
+        <div class="modal-container" role="document">
+          <div class="modal-header"><a class="btn btn-clear float-right" href="#modals" aria-label="Close"></a>
+            <div class="modal-title h6">支出明细</div>
+          </div>
+          <div class="modal-body">
+            <div class="content">
+              <ng-container *ngFor="let item of reportConfig">
+                <filter-equal *ngIf="item.type === 'equal'" [data]="item"></filter-equal>
+                <filter-range *ngIf="item.type === 'range'" [data]="item"></filter-range>
+                <filter-contain *ngIf="item.type === 'contain'" [data]="item"></filter-contain>
+              </ng-container>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a href="#modals" (click)="confirm()" class="btn btn-primary btn-sm">确认</a>
+            <button type="button" (click)="reset()" class="btn btn-link btn-sm">重置</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <div class="filter-date">
+      <select class="form-select select-sm">
+        <option>日度</option>
+        <option>月度</option>
+        <option>年度</option>
+      </select>
+      <div class="date">
+        <dr-date style="width: 120px;margin-right: 5px;" [type]="'input'" [name]="''" [viewType]="'day'"
+          [size]="'small'" [initDate]="expenseDate" (setDate)="onSetDate($event)">
+        </dr-date>
+        <dr-date style="width: 120px;" [type]="'input'" [name]="''" [viewType]="'day'" [size]="'small'"
+          [initDate]="expenseDate" (setDate)="onSetDate($event)">
+        </dr-date>
+      </div>
+    </div>
+
+    <div class="options">
+      <button class="btn btn-primary btn-sm"><i class="icon icon-search"></i>查询</button>
+      <button class="btn btn-sm"><i class="icon icon-download"></i>导出</button>
+    </div>
+  </div>
 </main>

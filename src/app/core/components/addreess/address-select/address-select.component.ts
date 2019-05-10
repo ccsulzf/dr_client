@@ -67,7 +67,7 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
     );
     typeahead.subscribe(data => {
       this.list = BaseData.addressList.filter((item) => {
-        return item.alias_name.indexOf(data) > -1 || this.system.filterByPY(item, 'alias_name', data);
+        return item.name.indexOf(data) > -1 || this.system.filterByPY(item, 'name', data);
       });
     });
 
@@ -103,7 +103,7 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
       this.showULAddress();
     } else {
       if (!_.find(this.list, (item) => {
-        return item.alias_name === this.address;
+        return item.name === this.address;
       })) {
         this.address = '';
       }
@@ -120,12 +120,12 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
       switch (e.keyCode) {
         case 38: // 上
           this.addressItem = this.list[prevIndex];
-          this.address = this.addressItem.alias_name;
+          this.address = this.addressItem.name;
           this.showULAddress();
           break;
         case 40: // 下
           this.addressItem = this.list[nextIndex];
-          this.address = this.addressItem.alias_name;
+          this.address = this.addressItem.name;
           this.showULAddress();
           break;
         case 27: // esc
@@ -148,7 +148,6 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
     }
   }
 
-
   // 滚动条滚到相应的元素位置
   showULAddress() {
     const list = document.getElementById('address-ul');
@@ -165,7 +164,7 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
     if (item) {
       this.addressItem = item;
       this.selectedAddressItem = item;
-      this.address = item.alias_name;
+      this.address = item.name;
       this.setAddress.emit(this.addressItem.id);
       this.ulShow = false;
     } else {

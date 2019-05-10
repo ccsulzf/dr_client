@@ -1,0 +1,19 @@
+<main>
+  <span>
+    {{name}} :
+  </span>
+
+  <section>
+    <div class="columns">
+      <div class="column">
+        <input class="form-input input-sm" min="0" [max]="numberRangeEnd" name="numberRangeStart"
+          [(ngModel)]="numberRangeStart" type="number">
+      </div>
+      <div class="divider"></div>
+      <div class="column">
+        <input class="form-input input-sm" min="0" [min]="numberRangeStart" name="numberRangeEnd"
+          [(ngModel)]="numberRangeEnd" type="number">
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,14 @@
+<main>
+  <span>
+    {{name}} :
+  </span>
+  <section>
+    <div class="form-group" *ngFor="let item of list;let i=index">
+      <label class="form-checkbox">
+        <input type="checkbox" [name]="item?.name+'_'+i" [(ngModel)]="item.selected">
+        <i class="form-icon"></i> {{item?.name}}
+      </label>
+    </div>
+    <div class="divider"></div>
+  </section>
+</main>

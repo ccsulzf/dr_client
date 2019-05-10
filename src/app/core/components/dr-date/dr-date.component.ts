@@ -16,6 +16,7 @@ export class DrDateComponent implements OnInit, OnDestroy {
   // input 和 text两种类型
   @Input() type;
 
+  @Input() size;
   // 视图类型年月日
   @Input() viewType;
 

@@ -1,0 +1,49 @@
+.form-group:not(:last-child) {
+  margin-bottom: 0;
+  /* margin-bottom: .4rem; */
+}
+
+
+main {
+  display: flex;
+  align-items: center;
+}
+
+span {
+  white-space: nowrap;
+  min-width: 119px;
+  text-align: right;
+}
+
+
+section {
+  display: flex;
+  margin-left: 5px;
+  flex-wrap: wrap;
+  flex-grow: 1;
+}
+
+input {
+  border: none;
+  border-bottom: .05rem solid #bcc3ce;
+}
+
+input:focus {
+  box-shadow: none;
+}
+
+//   input {
+//     line-height: 1.2rem;
+//     margin: .2rem 0;
+//     min-height: 1.4rem;
+//     padding: .1rem .4rem .1rem 1.2rem;
+//   }
+
+//   .columns {
+//     align-items: center;
+//   }
+
+//   .divider {
+//     width: 20px;
+//     border-top: 1px solid #95a5a6;
+//   }

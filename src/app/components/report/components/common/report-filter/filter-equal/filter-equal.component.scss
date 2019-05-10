@@ -1,0 +1,27 @@
+.form-group:not(:last-child) {
+  margin-bottom: 0;
+  /* margin-bottom: .4rem; */
+}
+
+main {
+  display: flex;
+  align-items: center;
+}
+
+span {
+  white-space: nowrap;
+  min-width: 119px;
+  text-align: right;
+}
+
+.form-group {
+  margin-right: 5px;
+}
+
+section {
+  display: flex;
+  margin-left: 5px;
+  flex-wrap: wrap;
+  flex-grow: 1;
+  border-bottom: 1px solid #efefef;
+}

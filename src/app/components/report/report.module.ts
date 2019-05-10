@@ -10,11 +10,15 @@ import { ReportRoutingModule } from './report-routing.module';
 import { ReportComponent } from './report.component';
 import { ReportFilterComponent } from './components/common/report-filter/report-filter.component';
 import { ExpenseDetailComponent } from './components/expense/expense-detail/expense-detail.component';
-import { ReportEqualComponent } from './components/common/report-filter/report-equal/report-equal.component';
 
 import { ReportService, ExpenseDetailService } from './services';
+import { FilterEqualComponent } from './components/common/report-filter/filter-equal/filter-equal.component';
+import { FilterRangeComponent } from './components/common/report-filter/filter-range/filter-range.component';
+import { FilterContainComponent } from './components/common/report-filter/filter-contain/filter-contain.component';
 @NgModule({
-  declarations: [ReportComponent, ReportFilterComponent, ExpenseDetailComponent, ReportEqualComponent],
+  declarations: [ReportComponent,
+    ReportFilterComponent,
+    ExpenseDetailComponent, FilterEqualComponent, FilterRangeComponent, FilterContainComponent],
   providers: [
     ReportService,
     ExpenseDetailService

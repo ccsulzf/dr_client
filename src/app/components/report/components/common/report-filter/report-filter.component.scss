@@ -6,61 +6,52 @@ main {
   display: flex;
   flex-direction: row;
   min-height: 40px;
+  -webkit-app-region: no-drag !important;
 }
 
-section {
-  display: flex;
-  flex-grow: 1;
-  flex-wrap: wrap;
-  align-items: center;
-  border: 1px solid #efefef;
-  box-sizing: border-box;
+.modal {
+  -webkit-app-region: no-drag !important;
+}
+
+.modal-container .modal-header {
+  padding: .4rem;
+}
+
+.modal-container .modal-body {
+  padding: 0;
 }
 
 .filter {
-  cursor: pointer;
-  position: relative;
-  min-width: 125px;
-  min-height: 40px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+  margin: 5px;
+}
 
-  span {
-    height: 100%;
-    display: inline-flex;
-    border: 1px dashed;
-    text-align: center;
-    align-items: center;
-    padding: 0 20px;
-    box-sizing: border-box;
+.filter-date {
+  display: flex;
+  align-items: flex-end;
+
+  select {
+    width: auto;
+    margin-right: 5px;
+  }
+
+  .date {
+    display: flex;
   }
 }
 
-ul {
-  max-height: 125px;
-  overflow-y: auto;
-  width: 100%;
-  min-width: 140px;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  z-index: 1000;
-  position: absolute;
-  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, .2), 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12);
-  background: #fff;
+a,
+button {
+  border-radius: 0;
+}
 
-  li {
-    height: 32px;
-    line-height: 32px;
-    cursor: pointer;
-    padding: 0 10px;
-    display: flex;
-    align-items: center;
+.options button:first-of-type {
+  margin-right: 5px;
+}
 
-    span {
-      margin-left: 5px;
-    }
-
-    &:hover {
-      background: #f5f5f5;
-    }
-  }
+.modal-footer button:first-of-type {
+  margin-right: 5px;
 }
