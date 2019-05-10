@@ -2,7 +2,7 @@
   <div class="filter">
     <div class="filter-option">
       <a class="btn btn-error btn-sm" [class.badge]="reportService.conditions.length" href="#example-modal-1"
-        data-badge><i class="icon icon-search"></i>添加查询条件</a>
+        data-badge><i class="icon icon-plus"></i>添加查询条件</a>
       <div class="modal" id="example-modal-1"><a class="modal-overlay" href="#modals" aria-label="Close"></a>
         <div class="modal-container" role="document">
           <div class="modal-header"><a class="btn btn-clear float-right" href="#modals" aria-label="Close"></a>
@@ -26,23 +26,22 @@
     </div>
 
     <div class="filter-date">
-      <select class="form-select select-sm">
-        <option>日度</option>
-        <option>月度</option>
-        <option>年度</option>
+      <select class="form-select select-sm" name="selectedDateType" [ngModel]="selectedDateType"
+        (ngModelChange)="selectDateType($event)">
+        <option *ngFor="let item of dateTypeList" [value]="item.viewType">{{item.name}}</option>
       </select>
       <div class="date">
-        <dr-date style="width: 120px;margin-right: 5px;" [type]="'input'" [name]="''" [viewType]="'day'"
-          [size]="'small'" [initDate]="expenseDate" (setDate)="onSetDate($event)">
+        <dr-date style="width: 120px;margin-right: 5px;" [type]="'input'" [nameShow]="false" [name]="'startDate'"
+          [viewType]="selectedDateType" [size]="'small'" [initDate]="startDate" (setDate)="onSetDate($event)">
         </dr-date>
-        <dr-date style="width: 120px;" [type]="'input'" [name]="''" [viewType]="'day'" [size]="'small'"
-          [initDate]="expenseDate" (setDate)="onSetDate($event)">
+        <dr-date style="width: 120px;" [type]="'input'" [nameShow]="false" [name]="'endDate'"
+          [viewType]="selectedDateType" [size]="'small'" [initDate]="endDate" (setDate)="onSetDate($event)">
         </dr-date>
       </div>
     </div>
 
     <div class="options">
-      <button class="btn btn-primary btn-sm"><i class="icon icon-search"></i>查询</button>
+      <button type="button" (click)="query()" class="btn btn-primary btn-sm"><i class="icon icon-search"></i>查询</button>
       <button class="btn btn-sm"><i class="icon icon-download"></i>导出</button>
     </div>
   </div>

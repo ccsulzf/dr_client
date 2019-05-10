@@ -1,5 +1,6 @@
 import { Component, OnInit, HostListener, AfterViewInit } from '@angular/core';
-import { GridOptions } from 'ag-grid-community';
+import { GridOptions } from 'ag-grid';
+import "ag-grid-enterprise";
 import { ExpenseDetailService } from '../../../services';
 @Component({
   selector: 'app-expense-detail',
@@ -15,6 +16,10 @@ export class ExpenseDetailComponent implements OnInit, AfterViewInit {
     this.gridOptions = <GridOptions>{
       enableColResize: true,
       enableSorting: true,
+      // enableFilter: true,
+
+      // 隐藏表格左边那个columns
+      toolPanelSuppressSideButtons: true,
       columnDefs: this.getColumnDefs(),
       rowData: [],
     };

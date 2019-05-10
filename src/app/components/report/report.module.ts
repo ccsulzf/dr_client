@@ -6,7 +6,6 @@ import { AgGridModule } from 'ag-grid-angular';
 
 import { ReportRoutingModule } from './report-routing.module';
 
-
 import { ReportComponent } from './report.component';
 import { ReportFilterComponent } from './components/common/report-filter/report-filter.component';
 import { ExpenseDetailComponent } from './components/expense/expense-detail/expense-detail.component';

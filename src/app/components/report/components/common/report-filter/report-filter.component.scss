@@ -6,6 +6,10 @@ main {
   display: flex;
   flex-direction: row;
   min-height: 40px;
+}
+
+a {
+  cursor: pointer;
   -webkit-app-region: no-drag !important;
 }
 
@@ -46,6 +50,10 @@ main {
 a,
 button {
   border-radius: 0;
+}
+
+i {
+  margin-right: 4px;
 }
 
 .options button:first-of-type {

@@ -1,7 +1,7 @@
 <main>
   <div>
     <ng-container *ngIf="type==='input'">
-      <label [style.display]="name?'block':'none'" class="form-label" #drDateLabelEle>{{name}}</label>
+      <label [style.display]="nameShow?'block':'none'" class="form-label" #drDateLabelEle>{{name}}</label>
       <div class="input-group">
         <input type="text" #dateInput class="form-input" [class.input-sm]="size==='small'" id="date" name="date" [(ngModel)]="date">
         <i class="input-group-addon form-icon fa fa-calendar" [class.icon-sm]="size==='small'" (click)="show = !show"></i>

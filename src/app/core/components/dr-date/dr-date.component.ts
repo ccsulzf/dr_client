@@ -17,8 +17,20 @@ export class DrDateComponent implements OnInit, OnDestroy {
   @Input() type;
 
   @Input() size;
+
+  @Input() nameShow;
+
   // 视图类型年月日
-  @Input() viewType;
+  @Input()
+  set viewType(viewType) {
+    this.view_type = viewType;
+    this.ngOnInit();
+  }
+
+  get viewType() {
+    return this.view_type;
+  }
+
 
   @Input()
   set initDate(initDate) {
@@ -36,6 +48,7 @@ export class DrDateComponent implements OnInit, OnDestroy {
 
   public changeTabViewEvent: Subscription;
 
+  public view_type;
   public show = false;
   public viewTypeList = [];
   public month;
@@ -52,6 +65,7 @@ export class DrDateComponent implements OnInit, OnDestroy {
 
   public weekList = [];
   public monthsList = [];
+
   constructor(
     private system: SystemService,
     public el: ElementRef
@@ -130,7 +144,7 @@ export class DrDateComponent implements OnInit, OnDestroy {
         }
       } else {
         this.show = true;
-        this.viewType = this.viewTypeList[this.viewTypeList.length - 1];
+        this.view_type = this.viewTypeList[this.viewTypeList.length - 1];
         if (this.type === 'input') {
           this.dateInput.nativeElement.focus();
           this.system.selectedTabView = this.name;

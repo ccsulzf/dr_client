@@ -79,7 +79,7 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
     );
     typeahead.subscribe(data => {
       this.list = this.fundAccountList.filter((item) => {
-        return item.name.indexOf(data) > -1 && this.system.filterByPY(item, 'name', data);
+        return item.name.indexOf(data) > -1 || this.system.filterByPY(item, 'name', data);
       });
     });
     this.doneEvent = this.system.doneEvent.subscribe((value) => {

@@ -1,6 +1,5 @@
-@import "~ag-grid-community/dist/styles/ag-grid.css";
-@import "~ag-grid-community/dist/styles/ag-theme-balham.css";
-
+@import "~ag-grid/dist/styles/ag-grid.css";
+@import "~ag-grid/dist/styles/ag-theme-balham.css";
 html,
 body {
   margin: 0;
@@ -10,6 +9,7 @@ body {
   overflow: hidden;
   -webkit-app-region: drag
 }
+
 
 button,
 input,
@@ -45,22 +45,22 @@ button {
 
 
 // 修改头部的那个border没有充满
-.ag-ltr .ag-header-cell {
-  border-right: 1px solid #b7b7b7;
-}
+// .ag-ltr .ag-header-cell {
+//   border-right: 1px solid #b7b7b7;
+// }
 
-.ag-header-cell::after,
-.ag-header-group-cell::after {
-  border: 0 !important;
-}
+// .ag-header-cell::after,
+// .ag-header-group-cell::after {
+//   border: 0 !important;
+// }
 
-.ag-cell {
-  /* border-right: 1px solid #dfdfdf !important;
-    border-bottom: 1px solid #dfdfdf !important; */
-  border-right: 1px dotted #808080 !important;
-  // border-bottom: 1px solid #dedede !important;
-}
+// .ag-cell {
+//   /* border-right: 1px solid #dfdfdf !important;
+//     border-bottom: 1px solid #dfdfdf !important; */
+//   border-right: 1px dotted #808080 !important;
+//   // border-bottom: 1px solid #dedede !important;
+// }
 
-.ag-ltr .ag-cell-focus {
-  border: 1px solid #0091EA !important;
-}
+// .ag-ltr .ag-cell-focus {
+//   border: 1px solid #0091EA !important;
+// }
