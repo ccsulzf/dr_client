@@ -75,6 +75,7 @@ export class ReportFilterComponent implements OnInit, OnDestroy {
 
   query() {
     this.getDate();
+    this.reportService.getData();
     // console.info(this.reportService.conditions);
     // console.info(this.reportService.dateTime);
   }

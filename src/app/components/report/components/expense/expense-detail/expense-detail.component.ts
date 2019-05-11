@@ -1,23 +1,24 @@
-import { Component, OnInit, HostListener, AfterViewInit } from '@angular/core';
+import { Component, OnInit, HostListener, AfterViewInit, OnDestroy } from '@angular/core';
 import { GridOptions } from 'ag-grid';
 import "ag-grid-enterprise";
-import { ExpenseDetailService } from '../../../services';
+import { ExpenseDetailService, ReportService } from '../../../services';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-expense-detail',
   templateUrl: './expense-detail.component.html',
   styleUrls: ['./expense-detail.component.scss']
 })
-export class ExpenseDetailComponent implements OnInit, AfterViewInit {
+export class ExpenseDetailComponent implements OnInit, AfterViewInit, OnDestroy {
   gridOptions: GridOptions;
   dataList: [];
+  getDataEvent: Subscription;
   constructor(
-    private expenseDetailService: ExpenseDetailService
+    public expenseDetailService: ExpenseDetailService,
+    public reportService: ReportService
   ) {
     this.gridOptions = <GridOptions>{
       enableColResize: true,
       enableSorting: true,
-      // enableFilter: true,
-
       // 隐藏表格左边那个columns
       toolPanelSuppressSideButtons: true,
       columnDefs: this.getColumnDefs(),
@@ -27,6 +28,15 @@ export class ExpenseDetailComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit() {
+    this.getDataEvent = this.reportService.getDataEvent.subscribe(() => {
+      this.getData();
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.getDataEvent) {
+      this.getDataEvent.unsubscribe();
+    }
   }
 
   @HostListener('window:resize')
@@ -37,18 +47,19 @@ export class ExpenseDetailComponent implements OnInit, AfterViewInit {
   async ngAfterViewInit() {
     this.gridOptions.api.setRowData([]);
     this.resize();
-    this.gridOptions.onGridReady = async () => {
-      await this.getData();
-    };
   }
 
   async getData() {
     try {
       this.gridOptions.api.showLoadingOverlay();
       this.dataList = [];
-      // this.gridOptions.api.setFloatingBottomRowData([]);
-      // const data = await this.expenseDetailService.getData();
-      this.gridOptions.api.setRowData([]);
+      const options = {
+        dateTime: this.reportService.dateTime,
+        conditions: this.reportService.conditions,
+        pagination: {}
+      }
+      const data = await this.expenseDetailService.getData(options);
+      this.gridOptions.api.setRowData(data);
       this.resize();
     } catch (error) {
 

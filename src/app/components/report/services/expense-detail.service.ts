@@ -36,18 +36,9 @@ export class ExpenseDetailService {
         }
     }
 
-    async getData() {
+    async getData(options) {
         try {
-            const option = {
-                dateTime: {
-                    "type": "day",
-                    "start": "2019-03-01",
-                    "end": "2019-03-31"
-                },
-                conditions: [],
-                pagination: {}
-            };
-            const list: any = await this.http.post('/DR/getExpenseReportDetail', option);
+            const list: any = await this.http.post('/DR/getExpenseReportDetail', options);
             if (list && list.length) {
                 this.changeData(list);
                 return list;

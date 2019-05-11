@@ -29,11 +29,17 @@ export class ReportService {
 
     public removeSelectEvent = new Subject<string>();
 
+    public getDataEvent = new Subject<any>();
+
     public removeSelect(value) {
         this.removeSelectEvent.next(value);
     }
 
     public getFilter() {
         this.getFilterEvent.next();
+    }
+
+    public getData() {
+        this.getDataEvent.next();
     }
 }

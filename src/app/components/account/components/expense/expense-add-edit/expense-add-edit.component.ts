@@ -124,6 +124,7 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
 
       this.content = data.expenseDetail.content;
 
+      this.memo = data.expenseDetail.memo;
       this.amount = Number(data.expenseDetail.amount);
 
       await this.getLableList();
@@ -138,14 +139,9 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
       if (value === '支出内容') {
         this.system.selectedTabView = value;
         this.contentInputEle.nativeElement.focus();
-        this.amountInputEle.nativeElement.blur();
       } else if (value === '支出金额') {
         this.system.selectedTabView = value;
         this.amountInputEle.nativeElement.focus();
-        this.contentInputEle.nativeElement.blur();
-      } else {
-        this.contentInputEle.nativeElement.blur();
-        this.amountInputEle.nativeElement.blur();
       }
     });
   }
@@ -237,10 +233,12 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
   init() {
     this.content = '';
     this.amount = '';
-    this.memo = '';
     this.participantList = [];
     this.participantList.push(_.find(BaseData.participantList, { isMyself: true }));
     this.labelList = [];
+    this.memo = '';
+    this.system.selectedTabView = '支出内容';
+    this.contentInputEle.nativeElement.focus();
   }
 
   reset() {

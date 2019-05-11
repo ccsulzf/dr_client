@@ -1,4 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { SystemService } from '../../providers';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'memo',
   templateUrl: './memo.component.html',
@@ -11,11 +13,24 @@ export class MemoComponent implements OnInit {
 
   @Output() setMemo = new EventEmitter<any>();
 
-  public memo = '';
+  public memo;
+  @Input()
+  set hasMemo(memo) {
+    this.memo = memo;
+  };
+
+  get hasMemo() {
+    return this.memo;
+  }
+
   public memoLength = 0;
-  constructor() { }
+
+  constructor(
+
+  ) { }
 
   ngOnInit() {
+
   }
 
   getMemo(memo) {

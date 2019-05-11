@@ -7,6 +7,8 @@ import { HttpClientService } from './providers/http-client.service';
 import { LogService } from './providers/log.service';
 import { SystemService } from './providers/system.service';
 import { BaseDataService } from './providers/baseData.service';
+import { NotifyService } from './providers/notify.service';
+
 import { NavComponent } from './components/nav/nav.component';
 
 import { DynamicComponentDirective } from './directives/dynamic-component.directive';
@@ -80,7 +82,8 @@ import { MemoComponent } from './components/memo/memo.component';
     HttpClientService,
     LogService,
     SystemService,
-    BaseDataService
+    BaseDataService,
+    NotifyService
   ],
   entryComponents: [
     AddressAddEditComponent,
