@@ -33,6 +33,7 @@ export class IncomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+    this.cd.detectChanges();
     this.accountService.rootComponent.component = IncomeListComponent;
     this.accountService.rootComponent.data = '';
     this.dynamicLoad(IncomeListComponent);
@@ -73,6 +74,7 @@ export class IncomeComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
   }
+
 
   dynamicLoad(component?, data?) {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);

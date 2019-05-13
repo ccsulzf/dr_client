@@ -54,7 +54,9 @@ import { MemoComponent } from './components/memo/memo.component';
     ParticipantSelectComponent, LabelSelectComponent,
     FundAccountSelectComponent, IncomeCategoryAddEditComponent,
     FundPartySelectComponent,
-    ExpenseCategorySelectComponent, FundChannelAddEditComponent, FundChannelSelectComponent, ExpenseBookListComponent, DrDateComponent, MemoComponent
+    ExpenseCategorySelectComponent,
+    FundChannelAddEditComponent,
+    FundChannelSelectComponent, ExpenseBookListComponent, DrDateComponent, MemoComponent
   ],
   exports: [
     NavComponent,

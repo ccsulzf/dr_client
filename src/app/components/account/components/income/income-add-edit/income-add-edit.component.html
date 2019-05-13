@@ -66,7 +66,7 @@
       </label-select>
     </div>
     <div class="columns detail">
-      <memo [title]="'备注'" [maxNumber]="500" (setMemo)="onSetMemo($event)"></memo>
+      <memo [title]="'备注'" [maxNumber]="500" [hasMemo]="memo" (setMemo)="onSetMemo($event)"></memo>
     </div>
   </form>
 

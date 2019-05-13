@@ -1,5 +1,6 @@
 @import "~ag-grid/dist/styles/ag-grid.css";
 @import "~ag-grid/dist/styles/ag-theme-balham.css";
+
 html,
 body {
   margin: 0;
@@ -23,6 +24,10 @@ label {
   -webkit-app-region: no-drag !important;
 }
 
+button {
+  cursor: pointer;
+}
+
 label {
   font-size: 14px;
 }
@@ -36,9 +41,31 @@ label {
   border-color: #00adb5 transparent transparent transparent;
 }
 
+.glabal-notify {
+  top: 10px;
+  position: absolute;
+  left: 40%;
+  z-index: 10000;
+  /* min-width: 200px; */
+  /* max-width: 400px; */
+  width: 200px !important;
+  max-width: 400px;
+}
 
-button {
-  cursor: pointer;
+.glabal-notify-icon {
+  border: 2px solid #fff;
+  border-radius: 50%;
+  width: 1.2rem;
+  height: 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center
+}
+
+.form-input-hint{
+  padding: 0;
+  margin: 0;
+  font-size: .6rem !important;
 }
 
 // 下面都是ag-grid的样式

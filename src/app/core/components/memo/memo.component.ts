@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { SystemService } from '../../providers';
 import { Subscription } from 'rxjs';
 @Component({
@@ -17,7 +17,7 @@ export class MemoComponent implements OnInit {
   @Input()
   set hasMemo(memo) {
     this.memo = memo;
-  };
+  }
 
   get hasMemo() {
     return this.memo;
@@ -30,7 +30,13 @@ export class MemoComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+  }
 
+  @HostListener('keyup', ['$event'])
+  hotKeyEvent(e) {
+    if (e.keyCode === 13) {
+      e.stopPropagation();
+    }
   }
 
   getMemo(memo) {

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { AccountService } from '../../../services';
-import { BaseDataService, SystemService } from '../../../../../core/providers';
+import { BaseDataService, SystemService, NotifyService } from '../../../../../core/providers';
 import { BaseData } from '../../../../../core/providers/base-data';
 import { HttpClientService } from '../../../../../core/providers';
 import { ExpenseService } from '../../../services';
@@ -57,7 +57,8 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     public http: HttpClientService,
     public baseDataService: BaseDataService,
     public system: SystemService,
-    public expenseService: ExpenseService
+    public expenseService: ExpenseService,
+    public notifyService: NotifyService
   ) { }
 
   ngOnInit() {
@@ -125,6 +126,7 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
       this.content = data.expenseDetail.content;
 
       this.memo = data.expenseDetail.memo;
+
       this.amount = Number(data.expenseDetail.amount);
 
       await this.getLableList();
@@ -275,6 +277,7 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
         fundAccountId: this.fundAccountId
       };
       await this.expenseService.addExpense(this.participantList, this.labelList);
+      this.notifyService.notify('添加支出账目', 'success');
       if ((this.expenseService.expneseListDate !==
         moment(this.expenseDate).format('YYYY-MM-DD'))
         || (this.expenseBookId !== this.expenseBook.id)) {
@@ -283,7 +286,7 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
       }
       this.init();
     } catch (error) {
-      alert('添加账目失败：' + error);
+      this.notifyService.notify('添加支出账目失败', 'error');
     }
   }
 
@@ -311,7 +314,7 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
       };
 
       await this.expenseService.editExpense(this.participantList, this.labelList);
-
+      this.notifyService.notify('编辑支出账目', 'success');
       this.expenseService.expneseListDate = moment(this.expenseDate).format('YYYY-MM-DD'),
         this.system.changeComponent({ component: 'expense-list' });
 
@@ -320,13 +323,13 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
       this.reset();
       this.goAdd();
     } catch (error) {
-      alert('编辑账目失败:' + error);
+      this.notifyService.notify('编辑支出账目失败', 'error');
     }
   }
 
   async delExpense() {
     try {
-      await this.expenseService.deleteExpenseDetail(this.expenseDetailId);
+      await this.expenseService.deleteExpenseDetail(this.expenseDetailId, this.amount);
       this.reset();
       this.goAdd();
       _.remove(this.expenseService.expenseDetailList, { id: this.expenseDetailId });
@@ -336,8 +339,9 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
         _.remove(this.expenseService.expenseList, { id: this.expenseId });
         this.system.changeComponent({ component: 'expense-list' });
       }
+      this.notifyService.notify('删除支出账目', 'success');
     } catch (error) {
-      alert('删除账目失败:' + error);
+      this.notifyService.notify('删除支出账目失败', 'error');
     }
   }
 }

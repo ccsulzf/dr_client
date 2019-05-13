@@ -127,13 +127,13 @@ export class ExpenseService {
     }
 
 
-    async deleteExpenseDetail(expenseDetailId) {
+    async deleteExpenseDetail(expenseDetailId, amount) {
         try {
             await this.http.delete('/DR/delExpense?expenseDetailId=' + expenseDetailId);
             BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
             // const fundAccount = this.baseDataService.getFundAccount(this.expenseDetail.fundAccountId);
             // fundAccount.balance = (Number(fundAccount.balance) * 100 + Number(this.expenseDetail.amount) * 100) / 100;
-            this.totalDayAmount = (Number(this.totalDayAmount) * 100 - Number(this.expenseDetail.amount) * 100) / 100;
+            this.totalDayAmount = (Number(this.totalDayAmount) * 100 - Number(amount) * 100) / 100;
         } catch (error) {
             throw error;
         }

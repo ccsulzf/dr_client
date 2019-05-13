@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { AccountService } from '../../../services/account.service';
 import { IncomeService } from '../../../services/income.service';
-import { SystemService, HttpClientService, BaseData } from '../../../../../core/providers';
+import { SystemService, HttpClientService, BaseData, NotifyService } from '../../../../../core/providers';
 
 import { Subscription } from 'rxjs';
 import * as moment from 'moment';
@@ -37,7 +37,8 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
     public accountService: AccountService,
     public incomeService: IncomeService,
     public system: SystemService,
-    public http: HttpClientService
+    public http: HttpClientService,
+    public notifyService: NotifyService
   ) { }
 
   ngOnInit() {
@@ -156,43 +157,59 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   async add() {
-    this.incomeService.income = {
-      userId: this.system.user.id,
-      addressId: this.addressId,
-      incomeCategoryId: this.incomeCategoryId,
-      fundPartyId: this.fundPartyId,
-      amount: this.amount,
-      fundChannelId: this.fundChannelId,
-      fundAccountId: this.fundAccountId,
-      startDate: this.startDate,
-      endDate: this.endDate,
-      memo: this.memo,
-    };
-    await this.incomeService.add(this.participantList, this.labelList);
-    this.reset();
+    try {
+      this.incomeService.income = {
+        userId: this.system.user.id,
+        addressId: this.addressId,
+        incomeCategoryId: this.incomeCategoryId,
+        fundPartyId: this.fundPartyId,
+        amount: this.amount,
+        fundChannelId: this.fundChannelId,
+        fundAccountId: this.fundAccountId,
+        startDate: this.startDate,
+        endDate: this.endDate,
+        memo: this.memo,
+      };
+      await this.incomeService.add(this.participantList, this.labelList);
+      this.notifyService.notify('添加收入', 'success');
+      this.reset();
+    } catch (error) {
+      this.notifyService.notify('添加收入失败', 'error');
+    }
+
   }
 
   async edit() {
-    this.incomeService.income = {
-      id: this.incomeId,
-      userId: this.system.user.id,
-      addressId: this.addressId,
-      incomeCategoryId: this.incomeCategoryId,
-      fundPartyId: this.fundPartyId,
-      amount: this.amount,
-      fundChannelId: this.fundChannelId,
-      fundAccountId: this.fundAccountId,
-      startDate: this.startDate,
-      endDate: this.endDate,
-      memo: this.memo,
-    };
-    this.reset();
-    await this.incomeService.editIncome(this.participantList, this.labelList);
+    try {
+      this.incomeService.income = {
+        id: this.incomeId,
+        userId: this.system.user.id,
+        addressId: this.addressId,
+        incomeCategoryId: this.incomeCategoryId,
+        fundPartyId: this.fundPartyId,
+        amount: this.amount,
+        fundChannelId: this.fundChannelId,
+        fundAccountId: this.fundAccountId,
+        startDate: this.startDate,
+        endDate: this.endDate,
+        memo: this.memo,
+      };
+      await this.incomeService.editIncome(this.participantList, this.labelList);
+      this.reset();
+      this.notifyService.notify('编辑收入', 'success');
+    } catch (error) {
+      this.notifyService.notify('编辑收入失败', 'error');
+    }
   }
 
   async del() {
-    await this.incomeService.deleteIncome(this.incomeId, this.fundAccountId);
-    this.reset();
+    try {
+      await this.incomeService.deleteIncome(this.incomeId, this.fundAccountId);
+      this.reset();
+      this.notifyService.notify('删除收入', 'success');
+    } catch (error) {
+      this.notifyService.notify('删除收入失败', 'error');
+    }
   }
 
   reset() {

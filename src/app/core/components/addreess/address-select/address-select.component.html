@@ -1,26 +1,25 @@
-
-<main >
-  <form>
-    <div class="form-item">
-      <label class="form-label">{{title}}</label>
-      <div class="has-icon-left" #addressListEle>
-        <input type="text" #addressInputEle class="form-input" placeholder="请选择地点" name="address" [(ngModel)]="address"
-          autocomplete="off" id="address-list">
-        <i class="form-icon icon icon-location" aria-hidden="true"></i>
-      </div>
-      <ul id="address-ul" class="menu" [style.display]="ulShow === true ? 'block':'none'">
-        <li [id]="'address_'+item.id" class="menu-item" *ngFor="let item of list" (click)="select(item)">
-          <a class="text-ellipsis" [class.li-selected]="address === item.name">{{item.name}}</a>
-          <p class="add-edit">
-            <i class="icon icon-edit" (click)="edit($event,item)"></i>
-            <i class="icon icon-delete" (click)="delete($event,item)"></i>
-          </p>
-        </li>
-        <li class="menu-item add">
-          <button tabindex="-1" type="button" class="btn btn-primary btn-sm" (click)="add()"><i class="icon icon-plus"></i>
-            添加地点</button>
-        </li>
-      </ul>
+<main>
+  <div class="form-item has-error">
+    <label class="form-label">{{title}}</label>
+    <div class="has-icon-left" #addressListEle>
+      <input type="text" #addressInputEle class="form-input" placeholder="请选择地点" name="address" [(ngModel)]="address"
+        autocomplete="off" id="address-list">
+      <i class="form-icon icon icon-location" aria-hidden="true"></i>
     </div>
-  </form>
+    <ul id="address-ul" class="menu" [style.display]="ulShow === true ? 'block':'none'">
+      <li [id]="'address_'+item.id" class="menu-item" *ngFor="let item of list" (click)="select(item)">
+        <a class="text-ellipsis" [class.li-selected]="address === item.name">{{item.name}}</a>
+        <p class="add-edit">
+          <i class="icon icon-edit" (click)="edit($event,item)"></i>
+          <i class="icon icon-delete" (click)="delete($event,item)"></i>
+        </p>
+      </li>
+      <li class="menu-item add">
+        <button tabindex="-1" type="button" class="btn btn-primary btn-sm" (click)="add()"><i
+            class="icon icon-plus"></i>
+          添加地点</button>
+      </li>
+    </ul>
+    <p class="form-input-hint">The option is invalid.</p>
+  </div>
 </main>
