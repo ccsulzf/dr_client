@@ -117,7 +117,7 @@ import {
 
 import { fromEvent, Subscription } from 'rxjs';
 
-import { map, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { map, filter, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 import { SystemService, BaseData, HttpClientService } from '../../../providers';
 
@@ -192,7 +192,6 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
           return false;
         }
       }),
-      debounceTime(10),
       distinctUntilChanged()
     );
     typeahead.subscribe(data => {

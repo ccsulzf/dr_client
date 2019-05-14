@@ -6,7 +6,7 @@ import { SystemService, BaseDataService, BaseData } from '../../../providers';
 
 import * as _ from 'lodash';
 import { fromEvent, Subscription } from 'rxjs';
-import { map, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { map, filter, distinctUntilChanged, switchMap } from 'rxjs/operators';
 @Component({
   selector: 'address-select',
   templateUrl: './address-select.component.html',

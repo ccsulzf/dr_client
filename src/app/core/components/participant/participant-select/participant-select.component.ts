@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 import { SystemService, BaseData } from '../../../providers';
 import { fromEvent } from 'rxjs';
-import { map, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { map, filter, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import * as _ from 'lodash';
 @Component({
   selector: 'participant-select',
@@ -58,7 +58,6 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
           return false;
         }
       }),
-      debounceTime(10),
       distinctUntilChanged()
     );
     typeahead.subscribe(data => {
@@ -107,7 +106,7 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
 
   init() {
     this.participantList = BaseData.participantList;
-    for (let item of this.participantList) {
+    for (const item of this.participantList) {
       item.selected = false;
     }
     const mySelf = _.find(this.participantList, { isMyself: true });

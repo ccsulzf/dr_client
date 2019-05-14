@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { SystemService, BaseData } from '../../../providers';
 import { fromEvent, Subscription } from 'rxjs';
-import { map, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { map, filter, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import * as _ from 'lodash';
 @Component({
   selector: 'fund-account-select',
@@ -74,7 +74,6 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
           return false;
         }
       }),
-      debounceTime(10),
       distinctUntilChanged()
     );
     typeahead.subscribe(data => {
