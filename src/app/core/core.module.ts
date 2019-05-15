@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { ElectronService } from './providers/electron.service';
 import { HttpClientService } from './providers/http-client.service';
 import { LogService } from './providers/log.service';
@@ -43,7 +44,8 @@ import { MemoComponent } from './components/memo/memo.component';
   imports: [
     CommonModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   declarations: [NavComponent, DynamicComponentDirective, WebviewDirective, BlankClickDirective,
     AddressAddEditComponent, ExpenseBookAddEditComponent,

@@ -1,120 +1,8 @@
-// import {
-//   Component, OnInit, Input, OnDestroy, Output, EventEmitter,
-//   HostListener, ElementRef, Renderer, ViewContainerRef
-// } from '@angular/core';
-// import { SystemService, BaseData, HttpClientService } from '../../../providers';
-// import * as _ from 'lodash';
-
-// @Component({
-//   selector: 'expenseCategory-select',
-//   templateUrl: './expense-category-select.component.html',
-//   styleUrls: ['./expense-category-select.component.scss']
-// })
-// export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
-//   @Input() title;
-//   @Output() setCategory = new EventEmitter<string>();
-
-//   @Input()
-//   set expenseCategoryId(expenseCategoryId) {
-//     this.select(_.find(BaseData.expenseCategoryList, { id: expenseCategoryId }));
-//   }
-
-//   get expenseCategoryId(): string { return this.expenseCategory.id; }
-
-//   @Input()
-//   set expenseBook(expenseBook) {
-//     this.expenseBookId = expenseBook.id;
-//     this.init();
-//   }
-
-//   get expenseBook() {
-//     return _.find(BaseData.expenseBookList, { id: this.expenseBookId });
-//   }
-
-//   expenseBookId;
-
-//   expenseCategoryList: any;
-//   expenseCategoryItem;
-//   expenseCategory;
-
-//   resetEvent;
-//   doneEvent;
-
-//   isListShow = false;
-
-//   clickId = 'expenseCategory-list';
-
-//   constructor(
-//     public system: SystemService,
-//     public el: ElementRef,
-//     public renderer: Renderer,
-//     public viewRef: ViewContainerRef
-//   ) { }
-
-
-//   ngOnInit() {
-//     this.init();
-
-//     this.resetEvent = this.system.resetEvent.subscribe(() => {
-//       this.init();
-//     });
-//     this.doneEvent = this.system.doneEvent.subscribe((value) => {
-//       if (value && value.model === 'expenseCategory') {
-//         this.select(value.data);
-//       } else {
-//         this.expenseCategoryList = _.filter(BaseData.expenseCategoryList, { expenseBookId: this.expenseBookId });
-//         this.select(_.first(this.expenseCategoryList));
-//       }
-//     });
-//   }
-
-//   @HostListener('document:click', ['$event'])
-//   onClick() {
-//     if (this.el.nativeElement.contains(event.target)) {
-//       this.isListShow = !this.isListShow;
-//     } else {
-//       this.isListShow = false;
-//     }
-//   }
-
-//   ngOnDestroy() {
-//     if (this.resetEvent) {
-//       this.resetEvent.unsubscribe();
-//     }
-//     if (this.doneEvent) {
-//       this.doneEvent.unsubscribe();
-//     }
-//   }
-
-//   init() {
-//     this.expenseCategoryList = _.filter(BaseData.expenseCategoryList, { expenseBookId: this.expenseBookId });
-//     this.select(_.first(this.expenseCategoryList));
-//   }
-
-//   select(item?) {
-//     this.expenseCategoryList = _.filter(BaseData.expenseCategoryList, { expenseBookId: this.expenseBookId });
-//     this.isListShow = false;
-//     if (item) {
-//       this.expenseCategoryItem = item;
-//       this.expenseCategory = item.name;
-//       this.setCategory.emit(this.expenseCategoryItem.id);
-//     } else {
-//       this.expenseCategoryItem = null;
-//       this.expenseCategory = '';
-//     }
-//   }
-
-//   add() {
-//     this.select();
-//     this.system.changeComponent({ component: 'expenseCategory-add-edit', data: this.expenseBook });
-//   }
-// }
-
 import {
   Component, OnInit, Input, OnDestroy, Output, EventEmitter,
-  HostListener, ElementRef, Renderer, ViewContainerRef, ViewChild
+  HostListener, ElementRef, Renderer, ViewContainerRef, ViewChild, forwardRef
 } from '@angular/core';
-
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn, AbstractControl, ValidationErrors, NG_VALIDATORS } from '@angular/forms';
 import { fromEvent, Subscription } from 'rxjs';
 
 import { map, filter, distinctUntilChanged, switchMap } from 'rxjs/operators';
@@ -123,30 +11,31 @@ import { SystemService, BaseData, HttpClientService } from '../../../providers';
 
 import * as _ from 'lodash';
 
+export const EXPENSE_CATEGORY_ACCESSOR: any = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => ExpenseCategorySelectComponent),
+  multi: true
+};
+
 @Component({
   selector: 'expenseCategory-select',
   templateUrl: './expense-category-select.component.html',
-  styleUrls: ['./expense-category-select.component.scss']
+  styleUrls: ['./expense-category-select.component.scss'],
+  providers: [EXPENSE_CATEGORY_ACCESSOR]
 })
 
-export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
+export class ExpenseCategorySelectComponent implements OnInit, OnDestroy, ControlValueAccessor {
 
   @ViewChild('expenseCategoryListEle') expenseCategoryListEle: ElementRef;
   @ViewChild('expenseCategoryInputEle') expenseCategoryInputEle: ElementRef;
   @Input() title;
-  @Output() setCategory = new EventEmitter<string>();
-
-  @Input()
-  set expenseCategoryId(expenseCategoryId) {
-    this.selectItem(_.find(BaseData.expenseCategoryList, { id: expenseCategoryId }));
-  }
-
-  get expenseCategoryId(): string { return this.expenseCategory.id; }
 
   @Input()
   set expenseBook(expenseBook) {
-    this.expenseBookId = expenseBook.id;
-    this.init();
+    if (expenseBook) {
+      this.expenseBookId = expenseBook.id;
+      this.init();
+    }
   }
 
   get expenseBook() {
@@ -155,7 +44,6 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
 
   expenseBookId;
 
-  // expenseCategoryList: any;
   expenseCategoryItem;
   selectedExpenseCategoryItem;
   expenseCategory;
@@ -174,6 +62,23 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
     public viewRef: ViewContainerRef,
     public system: SystemService,
   ) { }
+
+
+  propagateChange = (temp: any) => { };
+
+  writeValue(value: any) {
+    if (value) {
+      this.selectItem(_.find(BaseData.expenseCategoryList, { id: value }));
+    } else {
+      this.init();
+    }
+  }
+
+  registerOnChange(fn: any) {
+    this.propagateChange = fn;
+  }
+
+  registerOnTouched(fn: any) { }
 
   ngOnInit() {
     this.init();
@@ -278,8 +183,9 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy {
       this.selectedExpenseCategoryItem = item;
       this.expenseCategoryItem = item;
       this.expenseCategory = item.name;
+      this.propagateChange(item.id);
       this.ulShow = false;
-      this.setCategory.emit(this.expenseCategoryItem.id);
+      // this.setCategory.emit(this.expenseCategoryItem.id);
     } else {
       this.expenseCategoryItem = null;
       this.expenseCategory = '';

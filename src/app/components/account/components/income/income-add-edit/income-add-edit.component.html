@@ -1,13 +1,15 @@
 <main>
-  <form>
+  <form #form="ngForm">
     <div class="columns">
       <div class="column col-6">
-        <address-select [title]="'收入地点'" [addressId]="addressId" (setAddress)="onSetAddress($event)"></address-select>
+        <address-select name="address-select" [title]="'收入地点'" [(ngModel)]="addressId"></address-select>
       </div>
       <div class="column col-6">
-        <fund-party-select [title]="'付款方'" [type]="2" (setFundParty)="onSetFundParty($event)"
-          [fundPartyId]="fundPartyId">
+        <fund-party-select name="fund-party" [title]="'付款方'" [type]="1" name="fund-party" [(ngModel)]="fundPartyId">
         </fund-party-select>
+        <!-- <fund-party-select [title]="'付款方'" [type]="2" (setFundParty)="onSetFundParty($event)"
+          [fundPartyId]="fundPartyId">
+        </fund-party-select> -->
       </div>
     </div>
 
@@ -30,12 +32,11 @@
 
     <div class="columns">
       <div class="column col-6">
-        <fundChannel-select [title]="'收款渠道'" (setFundChannel)="onSetsetFundChannel($event)"
-          [fundChannelId]="fundChannelId"></fundChannel-select>
+        <fundChannel-select name="fundChannel" [title]="'收款渠道'" [(ngModel)]="fundChannelId"></fundChannel-select>
       </div>
       <div class="column col-6">
-        <fund-account-select [title]="'存入账户'" [fundChannelId]="fundChannelId"
-          (setFundAccount)="onSetFundAccount($event)" [filterCredit]="true" [fundAccountId]="fundAccountId">
+        <fund-account-select [title]="'存入账户'" name="fund-account" [fundChannelId]="fundChannelId" [filterCredit]="true"
+          [(ngModel)]="fundAccountId">
         </fund-account-select>
       </div>
     </div>
@@ -43,11 +44,12 @@
 
     <div class="columns">
       <div class="column col-6">
-        <dr-date [type]="'input'" [name]="'开始日期'" [nameShow]="true" [size]="'middle'" [viewType]="'day'" [initDate]="startDate"
-          (setDate)="onSetDate($event)"></dr-date>
+        <dr-date [type]="'input'" [name]="'开始日期'" [nameShow]="true" [size]="'middle'" [viewType]="'day'"
+          [initDate]="startDate" (setDate)="onSetDate($event)"></dr-date>
       </div>
       <div class="column col-6">
-        <dr-date [type]="'input'" [name]="'结束日期'" [nameShow]="true" [size]="'middle'" [viewType]="'day'" [initDate]="endDate" (setDate)="onSetDate($event)">
+        <dr-date [type]="'input'" [name]="'结束日期'" [nameShow]="true" [size]="'middle'" [viewType]="'day'"
+          [initDate]="endDate" (setDate)="onSetDate($event)">
         </dr-date>
       </div>
       <!-- <div class="column col-4">

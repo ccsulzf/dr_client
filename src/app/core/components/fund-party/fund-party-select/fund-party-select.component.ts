@@ -1,32 +1,42 @@
 import {
   Component, OnInit, Input, OnDestroy, Output, EventEmitter,
-  HostListener, ElementRef, Renderer, ViewContainerRef, ViewChild
+  HostListener, ElementRef, Renderer, ViewContainerRef, ViewChild, forwardRef
 } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn, AbstractControl, ValidationErrors, NG_VALIDATORS } from '@angular/forms';
+
 import { SystemService, BaseData } from '../../../providers';
 import { fromEvent, Subscription } from 'rxjs';
 import { map, filter, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import * as _ from 'lodash';
+
+export const FUND_PARTY_ACCESSOR: any = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => FundPartySelectComponent),
+  multi: true
+};
+
 @Component({
   selector: 'fund-party-select',
   templateUrl: './fund-party-select.component.html',
-  styleUrls: ['./fund-party-select.component.scss']
+  styleUrls: ['./fund-party-select.component.scss'],
+  providers: [FUND_PARTY_ACCESSOR]
 })
-export class FundPartySelectComponent implements OnInit, OnDestroy {
+export class FundPartySelectComponent implements OnInit, OnDestroy, ControlValueAccessor {
   @ViewChild('fundPartyListEle') fundPartyListEle: ElementRef;
   @ViewChild('fundPartyInputEle') fundPartyInputEle: ElementRef;
   @Input() title;
   @Input() type;
-  @Output() setFundParty = new EventEmitter<string>();
+  // @Output() setFundParty = new EventEmitter<string>();
 
-  @Input()
-  set fundPartyId(fundPartyId) {
-    this.select(_.find(BaseData.fundPartyList, { id: fundPartyId }));
-  }
+  // @Input()
+  // set fundPartyId(fundPartyId) {
+  //   this.select(_.find(BaseData.fundPartyList, { id: fundPartyId }));
+  // }
 
-  get fundPartyId(): string { return this.fundParty; }
+  // get fundPartyId(): string { return this.fundParty; }
 
   list = [];
-  // fundPartyList = [];
+
   fundPartyItem;
   selectedFundPartyItem;
   fundParty;
@@ -43,6 +53,19 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
     public renderer: Renderer,
     public viewRef: ViewContainerRef
   ) { }
+
+  propagateChange = (temp: any) => { };
+
+  writeValue(value: any) {
+    this.select(_.find(BaseData.fundPartyList, { id: value }));
+  }
+
+  registerOnChange(fn: any) {
+    this.propagateChange = fn;
+  }
+
+  registerOnTouched(fn: any) { }
+
 
   ngOnInit() {
     this.init();
@@ -184,7 +207,7 @@ export class FundPartySelectComponent implements OnInit, OnDestroy {
       this.selectedFundPartyItem = item;
       this.fundPartyItem = item;
       this.fundParty = item.name;
-      this.setFundParty.emit(this.fundPartyItem.id);
+      this.propagateChange(item.id);
       this.ulShow = false;
     } else {
       this.fundPartyItem = null;

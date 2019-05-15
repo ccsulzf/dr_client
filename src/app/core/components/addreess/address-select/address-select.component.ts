@@ -1,33 +1,30 @@
 import {
   Component, OnInit, Input, OnDestroy, Output, EventEmitter,
-  HostListener, ElementRef, Renderer, ViewContainerRef, ViewChild
+  HostListener, ElementRef, Renderer, ViewContainerRef, ViewChild, forwardRef
 } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn, AbstractControl, ValidationErrors, NG_VALIDATORS } from '@angular/forms';
 import { SystemService, BaseDataService, BaseData } from '../../../providers';
 
 import * as _ from 'lodash';
 import { fromEvent, Subscription } from 'rxjs';
-import { map, filter, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { map, filter, distinctUntilChanged } from 'rxjs/operators';
+
+export const ADDRESS_ACCESSOR: any = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => AddressSelectComponent),
+  multi: true
+};
 @Component({
   selector: 'address-select',
   templateUrl: './address-select.component.html',
-  styleUrls: ['./address-select.component.scss']
+  styleUrls: ['./address-select.component.scss'],
+  providers: [ADDRESS_ACCESSOR]
 })
-export class AddressSelectComponent implements OnInit, OnDestroy {
+
+export class AddressSelectComponent implements OnInit, OnDestroy, ControlValueAccessor {
   @ViewChild('addressListEle') addressListEle: ElementRef;
   @ViewChild('addressInputEle') addressInputEle: ElementRef;
   @Input() title;
-  @Output() setAddress = new EventEmitter<string>();
-
-  @Input()
-  set addressId(addressId) {
-    if (addressId) {
-      this.select(_.find(BaseData.addressList, { id: addressId }));
-    } else {
-      this.select(_.find(BaseData.addressList, { isCurrenLive: 1 }));
-    }
-  }
-
-  get addressId(): string { return this.address.id; }
 
   list = [];
   addressItem;
@@ -45,6 +42,22 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
     public renderer: Renderer,
     public viewRef: ViewContainerRef
   ) { }
+
+  propagateChange = (temp: any) => { };
+
+  writeValue(value: any) {
+    if (value) {
+      this.select(_.find(BaseData.addressList, { id: value }));
+    } else {
+      this.select(_.find(BaseData.addressList, { isCurrenLive: 1 }));
+    }
+  }
+
+  registerOnChange(fn: any) {
+    this.propagateChange = fn;
+  }
+
+  registerOnTouched(fn: any) { }
 
   ngOnInit() {
     this.init();
@@ -165,7 +178,7 @@ export class AddressSelectComponent implements OnInit, OnDestroy {
       this.addressItem = item;
       this.selectedAddressItem = item;
       this.address = item.name;
-      this.setAddress.emit(this.addressItem.id);
+      this.propagateChange(item.id);
       this.ulShow = false;
     } else {
       this.addressItem = null;

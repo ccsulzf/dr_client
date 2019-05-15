@@ -77,22 +77,6 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
-  onSetAddress(addressId) {
-    this.addressId = addressId;
-  }
-
-  onSetCategory(expenseCategoryId) {
-    this.expenseCategoryId = expenseCategoryId;
-  }
-
-  onSetFundParty(fundPartyId) {
-    this.fundPartyId = fundPartyId;
-  }
-
-  onSetsetFundChannel(fundChannelId) {
-    this.fundChannelId = fundChannelId;
-  }
-
   onSetFundAccount(fundAccountId) {
     this.fundAccountId = fundAccountId;
   }

@@ -1,10 +1,11 @@
 <!--  -->
 <main id="expense-add-edit">
   <div class="expense-book">
-    <expense-book-list [expenseBookId]="expenseBookId" (setExpenseBook)="onSetExpenseBook($event)"></expense-book-list>
+    <expense-book-list name="expenseBook" [ngModel]="expenseBookId" (ngModelChange)="onSetExpenseBook($event)">
+    </expense-book-list>
   </div>
   <section>
-    <form >
+    <form #expenseForm="ngForm">
       <!-- 日期&支出地点 -->
       <div class="columns">
         <div class="column col-6">
@@ -12,19 +13,19 @@
             [initDate]="expenseDate" (setDate)="onSetDate($event)"></dr-date>
         </div>
         <div class="column col-6">
-          <address-select [title]="'支出地点'" [addressId]="addressId" (setAddress)="onSetAddress($event)"></address-select>
+          <address-select name="address" [title]="'支出地点'" [(ngModel)]="addressId">
+          </address-select>
         </div>
       </div>
 
       <!-- 支出类别&收款方 -->
       <div class="columns">
         <div class="column col-6">
-          <expenseCategory-select [title]="'类别'" [expenseBook]="expenseBook" (setCategory)="onSetCategory($event)"
-            [expenseCategoryId]="expenseCategoryId"></expenseCategory-select>
+          <expenseCategory-select [title]="'类别'" name="expenseCategory" [expenseBook]="expenseBook"
+            [(ngModel)]="expenseCategoryId"></expenseCategory-select>
         </div>
         <div class="column col-6">
-          <fund-party-select [title]="'商家'" [type]="1" (setFundParty)="onSetFundParty($event)"
-            [fundPartyId]="fundPartyId">
+          <fund-party-select name="fund-party" [title]="'商家'" [type]="1" name="fund-party" [(ngModel)]="fundPartyId">
           </fund-party-select>
         </div>
       </div>
@@ -32,12 +33,11 @@
       <!-- 付款渠道&付款账户 -->
       <div class="columns">
         <div class="column col-6">
-          <fundChannel-select [title]="'渠道'" (setFundChannel)="onSetsetFundChannel($event)"
-            [fundChannelId]="fundChannelId"></fundChannel-select>
+          <fundChannel-select name="fundChannel" [title]="'渠道'" [(ngModel)]="fundChannelId"></fundChannel-select>
         </div>
         <div class="column col-6">
-          <fund-account-select [title]="'账户'" [fundChannelId]="fundChannelId"
-            (setFundAccount)="onSetFundAccount($event)" [filterCredit]="false" [fundAccountId]="fundAccountId">
+          <fund-account-select name="fund-account" [title]="'账户'" [fundChannelId]="fundChannelId" [filterCredit]="false"
+            [(ngModel)]="fundAccountId">
           </fund-account-select>
         </div>
       </div>
@@ -74,6 +74,7 @@
     <div class="dr-btn-group" *ngIf="!editOrDelFlag && addFlag">
       <button tabindex="-1" class="btn btn-primary" (click)="addExpense()">
         <i class="icon icon-plus"></i> 添加
+        <p *ngIf="!expenseForm.valid">Counter is invalid!</p>
       </button>
       <button tabindex="-1" class="btn btn-Secondary" (click)="reset()">
         <i class="icon icon-refresh"></i> 重置

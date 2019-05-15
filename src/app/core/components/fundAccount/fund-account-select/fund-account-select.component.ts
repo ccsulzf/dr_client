@@ -1,17 +1,26 @@
 import {
   Component, OnInit, Input, OnDestroy, Output, EventEmitter,
-  HostListener, ElementRef, Renderer, ViewContainerRef, ViewChild
+  HostListener, ElementRef, Renderer, ViewContainerRef, ViewChild, forwardRef
 } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn, AbstractControl, ValidationErrors, NG_VALIDATORS } from '@angular/forms';
+
 import { SystemService, BaseData } from '../../../providers';
 import { fromEvent, Subscription } from 'rxjs';
 import { map, filter, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import * as _ from 'lodash';
+
+export const FUND_ACCOUNT_ACCESSOR: any = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => FundAccountSelectComponent),
+  multi: true
+};
 @Component({
   selector: 'fund-account-select',
   templateUrl: './fund-account-select.component.html',
-  styleUrls: ['./fund-account-select.component.scss']
+  styleUrls: ['./fund-account-select.component.scss'],
+  providers: [FUND_ACCOUNT_ACCESSOR]
 })
-export class FundAccountSelectComponent implements OnInit, OnDestroy {
+export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlValueAccessor {
   @ViewChild('fundAccountListEle') fundAccountListEle: ElementRef;
   @ViewChild('fundAccountInputEle') fundAccountInputEle: ElementRef;
   @Input() title;
@@ -24,17 +33,16 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
       this.getFundAccountList();
     }
   }
-
   get fundChannelId(): string { return this.fundChannel.id; }
 
-  @Output() setFundAccount = new EventEmitter<string>();
+  // @Output() setFundAccount = new EventEmitter<string>();
 
-  @Input()
-  set fundAccountId(fundAccountId) {
-    this.select(_.find(BaseData.fundAccountList, { id: fundAccountId }));
-  }
+  // @Input()
+  // set fundAccountId(fundAccountId) {
+  //   this.select(_.find(BaseData.fundAccountList, { id: fundAccountId }));
+  // }
 
-  get fundAccountId(): string { return this.fundAccount.id; }
+  // get fundAccountId(): string { return this.fundAccount.id; }
 
   list = [];
   fundAccountList = [];
@@ -56,6 +64,18 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
     public renderer: Renderer,
     public viewRef: ViewContainerRef
   ) { }
+
+  propagateChange = (temp: any) => { };
+
+  writeValue(value: any) {
+    this.select(_.find(BaseData.fundAccountList, { id: value }));
+  }
+
+  registerOnChange(fn: any) {
+    this.propagateChange = fn;
+  }
+
+  registerOnTouched(fn: any) { }
 
   ngOnInit() {
     this.init();
@@ -223,7 +243,7 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy {
       this.selectedFundAccountItem = this.fundAccountItem;
       this.fundAccountItem = item;
       this.fundAccount = item.name;
-      this.setFundAccount.emit(this.fundAccountItem.id);
+      this.propagateChange(item.id);
       this.ulShow = false;
     } else {
       this.fundAccountItem = null;

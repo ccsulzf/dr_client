@@ -1,29 +1,29 @@
 import {
   Component, OnInit, Input, OnDestroy, Output, EventEmitter,
-  HostListener, ElementRef, Renderer, ViewContainerRef, ViewChild
+  HostListener, ElementRef, Renderer, ViewContainerRef, ViewChild, forwardRef
 } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn, AbstractControl, ValidationErrors, NG_VALIDATORS } from '@angular/forms';
 import { SystemService, BaseData } from '../../../providers';
 import { fromEvent, Subscription } from 'rxjs';
 import { map, filter, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import * as _ from 'lodash';
 
+export const FUND_CHANNEL_ACCESSOR: any = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => FundChannelSelectComponent),
+  multi: true
+};
+
 @Component({
   selector: 'fundChannel-select',
   templateUrl: './fund-channel-select.component.html',
-  styleUrls: ['./fund-channel-select.component.scss']
+  styleUrls: ['./fund-channel-select.component.scss'],
+  providers: [FUND_CHANNEL_ACCESSOR]
 })
-export class FundChannelSelectComponent implements OnInit, OnDestroy {
+export class FundChannelSelectComponent implements OnInit, OnDestroy, ControlValueAccessor {
   @ViewChild('fundChannelListEle') fundChannelListEle: ElementRef;
   @ViewChild('fundChannelInputEle') fundChannelInputEle: ElementRef;
   @Input() title;
-  @Output() setFundChannel = new EventEmitter<string>();
-
-  @Input()
-  set fundChannelId(fundChannelId) {
-    this.select(_.find(BaseData.fundChannelList, { id: fundChannelId }));
-  }
-
-  get fundChannelId(): string { return this.fundChannel; }
 
   list = [];
   fundChannelList = [];
@@ -43,6 +43,17 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy {
     public viewRef: ViewContainerRef
   ) { }
 
+  propagateChange = (temp: any) => { };
+
+  writeValue(value: any) {
+    this.select(_.find(BaseData.fundChannelList, { id: value }));
+  }
+
+  registerOnChange(fn: any) {
+    this.propagateChange = fn;
+  }
+
+  registerOnTouched(fn: any) { }
 
   ngOnInit() {
     this.init();
@@ -174,7 +185,7 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy {
       this.selectedFundChannelItem = this.fundChannelItem;
       this.fundChannelItem = item;
       this.fundChannel = item.name;
-      this.setFundChannel.emit(this.fundChannelItem.id);
+      this.propagateChange(item.id);
       this.ulShow = false;
     } else {
       this.fundChannelItem = null;
