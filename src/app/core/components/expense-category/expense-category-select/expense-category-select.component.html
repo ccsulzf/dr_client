@@ -11,7 +11,7 @@
         <li [id]="item.id" class="menu-item" *ngFor="let item of list" (click)="selectItem(item)">
           <a class="text-ellipsis" [class.li-selected]="expenseCategory === item.name">{{item?.name}}</a>
           <p class="add-edit">
-            <i class="icon icon-edit"></i>
+              <i class="icon icon-edit" (click)="edit($event,item)"></i>
             <i class="icon icon-delete"></i>
           </p>
         </li>

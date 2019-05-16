@@ -221,7 +221,23 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy, Contro
 
   add() {
     this.selectItem();
-    this.system.changeComponent({ component: 'expenseCategory-add-edit', data: this.expenseBook });
+    this.system.changeComponent({
+      component: 'expenseCategory-add-edit', data: {
+        expenseBook: this.expenseBook,
+        value: null
+      }
+    });
+  }
+
+  edit(e, item) {
+    e.stopPropagation();
+    this.ulShow = false;
+    this.system.changeComponent({
+      component: 'expenseCategory-add-edit', data: {
+        expenseBook: this.expenseBook,
+        value: item
+      }
+    });
   }
 }
 

@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { HttpClientService, BaseDataService, SystemService } from '../../../providers';
 @Component({
   selector: 'app-fund-channel-add-edit',
   templateUrl: './fund-channel-add-edit.component.html',
-  styleUrls: ['./fund-channel-add-edit.component.scss']
+  styleUrls: ['../../core-form.scss']
 })
 export class FundChannelAddEditComponent implements OnInit {
-
+  @Input() data;
   public name;
   public memo;
 
@@ -17,9 +17,13 @@ export class FundChannelAddEditComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if (this.data) {
+      this.name = this.data.name;
+      this.memo = this.data.memo;
+    }
   }
 
-  async add() {
+  async addOrEdit() {
     const fundChannel = await this.http.post('/DR/FundChannel',
       {
         userId: this.system.user.id, name: this.name, memo: this.memo

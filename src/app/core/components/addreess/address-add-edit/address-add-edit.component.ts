@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 @Component({
   selector: 'app-address-add-edit',
   templateUrl: './address-add-edit.component.html',
-  styleUrls: ['./address-add-edit.component.scss']
+  styleUrls: ['../../core-form.scss']
 })
 export class AddressAddEditComponent implements OnInit {
   @Input() data;
@@ -18,6 +18,7 @@ export class AddressAddEditComponent implements OnInit {
   public cityList = [];
   public areaList = [];
   public addressData;
+
   constructor(
     public httpClient: HttpClient,
     public system: SystemService,
@@ -29,6 +30,13 @@ export class AddressAddEditComponent implements OnInit {
     this.httpClient.get('assets/province.json')
       .subscribe((data) => {
         this.addressData = data;
+        if (this.data) {
+          this.province = this.data.province;
+          this.selectProvince(this.data.province);
+          this.selectCity(this.data.city);
+          this.area = this.data.area;
+          this.isCurrenLive = this.data.isCurrenLive;
+        }
       });
   }
 
@@ -48,15 +56,20 @@ export class AddressAddEditComponent implements OnInit {
     this.areaList = temp.areaList;
   }
 
-  async add() {
-    const address = await this.http.post('/DR/Address',
-      {
-        province: this.province, city: this.city,
-        area: this.area, memo: this.memo, isCurrenLive: this.isCurrenLive, userId: this.system.user.id
-      });
-    if (address) {
-      this.baseData.addAddress(address);
-      this.system.done({ model: 'address', data: address });
+  async addOrEdit() {
+    if (this.data) {
+
+    } else {
+      const address = await this.http.post('/DR/Address',
+        {
+          province: this.province, city: this.city,
+          area: this.area, memo: this.memo, isCurrenLive: this.isCurrenLive, userId: this.system.user.id
+        });
+
+      if (address) {
+        this.baseData.addAddress(address);
+        this.system.done({ model: 'address', data: address });
+      }
     }
   }
 

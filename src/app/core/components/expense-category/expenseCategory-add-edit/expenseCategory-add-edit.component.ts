@@ -3,12 +3,13 @@ import { HttpClientService, BaseDataService, SystemService } from '../../../prov
 @Component({
   selector: 'expenseCategory-add-edit',
   templateUrl: './expenseCategory-add-edit.component.html',
-  styleUrls: ['./expenseCategory-add-edit.component.scss']
+  styleUrls: ['../../core-form.scss']
 })
 export class ExpenseCategoryAddEditComponent implements OnInit {
   @Input() data;
   public name = '';
   public memo = '';
+  public expenseBook;
   constructor(
     public http: HttpClientService,
     public baseData: BaseDataService,
@@ -16,9 +17,14 @@ export class ExpenseCategoryAddEditComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.expenseBook = this.data.expenseBook;
+    if (this.data.value) {
+      this.name = this.data.value.name;
+      this.memo = this.data.value.memo;
+    }
   }
 
-  async add() {
+  async addOrEdit() {
     const expenseCategory = await this.http.post('/DR/ExpenseCategory',
       {
         expenseBookId: this.data.id, name: this.name, memo: this.memo,

@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 @Component({
   selector: 'app-fund-account-add-edit',
   templateUrl: './fund-account-add-edit.component.html',
-  styleUrls: ['./fund-account-add-edit.component.scss']
+  styleUrls: ['../../core-form.scss', './fund-account-add-edit.component.scss']
 })
 export class FundAccountAddEditComponent implements OnInit {
   @Input() data;
@@ -96,7 +96,7 @@ export class FundAccountAddEditComponent implements OnInit {
     }
   }
 
-  async add() {
+  async addOrEdit() {
     const fundcount = await this.http.post('/DR/addFundCount',
       {
         fundAccount: this.fundAccount,

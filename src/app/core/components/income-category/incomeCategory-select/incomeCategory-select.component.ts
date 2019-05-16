@@ -86,7 +86,6 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
         this.system.selectedTabView = value;
         this.showULIncomeCategory();
       } else {
-        console.info(123);
         this.ulShow = false;
         this.incomeCategoryInputEle.nativeElement.blur();
       }
@@ -183,10 +182,15 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
     }
   }
 
-
-
   add() {
     this.select();
     this.system.changeComponent({ component: 'incomeCategory-add-edit' });
   }
+
+  edit(e, item) {
+    e.stopPropagation();
+    this.ulShow = false;
+    this.system.changeComponent({ component: 'incomeCategory-add-edit', data: item });
+  }
+
 }

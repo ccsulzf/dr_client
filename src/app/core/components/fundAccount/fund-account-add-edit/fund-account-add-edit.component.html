@@ -1,63 +1,79 @@
 <main>
-  <p>添加资金账户</p>
+  <div class="header-panel">
+    {{data?'编辑':'添加'}}资金账户
+  </div>
   <form>
-    <div>
+    <div class="form-item form-group">
       <label>
         资金来往渠道:
       </label>
-      <div>
-        <div #divClick class="select">
-          <input disabled placeholder="请绑定渠道" name="fundChannelName" [(ngModel)]="fundChannelName">
-          <i class="down-triangle"></i>
-        </div>
-        <ul #ulClick [style.display]="isListShow?'block':'none'">
-          <li *ngFor="let item of fundChannelList">
-            <input type="checkbox" [ngModel]="item.selected" name="selected" (ngModelChange)="select($event,item)"><span>{{item?.name}}</span>
-          </li>
-        </ul>
+      <div #divClick class="has-icon-right">
+        <input class="form-input text-ellipsis" placeholder="请绑定渠道" name="fundChannelName" [(ngModel)]="fundChannelName">
+        <i class="form-icon icon icon-arrow-down" aria-hidden="true"></i>
       </div>
+      <ul class="menu" #ulClick [style.display]="isListShow?'block':'none'">
+        <li class="menu-item" *ngFor="let item of fundChannelList">
+          <div class="form-group">
+            <label class="form-checkbox">
+              <input type="checkbox" [ngModel]="item.selected" name="selected" (ngModelChange)="select($event,item)">
+              <i class="form-icon"></i> {{item?.name}}
+            </label>
+          </div>
+        </li>
+      </ul>
+
     </div>
 
-    <div class="input">
+    <div class="form-group">
       <label>
         资金账户:
       </label>
-      <input type="text" name="name" [(ngModel)]="fundAccount.name">
+      <input type="text" class="form-input" name="name" [(ngModel)]="fundAccount.name">
     </div>
 
-    <div class="input">
+    <div class="form-group">
       <label>
         账户余额:
       </label>
-      <input type="number" [disabled]="fundAccount.isCredit" name="balance" [(ngModel)]="fundAccount.balance">
+      <input type="number" class="form-input" [disabled]="fundAccount.isCredit" name="balance"
+        [(ngModel)]="fundAccount.balance">
     </div>
 
-    <div class="input" style="flex-direction: row;">
+    <div class="form-group">
+      <label class="form-switch">
+        <input type="checkbox" name="isCredit" [ngModel]="fundAccount.isCredit" (ngModelChange)="setIsCredit($event)">
+        <i class="form-icon"></i> 账户是否信贷
+      </label>
+    </div>
+
+    <!-- <div class="input" style="flex-direction: row;">
       <input type="checkbox" name="isCredit" [ngModel]="fundAccount.isCredit" (ngModelChange)="setIsCredit($event)">
       <label>账户是否信贷</label>
-    </div>
+    </div> -->
 
     <fieldset *ngIf="fundAccount.isCredit">
-      <legend>信贷数据</legend>
-      <div class="input">
+      <!-- <legend>信贷数据</legend> -->
+      <div class="form-group">
         <label>
           信用额度:
         </label>
-        <input type="number" name="creditAmount" [ngModel]="creditAccount.creditAmount" (ngModelChange)="setCreditAmount($event)">
+        <input type="number" class="form-input" name="creditAmount" [ngModel]="creditAccount.creditAmount"
+          (ngModelChange)="setCreditAmount($event)">
       </div>
 
-      <div class="input">
+      <div class="form-group">
         <label>
           已使用额度:
         </label>
-        <input type="number" name="usedAmount" [ngModel]="creditAccount.usedAmount" (ngModelChange)="setUsedAmount($event)">
+        <input type="number" class="form-input" name="usedAmount" [ngModel]="creditAccount.usedAmount"
+          (ngModelChange)="setUsedAmount($event)">
       </div>
 
-      <div class="input">
+      <div class="form-group">
         <label>
           账单日:
         </label>
-        <select name="billDay" [(ngModel)]="creditAccount.billDay">
+        <select name="billDay" class="form-select" [(ngModel)]="creditAccount.billDay">
           <option *ngFor="let item of numbers" name="item" [value]="item">{{item}}</option>
         </select>
       </div>
@@ -66,16 +82,16 @@
         <label>
           还款日:
         </label>
-        <select name="repaymentDay" [(ngModel)]="creditAccount.repaymentDay">
+        <select name="repaymentDay" class="form-select" [(ngModel)]="creditAccount.repaymentDay">
           <option *ngFor="let item of numbers" name="item" [value]="item">{{item}}</option>
         </select>
         <!-- <input type="date" name="repaymentDay" [(ngModel)]="creditAccount.repaymentDay"> -->
       </div>
     </fieldset>
 
-    <div class="btn-group">
-      <button (click)="add()">添加</button>
-      <button (click)="cancel()">取消</button>
-    </div>
+    <div class="form-group btn-group">
+        <button type="button" (click)="addOrEdit()" class="btn btn-primary">添 加</button>
+        <button type="button" (click)="cancel()" class="btn btn-link">取 消</button>
+      </div>
   </form>
 </main>

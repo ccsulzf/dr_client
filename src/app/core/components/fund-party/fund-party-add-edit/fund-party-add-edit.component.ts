@@ -3,10 +3,11 @@ import { HttpClientService, BaseDataService, SystemService } from '../../../prov
 @Component({
   selector: 'app-fund-party-add-edit',
   templateUrl: './fund-party-add-edit.component.html',
-  styleUrls: ['./fund-party-add-edit.component.scss']
+  styleUrls: ['../../core-form.scss']
 })
 export class FundPartyAddEditComponent implements OnInit {
   @Input() data;
+  public title;
   public type;
   public name;
   public category = 1;
@@ -18,10 +19,17 @@ export class FundPartyAddEditComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.type = this.data;
+    this.type = this.data.type;
+    this.title = this.data.title;
+
+    if (this.data.action === 'edit') {
+      this.category = this.data.value.category;
+      this.memo = this.data.value.memo;
+      this.name = this.data.value.name;
+    }
   }
 
-  async add() {
+  async addOrEdit() {
     const fundParty = await this.http.post('/DR/FundParty',
       {
         userId: this.system.user.id, name: this.name, memo: this.memo,

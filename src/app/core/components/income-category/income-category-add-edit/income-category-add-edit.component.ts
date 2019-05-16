@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { HttpClientService, BaseDataService, SystemService } from '../../../providers';
 @Component({
   selector: 'app-income-category-add-edit',
   templateUrl: './income-category-add-edit.component.html',
-  styleUrls: ['./income-category-add-edit.component.scss']
+  styleUrls: ['../../core-form.scss']
 })
 export class IncomeCategoryAddEditComponent implements OnInit {
-
+  @Input() data;
   public name = '';
   public memo = '';
   constructor(
@@ -16,9 +16,13 @@ export class IncomeCategoryAddEditComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if (this.data) {
+      this.name = this.data.name;
+      this.memo = this.data.memo;
+    }
   }
 
-  async add() {
+  async addOrEdit() {
     const incomeCategory = await this.http.post('/DR/IncomeCategory',
       {
         name: this.name, memo: this.memo,
@@ -33,6 +37,4 @@ export class IncomeCategoryAddEditComponent implements OnInit {
   cancel() {
     this.system.done();
   }
-
-
 }

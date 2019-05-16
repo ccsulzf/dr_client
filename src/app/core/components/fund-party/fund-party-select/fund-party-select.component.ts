@@ -26,14 +26,6 @@ export class FundPartySelectComponent implements OnInit, OnDestroy, ControlValue
   @ViewChild('fundPartyInputEle') fundPartyInputEle: ElementRef;
   @Input() title;
   @Input() type;
-  // @Output() setFundParty = new EventEmitter<string>();
-
-  // @Input()
-  // set fundPartyId(fundPartyId) {
-  //   this.select(_.find(BaseData.fundPartyList, { id: fundPartyId }));
-  // }
-
-  // get fundPartyId(): string { return this.fundParty; }
 
   list = [];
 
@@ -217,7 +209,25 @@ export class FundPartySelectComponent implements OnInit, OnDestroy, ControlValue
 
   add() {
     this.select();
-    this.system.changeComponent({ component: 'fundParty-add-edit', data: this.type });
+    this.system.changeComponent({
+      component: 'fundParty-add-edit', data: {
+        action: 'add',
+        type: this.type,
+        value: null,
+        title: this.title
+      }
+    });
+  }
+
+  edit(e, item) {
+    e.stopPropagation();
+    this.ulShow = false;
+    this.system.changeComponent({ component: 'fundParty-add-edit', data: {
+      action: 'edit',
+      type: this.type,
+      value: item,
+      title: this.title
+    } });
   }
 
 }

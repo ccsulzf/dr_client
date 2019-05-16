@@ -51,7 +51,7 @@ export class ExpenseComponent implements OnDestroy, AfterViewInit, AfterViewChec
           this.dynamicLoad(FundPartyAddEditComponent, value.data);
           break;
         case 'fundChannel-add-edit':
-          this.dynamicLoad(FundChannelAddEditComponent);
+          this.dynamicLoad(FundChannelAddEditComponent, value.data);
           break;
         case 'fundAccount-add-edit':
           this.dynamicLoad(FundAccountAddEditComponent, value.data);

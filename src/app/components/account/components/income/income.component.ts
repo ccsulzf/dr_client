@@ -43,16 +43,16 @@ export class IncomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.changeComponent = this.system.changeComponentEvent.subscribe((value: any) => {
       switch (value.component) {
         case 'address-add-edit':
-          this.dynamicLoad(AddressAddEditComponent);
+          this.dynamicLoad(AddressAddEditComponent, value.data);
           break;
         case 'incomeCategory-add-edit':
-          this.dynamicLoad(IncomeCategoryAddEditComponent);
+          this.dynamicLoad(IncomeCategoryAddEditComponent, value.data);
           break;
         case 'fundParty-add-edit':
           this.dynamicLoad(FundPartyAddEditComponent, value.data);
           break;
         case 'fundChannel-add-edit':
-          this.dynamicLoad(FundChannelAddEditComponent);
+          this.dynamicLoad(FundChannelAddEditComponent, value.data);
           break;
         case 'fundAccount-add-edit':
           this.dynamicLoad(FundAccountAddEditComponent, value.data);
