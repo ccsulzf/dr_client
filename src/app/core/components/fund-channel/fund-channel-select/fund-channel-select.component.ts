@@ -141,9 +141,11 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy, ControlVal
 
   // 滚动条滚到相应的元素位置
   showULFundChannel() {
-    const list = document.getElementById('fundChannel-ul');
-    const targetLi = document.getElementById('fundChannel_' + this.fundChannelItem.id);
-    list.scrollTop = (targetLi.offsetTop - 8);
+    if (this.fundChannelItem) {
+      const list = document.getElementById('fundChannel-ul');
+      const targetLi = document.getElementById('fundChannel_' + this.fundChannelItem.id);
+      list.scrollTop = (targetLi.offsetTop - 8);
+    }
   }
 
   init() {

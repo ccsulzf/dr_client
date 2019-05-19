@@ -5,21 +5,21 @@
   <form>
     <div class="form-group">
       <label>省/直辖市</label>
-      <select class="form-select" name="province" [ngModel]="province" (ngModelChange)="selectProvince($event)">
+      <select class="form-select" name="province" [ngModel]="address.province" (ngModelChange)="selectProvince($event)">
         <option value="">--请选择省或直辖市--</option>
         <option *ngFor="let item of addressData" [value]="item.name">{{item?.name}}</option>
       </select>
     </div>
     <div class="form-group">
       <label>市/直辖市</label>
-      <select class="form-select" name="city" [ngModel]="city" (ngModelChange)="selectCity($event)">
+      <select class="form-select" name="city" [ngModel]="address.city" (ngModelChange)="selectCity($event)">
         <option value="">--请选择市或直辖市--</option>
         <option *ngFor="let item of cityList" [value]="item.name">{{item?.name}}</option>
       </select>
     </div>
     <div class="form-group">
       <label>区/县级市/县</label>
-      <select class="form-select" name="area" [(ngModel)]="area">
+      <select class="form-select" name="area" [(ngModel)]="address.area">
         <option value="">--请选择区或县级市或县--</option>
         <option *ngFor="let item of areaList" [value]="item.name">{{item?.name}}</option>
       </select>
@@ -27,7 +27,7 @@
 
     <div class="form-group">
       <label class="form-switch">
-        <input type="checkbox" name="isCurrenLive" [(ngModel)]="isCurrenLive">
+        <input type="checkbox" name="isCurrenLive" [(ngModel)]="address.isCurrenLive">
         <i class="form-icon"></i> 是否当前居住地
       </label>
     </div>
@@ -36,7 +36,7 @@
       <label>
         备注:
       </label>
-      <textarea class="form-input" name="memo" [(ngModel)]="memo"></textarea>
+      <textarea class="form-input" name="memo" [(ngModel)]="address.memo"></textarea>
     </div>
     <div class="form-group btn-group">
       <button type="button" (click)="addOrEdit()" class="btn btn-primary">添 加</button>

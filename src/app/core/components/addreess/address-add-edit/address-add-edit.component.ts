@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostListener } from '@angular/core';
 import { SystemService, HttpClientService, BaseDataService } from '../../../providers';
 import { HttpClient } from '@angular/common/http';
 import * as _ from 'lodash';
@@ -9,11 +9,14 @@ import * as _ from 'lodash';
 })
 export class AddressAddEditComponent implements OnInit {
   @Input() data;
-  public province = '';
-  public city = '';
-  public area = '';
-  public isCurrenLive = 0;
-  public memo;
+  public address = {
+    id: '',
+    province: '',
+    city: '',
+    area: '',
+    isCurrenLive: 0,
+    memo: ''
+  }
 
   public cityList = [];
   public areaList = [];
@@ -31,17 +34,15 @@ export class AddressAddEditComponent implements OnInit {
       .subscribe((data) => {
         this.addressData = data;
         if (this.data) {
-          this.province = this.data.province;
-          this.selectProvince(this.data.province);
-          this.selectCity(this.data.city);
-          this.area = this.data.area;
-          this.isCurrenLive = this.data.isCurrenLive;
+          this.address = this.data;
+          this.selectProvince(this.address.province);
+          this.selectCity(this.address.city);
         }
       });
   }
 
   selectProvince(data) {
-    this.province = data;
+    this.address.province = data;
     const temp = _.find(this.addressData, (item) => {
       return item.name === data;
     });
@@ -49,22 +50,25 @@ export class AddressAddEditComponent implements OnInit {
   }
 
   selectCity(data) {
-    this.city = data;
+    this.address.city = data;
     const temp = _.find(this.cityList, (item) => {
       return item.name === data;
     });
     this.areaList = temp.areaList;
   }
 
+  @HostListener('keyup', ['$event'])
+  hotKeyEvent(e) {
+    e.stopPropagation();
+  }
+
   async addOrEdit() {
+    const address = await this.http.post('/DR/addOrEditAddress',
+      this.address
+    );
     if (this.data) {
 
     } else {
-      const address = await this.http.post('/DR/Address',
-        {
-          province: this.province, city: this.city,
-          area: this.area, memo: this.memo, isCurrenLive: this.isCurrenLive, userId: this.system.user.id
-        });
 
       if (address) {
         this.baseData.addAddress(address);
