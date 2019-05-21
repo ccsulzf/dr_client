@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { SystemService } from '../../providers';
 import { Subscription } from 'rxjs';
 @Component({
@@ -7,6 +7,8 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./memo.component.scss']
 })
 export class MemoComponent implements OnInit {
+  @ViewChild('memoInputEle') memoInputEle: ElementRef;
+
   @Input() title;
   // 最多可以填写多少字
   @Input() maxNumber;
@@ -34,8 +36,15 @@ export class MemoComponent implements OnInit {
 
   @HostListener('keyup', ['$event'])
   hotKeyEvent(e) {
-    if (e.keyCode === 13) {
-      e.stopPropagation();
+    switch (e.keyCode) {
+      case 13:
+        e.stopPropagation();
+        break;
+      case 27:
+        this.memoInputEle.nativeElement.blur();
+        break;
+      default:
+        break;
     }
   }
 
@@ -54,5 +63,6 @@ export class MemoComponent implements OnInit {
       this.setMemo.emit(memo);
     }
   }
+
 
 }

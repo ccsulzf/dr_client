@@ -35,15 +35,6 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
   }
   get fundChannelId(): string { return this.fundChannel.id; }
 
-  // @Output() setFundAccount = new EventEmitter<string>();
-
-  // @Input()
-  // set fundAccountId(fundAccountId) {
-  //   this.select(_.find(BaseData.fundAccountList, { id: fundAccountId }));
-  // }
-
-  // get fundAccountId(): string { return this.fundAccount.id; }
-
   list = [];
   fundAccountList = [];
   selectedFundAccountItem;
@@ -116,8 +107,6 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
 
     this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
       if (value === this.title) {
-        // this.fundAccountItem = this.list[0] || null;
-        // this.fundAccount = this.fundAccountItem.name || '';
         this.ulShow = true;
         this.fundAccountInputEle.nativeElement.focus();
         this.system.selectedTabView = value;

@@ -77,9 +77,6 @@ export class ExpenseService {
 
             this.groupDetailList();
 
-            // const fundAccount = this.baseDataService.getFundAccount(this.expenseDetail.fundAccountId);
-
-            // fundAccount.balance = (Number(fundAccount.balance) * 100 - Number(this.expenseDetail.amount) * 100) / 100;
             BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
 
             const expense = _.find(this.expenseList, { expenseBookId: this.expense.expenseBookId });

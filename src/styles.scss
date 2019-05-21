@@ -62,11 +62,22 @@ label {
   justify-content: center
 }
 
-.form-input-hint{
+.form-input-hint {
   padding: 0;
   margin: 0;
   font-size: .6rem !important;
 }
+
+.column {
+  margin-bottom: .5rem;
+}
+
+.form-input-hint {
+  margin: 0 !important;
+  padding: 0 !important;
+  position: absolute;
+}
+
 
 // 下面都是ag-grid的样式
 

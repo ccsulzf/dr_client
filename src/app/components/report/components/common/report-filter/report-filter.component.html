@@ -31,11 +31,12 @@
         <option *ngFor="let item of dateTypeList" [value]="item.viewType">{{item.name}}</option>
       </select>
       <div class="date">
-        <dr-date style="width: 120px;margin-right: 5px;" [type]="'input'" [nameShow]="false" [name]="'startDate'"
-          [viewType]="selectedDateType" [size]="'small'" [initDate]="startDate" (setDate)="onSetDate($event)">
+        <dr-date style="width: 120px;margin-right: 5px;" [type]="'input'" name="startDate" [nameShow]="false" [dateName]="'startDate'"
+          [viewType]="selectedDateType" [size]="'small'" [ngModel]="startDate" (ngModelChange)="onSetDate($event)">
         </dr-date>
-        <dr-date style="width: 120px;" [type]="'input'" [nameShow]="false" [name]="'endDate'"
-          [viewType]="selectedDateType" [size]="'small'" [initDate]="endDate" (setDate)="onSetDate($event)">
+
+        <dr-date style="width: 120px;" [type]="'input'" name="endDate" [nameShow]="false" [dateName]="'endDate'"
+          [viewType]="selectedDateType" [size]="'small'" [ngModel]="endDate" (ngModelChange)="onSetDate($event)">
         </dr-date>
       </div>
     </div>

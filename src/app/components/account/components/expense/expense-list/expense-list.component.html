@@ -1,10 +1,11 @@
 <main>
-  <div class="day-expense">
-    <dr-date [type]="'text'" [viewType]="'day'" [nameShow]="false" [name]="" [initDate]="date" (setDate)="changeDate($event)"></dr-date>
+  <form class="day-expense">
+    <dr-date [type]="'text'" [viewType]="'day'" name="date" [nameShow]="false" [dateName]="" [ngModel]="endDate" (ngModelChange)="changeDate($event)" ></dr-date>
+    <!-- [initDate]="date" (setDate)="changeDate($event)" -->
     <span>
       总计:-{{expenseService?.totalDayAmount}}元
     </span>
-  </div>
+  </form>
   <ul *ngIf="expenseService?.expenseList && expenseService?.expenseList.length">
     <li (click)="goDetail(item)" *ngFor="let item of expenseService?.expenseList">
       <span>

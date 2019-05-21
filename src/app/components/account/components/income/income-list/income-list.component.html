@@ -1,10 +1,12 @@
 <main>
-  <div class="month-income">
-    <dr-date [type]="'text'" [viewType]="'month'" [nameShow]="true" [name]="" [initDate]="date" (setDate)="changeDate($event)"></dr-date>
+  <form class="month-income">
+    <dr-date [type]="'text'" [viewType]="'month'" name="date" [nameShow]="false" [dateName]="" [ngModel]="date"
+      (ngModelChange)="changeDate($event)"></dr-date>
+    <!-- <dr-date [type]="'text'" [viewType]="'month'" [nameShow]="true" [name]="" [initDate]="date" (setDate)="changeDate($event)"></dr-date> -->
     <span>
       总计: {{incomeService?.totalMonthAmount}}元
     </span>
-  </div>
+  </form>
   <div class="no-income" *ngIf="!(incomeService?.incomeList && incomeService?.incomeList.length)">
     当前没有收入
   </div>

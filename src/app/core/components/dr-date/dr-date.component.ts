@@ -1,17 +1,26 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, HostListener, OnDestroy, Renderer2 } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, HostListener, OnDestroy, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn, AbstractControl, ValidationErrors, NG_VALIDATORS } from '@angular/forms';
 import { SystemService } from '../../providers';
 import { Subscription } from 'rxjs';
 
 import { monthsList, weekList } from './da-date.comfig';
 import * as _ from 'lodash';
+
+
+export const EXPENSE_CATEGORY_ACCESSOR: any = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => DrDateComponent),
+  multi: true
+};
 @Component({
   selector: 'dr-date',
   templateUrl: './dr-date.component.html',
-  styleUrls: ['./dr-date.component.scss']
+  styleUrls: ['./dr-date.component.scss'],
+  providers: [EXPENSE_CATEGORY_ACCESSOR]
 })
-export class DrDateComponent implements OnInit, OnDestroy {
+export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor {
 
-  @Input() name;
+  @Input() dateName;
 
   // input 和 text两种类型
   @Input() type;
@@ -31,17 +40,6 @@ export class DrDateComponent implements OnInit, OnDestroy {
     return this.view_type;
   }
 
-
-  @Input()
-  set initDate(initDate) {
-    this.date = initDate || new Date();
-  }
-
-  get initDate() {
-    return this.date;
-  }
-
-  @Output() setDate = new EventEmitter<Object>();
 
   @ViewChild('drDateLabelEle') drDateLabelEle: ElementRef;
   @ViewChild('dateInput') dateInput: ElementRef;
@@ -74,8 +72,20 @@ export class DrDateComponent implements OnInit, OnDestroy {
     this.monthsList = monthsList;
   }
 
+  propagateChange = (temp: any) => { };
+
+  writeValue(value: any) {
+    this.date = value;
+  }
+
+  registerOnChange(fn: any) {
+    this.propagateChange = fn;
+  }
+
+  registerOnTouched(fn: any) { }
+
   ngOnInit() {
-    this.date = this.initDate || new Date();
+    // this.date = this.initDate || new Date();
     this.getMonth(new Date(this.date).getMonth() + 1);
     this.getYear();
     this.getDay(this.date);
@@ -83,12 +93,11 @@ export class DrDateComponent implements OnInit, OnDestroy {
     this.monthDays = this.getMonthDays();
     this.getViewTypeList(this.viewType);
     this.getList();
-
-    if (this.name) {
-      this.system.tabViewList.add(this.name);
+    if (this.dateName) {
+      this.system.tabViewList.add(this.dateName);
     }
     this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
-      if (value === this.name) {
+      if (value === this.dateName) {
         this.system.selectedTabView = value;
         this.dateInput.nativeElement.focus();
         this.show = true;
@@ -140,14 +149,14 @@ export class DrDateComponent implements OnInit, OnDestroy {
       if (this.el.nativeElement.contains(this.drDateLabelEle.nativeElement)) {
         this.show = !this.show;
         if (this.show) {
-          this.system.selectedTabView = this.name;
+          this.system.selectedTabView = this.dateName;
         }
       } else {
         this.show = true;
         this.view_type = this.viewTypeList[this.viewTypeList.length - 1];
         if (this.type === 'input') {
           this.dateInput.nativeElement.focus();
-          this.system.selectedTabView = this.name;
+          this.system.selectedTabView = this.dateName;
         }
       }
     } else {
@@ -334,12 +343,13 @@ export class DrDateComponent implements OnInit, OnDestroy {
     }
     if (this.viewType === 'input') {
       this.dateInput.nativeElement.focus();
-      this.system.selectedTabView = this.name;
+      this.system.selectedTabView = this.dateName;
     }
-    this.setDate.emit({
-      name: this.name,
+    this.propagateChange({
+      name: this.dateName,
       date: this.date
     });
+    // this.setDate.emit();
   }
 
   selectToday(e) {
@@ -354,10 +364,14 @@ export class DrDateComponent implements OnInit, OnDestroy {
     this.show = false;
     if (this.viewType === 'input') {
       this.dateInput.nativeElement.focus();
-      this.system.selectedTabView = this.name;
+      this.system.selectedTabView = this.dateName;
     }
-    this.setDate.emit({
-      name: this.name,
+    // this.setDate.emit({
+    //   name: this.name,
+    //   date: this.date
+    // });
+    this.propagateChange({
+      name: this.dateName,
       date: this.date
     });
   }
@@ -375,10 +389,14 @@ export class DrDateComponent implements OnInit, OnDestroy {
     }
     if (this.viewType === 'input') {
       this.dateInput.nativeElement.focus();
-      this.system.selectedTabView = this.name;
+      this.system.selectedTabView = this.dateName;
     }
-    this.setDate.emit({
-      name: this.name,
+    // this.setDate.emit({
+    //   name: this.name,
+    //   date: this.date
+    // });
+    this.propagateChange({
+      name: this.dateName,
       date: this.date
     });
   }

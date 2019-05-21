@@ -54,12 +54,6 @@ export class ExpenseListComponent implements AfterViewInit, OnInit, OnDestroy, A
           this.expenseService.expenseList.push(item);
           this.expenseService.totalDayAmount = (this.expenseService.totalDayAmount * 100 + item.totalAmount * 100) / 100;
         }
-
-        // 这里有问题的
-        // this.expenseService.totalDayAmount = _.map(data, 'totalAmount').reduce(
-        //   (acc, cur) => (100 * acc + 100 * cur) / 100,
-        //   0
-        // );
       }
     });
   }

@@ -1,9 +1,12 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { FormBuilder, FormGroup, FormControl, Validators, FormGroupDirective } from '@angular/forms';
 import { AccountService } from '../../../services';
-import { BaseDataService, SystemService, NotifyService } from '../../../../../core/providers';
+import { BaseDataService, SystemService, NotifyService, HttpClientService } from '../../../../../core/providers';
 import { BaseData } from '../../../../../core/providers/base-data';
-import { HttpClientService } from '../../../../../core/providers';
+
 import { ExpenseService } from '../../../services';
+
+import { Expense, ExpenseDetail } from '../../../models';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
@@ -50,6 +53,9 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
   public expenseDetailId;
   public expenseBookId;
   public totalAmount;
+
+  // public expense: Expense;
+  // public expenseDetail: ExpenseDetail;
 
   public changeTabViewEvent: Subscription;
   constructor(
