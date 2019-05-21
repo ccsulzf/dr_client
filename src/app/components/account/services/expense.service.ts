@@ -83,16 +83,16 @@ export class ExpenseService {
 
             this.totalDayAmount = (Number(this.totalDayAmount) * 100 + Number(expenseDetail.amount) * 100) / 100;
             if (hasExpense) {
-                hasExpense.totalAmount = (Number(hasExpense.totalAmount) * 100 + Number(this.expenseDetail.amount) * 100) / 100;
+                hasExpense.totalAmount = (Number(hasExpense.totalAmount) * 100 + Number(expenseDetail.amount) * 100) / 100;
             } else {
-                const expenseBook = this.baseDataService.getExpenseBook(this.expense.expenseBookId);
+                const expenseBook = this.baseDataService.getExpenseBook(expense.expenseBookId);
                 this.expenseList.push({
                     id: data.expenseId,
                     expenseDate: moment().format('YYYY-MM-DD'),
                     userId: this.system.user.id,
-                    expenseBookId: this.expense.expenseBookId,
+                    expenseBookId: expense.expenseBookId,
                     expenseBookName: expenseBook.name,
-                    totalAmount: this.expenseDetail.amount
+                    totalAmount: expenseDetail.amount
                 });
             }
         } catch (error) {
@@ -100,11 +100,11 @@ export class ExpenseService {
         }
     }
 
-    async editExpense(participantList, labelList) {
+    async editExpense(expense, expenseDetail, participantList, labelList) {
         try {
             const data = {
-                expense: this.expense,
-                expenseDetail: this.expenseDetail,
+                expense: expense,
+                expenseDetail: expenseDetail,
                 participantList: participantList,
                 labelList: labelList
             };
@@ -124,13 +124,14 @@ export class ExpenseService {
     }
 
 
-    async deleteExpenseDetail(expenseDetailId, amount) {
+    async deleteExpenseDetail(expense, expenseDetailId, amount) {
         try {
             await this.http.delete('/DR/delExpense?expenseDetailId=' + expenseDetailId);
             BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
             // const fundAccount = this.baseDataService.getFundAccount(this.expenseDetail.fundAccountId);
             // fundAccount.balance = (Number(fundAccount.balance) * 100 + Number(this.expenseDetail.amount) * 100) / 100;
             this.totalDayAmount = (Number(this.totalDayAmount) * 100 - Number(amount) * 100) / 100;
+            expense.totalAmount = (Number(expense.totalAmount) * 100 - Number(amount) * 100) / 100;
         } catch (error) {
             throw error;
         }

@@ -46,9 +46,11 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy, ControlVal
   propagateChange = (temp: any) => { };
 
   writeValue(value: any) {
-    if (value) {
-      this.select(_.find(BaseData.fundChannelList, { id: value }));
-    }
+    setTimeout(() => {
+      if (value) {
+        this.select(_.find(BaseData.fundChannelList, { id: value }));
+      }
+    });
   }
 
   registerOnChange(fn: any) {
@@ -159,7 +161,7 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy, ControlVal
   init() {
     this.fundChannelList = BaseData.fundChannelList;
     this.list = this.fundChannelList;
-    this.select(_.first(this.fundChannelList));
+    // this.select(_.first(this.fundChannelList));
   }
 
   @HostListener('document:click', ['$event'])

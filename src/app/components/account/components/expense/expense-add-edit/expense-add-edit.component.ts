@@ -89,12 +89,6 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     });
   }
 
-  // onSetDate(data) {
-  //   if (data) {
-  //     this.expense.expenseDate = data.date;
-  //   }
-  // }
-
   onSetExpenseBook(item) {
     if (item) {
       this.expenseBook = item;
@@ -231,7 +225,7 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     this.labelList = [];
     this.memo = '';
     this.system.selectedTabView = '支出内容';
-    this.contentInputEle.nativeElement.focus();
+    // this.contentInputEle.nativeElement.focus();
     this.expenseForm.markAsPristine();
   }
 
@@ -243,12 +237,6 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
       expenseDate: moment().format('YYYY-MM-DD')
     });
     this.init();
-    // this.expense.expenseBookId = '';
-    // this.addressId = '';
-    // this.fundAccountId = '';
-    // this.fundPartyId = '';
-    // this.init();
-    // this.expenseDate = moment().format('YYYY-MM-DD');
   }
 
   goAdd() {
@@ -258,87 +246,63 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   async addExpense() {
-    console.info('----add----');
-    // console.info(this.expense);
-    console.info(this.expenseDetail);
-    // console.info(this.expenseForm.value);
     if (!this.expenseForm.valid) {
       for (const item in this.expenseForm.controls) {
         this.expenseForm.get(item).markAsTouched();
       }
       return;
     }
-    // try {
-    //   await this.expenseService.addExpense(this.expense, this.expenseDetail, this.participantList, this.labelList);
-    //   this.notifyService.notify('添加支出账目', 'success');
-    //   if ((this.expenseService.expneseListDate !==
-    //     moment(this.expense.expenseDate).format('YYYY-MM-DD'))
-    //     || (this.expense.expenseBookId !== this.expenseBook.id)) {
-    //     this.expenseService.expneseListDate = moment(this.expense.expenseDate).format('YYYY-MM-DD'),
-    //       this.system.changeComponent({ component: 'expense-list' });
-    //   }
-    //   this.init();
-    // } catch (error) {
-    //   this.notifyService.notify('添加支出账目失败', 'error');
-    // }
+    try {
+      this.expense.totalAmount = this.expenseDetail.amount;
+      await this.expenseService.addExpense(this.expense, this.expenseDetail, this.participantList, this.labelList);
+      this.notifyService.notify('添加支出账目', 'success');
+      if ((this.expenseService.expneseListDate !==
+        moment(this.expense.expenseDate).format('YYYY-MM-DD'))
+        || (this.expense.expenseBookId !== this.expenseBook.id)) {
+        this.expenseService.expneseListDate = moment(this.expense.expenseDate).format('YYYY-MM-DD'),
+          this.system.changeComponent({ component: 'expense-list' });
+      }
+      this.init();
+    } catch (error) {
+      this.notifyService.notify('添加支出账目失败', 'error');
+    }
   }
 
   async editExpense() {
-    console.info('----edit----');
-    console.info(this.expense);
-
-    console.info(this.expenseDetail);
-    // try {
-    //   this.expenseService.expense = {
-    //     id: this.expenseId,
-    //     expenseDate: moment(this.expenseDate).format('YYYY-MM-DD'),
-    //     userId: this.system.user.id,
-    //     expenseBookId: this.expenseBook.id,
-    //     totalAmount: this.totalAmount
-    //   };
-
-    //   this.expenseService.expenseDetail = {
-    //     id: this.expenseDetailId,
-    //     expenseId: this.expenseId,
-    //     content: this.content,
-    //     amount: this.amount,
-    //     memo: this.memo,
-    //     addressId: this.addressId,
-    //     expenseCategoryId: this.expenseCategoryId,
-    //     fundPartyId: this.fundPartyId,
-    //     fundChannelId: this.fundChannelId,
-    //     fundAccountId: this.fundAccountId
-    //   };
-
-    //   await this.expenseService.editExpense(this.participantList, this.labelList);
-    //   this.notifyService.notify('编辑支出账目', 'success');
-    //   this.expenseService.expneseListDate = moment(this.expenseDate).format('YYYY-MM-DD'),
-    //     this.system.changeComponent({ component: 'expense-list' });
-
-    //   this.expenseService.init();
-
-    //   this.reset();
-    //   this.goAdd();
-    // } catch (error) {
-    //   this.notifyService.notify('编辑支出账目失败', 'error');
-    // }
+    if (!this.expenseForm.valid) {
+      for (const item in this.expenseForm.controls) {
+        this.expenseForm.get(item).markAsTouched();
+      }
+      return;
+    }
+    try {
+      await this.expenseService.editExpense(this.expense, this.expenseDetail, this.participantList, this.labelList);
+      this.notifyService.notify('编辑支出账目', 'success');
+      this.expenseService.expneseListDate = moment(this.expense.expenseDate).format('YYYY-MM-DD'),
+        this.system.changeComponent({ component: 'expense-list' });
+      this.expenseService.init();
+      this.reset();
+      this.goAdd();
+    } catch (error) {
+      this.notifyService.notify('编辑支出账目失败', 'error');
+    }
   }
 
   async delExpense() {
-    // try {
-    //   await this.expenseService.deleteExpenseDetail(this.expenseDetailId, this.amount);
-    //   this.reset();
-    //   this.goAdd();
-    //   _.remove(this.expenseService.expenseDetailList, { id: this.expenseDetailId });
-    //   if (this.expenseService.expenseDetailList.length) {
-    //     this.expenseService.groupDetailList();
-    //   } else {
-    //     _.remove(this.expenseService.expenseList, { id: this.expenseId });
-    //     this.system.changeComponent({ component: 'expense-list' });
-    //   }
-    //   this.notifyService.notify('删除支出账目', 'success');
-    // } catch (error) {
-    //   this.notifyService.notify('删除支出账目失败', 'error');
-    // }
+    try {
+      await this.expenseService.deleteExpenseDetail(this.expense, this.expenseDetail.id, this.expenseDetail.amount);
+      this.reset();
+      this.goAdd();
+      _.remove(this.expenseService.expenseDetailList, { id: this.expenseDetail.id });
+      if (this.expenseService.expenseDetailList.length) {
+        this.expenseService.groupDetailList();
+      } else {
+        _.remove(this.expenseService.expenseList, { id: this.expense.id });
+        this.system.changeComponent({ component: 'expense-list' });
+      }
+      this.notifyService.notify('删除支出账目', 'success');
+    } catch (error) {
+      this.notifyService.notify('删除支出账目失败', 'error');
+    }
   }
 }

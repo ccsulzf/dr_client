@@ -4,7 +4,7 @@
       <label class="form-label" for="input-example-1">{{title}}</label>
       <div class="has-icon-left" #fundAccountListEle>
         <input type="text" #fundAccountInputEle class="form-input" placeholder="请选择付款账户" name="fundAccount"
-          [(ngModel)]="fundAccount" autocomplete="off" id="fundAccount-list">
+          [(ngModel)]="fundAccount" (ngModelChange)="change($event)" autocomplete="off" id="fundAccount-list">
         <i class="form-icon fa fa-folder-open" aria-hidden="true"></i>
       </div>
       <ul class="menu" id="fundAccount-ul" [style.display]="ulShow === true ? 'block':'none'">

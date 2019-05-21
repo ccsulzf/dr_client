@@ -6,7 +6,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn, AbstractControl, 
 import { SystemService, BaseDataService, BaseData } from '../../../providers';
 
 import * as _ from 'lodash';
-import { fromEvent, Subscription } from 'rxjs';
+import { fromEvent, Subscription,of, Observable } from 'rxjs';
 import { map, filter, distinctUntilChanged } from 'rxjs/operators';
 
 export const ADDRESS_ACCESSOR: any = {
@@ -45,11 +45,13 @@ export class AddressSelectComponent implements OnInit, OnDestroy, ControlValueAc
   propagateChange = (temp: any) => { };
 
   writeValue(value: any) {
-    if (value) {
-      this.select(_.find(BaseData.addressList, { id: value }));
-    } else {
-      this.select(_.find(BaseData.addressList, { isCurrenLive: 1 }));
-    }
+    setTimeout(() => {
+      if (value) {
+        this.select(_.find(BaseData.addressList, { id: value }));
+      } else {
+        this.select(_.find(BaseData.addressList, { isCurrenLive: 1 }));
+      }
+    });
   }
 
   registerOnChange(fn: any) {

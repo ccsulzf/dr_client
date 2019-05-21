@@ -59,9 +59,11 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
   propagateChange = (temp: any) => { };
 
   writeValue(value: any) {
-    if (value) {
-      this.select(_.find(BaseData.fundAccountList, { id: value }));
-    }
+    setTimeout(() => {
+      if (value) {
+        this.select(_.find(BaseData.fundAccountList, { id: value }));
+      }
+    });
   }
 
   registerOnChange(fn: any) {
@@ -224,6 +226,12 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
     this.getFundAccountList();
     // this.select();
   }
+
+  change(data) {
+    const item = _.find(this.list, { name: data });
+    this.select(item);
+  }
+
 
   select(item?) {
     // this.getFundAccountList();
