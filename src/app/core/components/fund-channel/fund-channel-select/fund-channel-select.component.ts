@@ -27,8 +27,8 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy, ControlVal
 
   list = [];
   fundChannelList = [];
+
   fundChannelItem;
-  selectedFundChannelItem;
   fundChannel;
 
   resetEvent;
@@ -46,7 +46,9 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy, ControlVal
   propagateChange = (temp: any) => { };
 
   writeValue(value: any) {
-    this.select(_.find(BaseData.fundChannelList, { id: value }));
+    if (value) {
+      this.select(_.find(BaseData.fundChannelList, { id: value }));
+    }
   }
 
   registerOnChange(fn: any) {
@@ -122,16 +124,14 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy, ControlVal
         case 38: // 上
           this.fundChannelItem = this.list[prevIndex];
           this.fundChannel = this.fundChannelItem.name;
+          this.propagateChange(this.fundChannelItem.id);
           this.showULFundChannel();
           break;
         case 40: // 下
           this.fundChannelItem = this.list[nextIndex];
           this.fundChannel = this.fundChannelItem.name;
+          this.propagateChange(this.fundChannelItem.id);
           this.showULFundChannel();
-          break;
-        case 27: // esc
-          this.ulShow = false;
-          this.select(this.selectedFundChannelItem);
           break;
         case 13:
           e.stopPropagation();
@@ -143,7 +143,6 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy, ControlVal
     } else if (!this.ulShow && e.keyCode === 13) {
       e.stopPropagation();
       this.ulShow = true;
-      this.selectedFundChannelItem = this.fundChannelItem;
       this.showULFundChannel();
     }
   }
@@ -193,7 +192,6 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy, ControlVal
 
   select(item?) {
     if (item) {
-      this.selectedFundChannelItem = this.fundChannelItem;
       this.fundChannelItem = item;
       this.fundChannel = item.name;
       this.propagateChange(item.id);
@@ -201,9 +199,14 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy, ControlVal
     } else {
       this.fundChannelItem = null;
       this.fundChannel = '';
+      this.propagateChange('');
     }
   }
 
+  change(data) {
+    const item = _.find(this.list, { name: data });
+    this.select(item);
+  }
 
   add() {
     this.select();

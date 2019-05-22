@@ -28,7 +28,6 @@ export class AddressSelectComponent implements OnInit, OnDestroy, ControlValueAc
 
   list = [];
   addressItem;
-  selectedAddressItem;
   address;
 
   doneEvent;
@@ -89,8 +88,6 @@ export class AddressSelectComponent implements OnInit, OnDestroy, ControlValueAc
         if (value.data) {
           this.select(value.data);
           this.list = _.cloneDeep(BaseData.addressList);
-        } else {
-          this.select(this.selectedAddressItem);
         }
       }
     });
@@ -120,31 +117,35 @@ export class AddressSelectComponent implements OnInit, OnDestroy, ControlValueAc
       })) {
         this.address = '';
       }
-      this.select(this.selectedAddressItem);
     }
   }
 
   @HostListener('keyup', ['$event'])
   hotKeyEvent(e) {
     if (this.ulShow) {
-      const index = _.findIndex(this.list, { id: this.addressItem.id });
-      const nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
-      const prevIndex = (index === 0) ? this.list.length - 1 : index - 1;
+      let index = -1;
+      let nextIndex = 0;
+      let prevIndex = 0;
+      if (this.addressItem) {
+        index = _.findIndex(this.list, { id: this.addressItem.id });
+        nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
+        prevIndex = (index === 0) ? this.list.length - 1 : index - 1;
+      } else {
+        nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
+        prevIndex = this.list.length - 1;
+      }
       switch (e.keyCode) {
         case 38: // 上
           this.addressItem = this.list[prevIndex];
           this.address = this.addressItem.name;
+          this.propagateChange(this.addressItem.id);
           this.showULAddress();
           break;
         case 40: // 下
           this.addressItem = this.list[nextIndex];
           this.address = this.addressItem.name;
+          this.propagateChange(this.addressItem.id);
           this.showULAddress();
-          break;
-        case 27: // esc
-          this.ulShow = false;
-          this.select(this.selectedAddressItem);
-          this.addressInputEle.nativeElement.blur();
           break;
         case 13:
           e.stopPropagation();
@@ -156,7 +157,6 @@ export class AddressSelectComponent implements OnInit, OnDestroy, ControlValueAc
     } else if (!this.ulShow && e.keyCode === 13) {
       e.stopPropagation();
       this.ulShow = true;
-      this.selectedAddressItem = this.addressItem;
       this.showULAddress();
     }
   }
@@ -173,16 +173,27 @@ export class AddressSelectComponent implements OnInit, OnDestroy, ControlValueAc
     this.select(_.find(this.list, { isCurrenLive: 1 }));
   }
 
+  change(value) {
+    let address = null;
+    if (value) {
+      address = _.find(this.list, (item) => {
+        return item.name.indexOf(value) > -1;
+      });
+    }
+    this.select(address);
+  }
+
   select(item?) {
     if (item) {
       this.addressItem = item;
-      this.selectedAddressItem = item;
       this.address = item.name;
       this.propagateChange(item.id);
       this.ulShow = false;
     } else {
       this.addressItem = null;
       this.address = '';
+      this.ulShow = false;
+      this.propagateChange('');
     }
   }
 

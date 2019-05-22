@@ -45,7 +45,6 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy, Contro
   expenseBookId;
 
   expenseCategoryItem;
-  selectedExpenseCategoryItem;
   expenseCategory;
 
   resetEvent;
@@ -139,16 +138,14 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy, Contro
         case 38: // 上
           this.expenseCategoryItem = this.list[prevIndex];
           this.expenseCategory = this.expenseCategoryItem.name;
+          this.propagateChange(this.expenseCategoryItem.id);
           this.showULExpenseCategory();
           break;
         case 40: // 下
           this.expenseCategoryItem = this.list[nextIndex];
           this.expenseCategory = this.expenseCategoryItem.name;
+          this.propagateChange(this.expenseCategoryItem.id);
           this.showULExpenseCategory();
-          break;
-        case 27: // esc
-          this.ulShow = false;
-          this.selectItem(this.selectedExpenseCategoryItem);
           break;
         case 13:
           e.stopPropagation();
@@ -160,7 +157,6 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy, Contro
     } else if (!this.ulShow && e.keyCode === 13) {
       e.stopPropagation();
       this.ulShow = true;
-      this.selectedExpenseCategoryItem = this.expenseCategoryItem;
       this.showULExpenseCategory();
     }
 
@@ -180,7 +176,6 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy, Contro
 
   selectItem(item?) {
     if (item) {
-      this.selectedExpenseCategoryItem = item;
       this.expenseCategoryItem = item;
       this.expenseCategory = item.name;
       this.propagateChange(item.id);
@@ -189,6 +184,7 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy, Contro
     } else {
       this.expenseCategoryItem = null;
       this.expenseCategory = '';
+      this.propagateChange('');
     }
   }
 
@@ -217,6 +213,11 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy, Contro
     if (this.changeTabViewEvent) {
       this.changeTabViewEvent.unsubscribe();
     }
+  }
+
+  change(data) {
+    const item = _.find(this.list, { name: data });
+    this.selectItem(item);
   }
 
   add() {

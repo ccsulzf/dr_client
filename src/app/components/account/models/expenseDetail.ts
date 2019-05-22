@@ -1,13 +1,13 @@
 export class ExpenseDetail {
-    id: number;
-    expenseId: number;
-    addressId: number;
-    expenseCategoryId: number;
-    fundPartyId: number;
-    fundChannelId: number;
-    fundAccountId: number;
+    id: any;
+    expenseId: any;
+    addressId: any;
+    expenseCategoryId: any;
+    fundPartyId: any;
+    fundChannelId: any;
+    fundAccountId: any;
     content: string;
-    amount: number;
+    amount: any;
     memo: string;
 }
 

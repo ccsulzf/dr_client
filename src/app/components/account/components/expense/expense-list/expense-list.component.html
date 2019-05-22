@@ -1,6 +1,6 @@
 <main>
   <form class="day-expense">
-    <dr-date [type]="'text'" [viewType]="'day'" name="date" [nameShow]="false" [dateName]="" [ngModel]="endDate" (ngModelChange)="changeDate($event)" ></dr-date>
+    <dr-date [type]="'text'" [viewType]="'day'" name="date" [nameShow]="false" [dateName]="" [ngModel]="date" (ngModelChange)="changeDate($event)" ></dr-date>
     <!-- [initDate]="date" (setDate)="changeDate($event)" -->
     <span>
       总计:-{{expenseService?.totalDayAmount}}元

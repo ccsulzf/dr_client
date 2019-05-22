@@ -62,11 +62,11 @@ export class ExpenseService {
         }
     }
 
-    async addExpense(participantList, labelList) {
+    async addExpense(expense, expenseDetail, participantList, labelList) {
         try {
             const expenseData = {
-                expense: this.expense,
-                expenseDetail: this.expenseDetail,
+                expense: expense,
+                expenseDetail: expenseDetail,
                 participantList: participantList,
                 labelList: labelList
             };
@@ -79,11 +79,11 @@ export class ExpenseService {
 
             BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
 
-            const expense = _.find(this.expenseList, { expenseBookId: this.expense.expenseBookId });
+            const hasExpense = _.find(this.expenseList, { expenseBookId: expense.expenseBookId });
 
-            this.totalDayAmount = (Number(this.totalDayAmount) * 100 + Number(this.expenseDetail.amount) * 100) / 100;
-            if (expense) {
-                expense.totalAmount = (Number(expense.totalAmount) * 100 + Number(this.expenseDetail.amount) * 100) / 100;
+            this.totalDayAmount = (Number(this.totalDayAmount) * 100 + Number(expenseDetail.amount) * 100) / 100;
+            if (hasExpense) {
+                hasExpense.totalAmount = (Number(hasExpense.totalAmount) * 100 + Number(this.expenseDetail.amount) * 100) / 100;
             } else {
                 const expenseBook = this.baseDataService.getExpenseBook(this.expense.expenseBookId);
                 this.expenseList.push({

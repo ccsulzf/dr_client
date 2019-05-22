@@ -37,7 +37,7 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
 
   list = [];
   fundAccountList = [];
-  selectedFundAccountItem;
+
   fundAccountItem;
   fundAccount;
 
@@ -59,7 +59,9 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
   propagateChange = (temp: any) => { };
 
   writeValue(value: any) {
-    this.select(_.find(BaseData.fundAccountList, { id: value }));
+    if (value) {
+      this.select(_.find(BaseData.fundAccountList, { id: value }));
+    }
   }
 
   registerOnChange(fn: any) {
@@ -195,16 +197,14 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
         case 38: // 上
           this.fundAccountItem = this.list[prevIndex];
           this.fundAccount = this.fundAccountItem.name;
+          this.propagateChange(this.fundAccountItem.id);
           this.showULFundAccount();
           break;
         case 40: // 下
           this.fundAccountItem = this.list[nextIndex];
           this.fundAccount = this.fundAccountItem.name;
+          this.propagateChange(this.fundAccountItem.id);
           this.showULFundAccount();
-          break;
-        case 27: // esc
-          this.ulShow = false;
-          this.select(this.selectedFundAccountItem);
           break;
         case 13:
           e.stopPropagation();
@@ -216,7 +216,6 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
     } else if (!this.ulShow && e.keyCode === 13) {
       e.stopPropagation();
       this.ulShow = true;
-      this.selectedFundAccountItem = this.fundAccountItem;
       this.showULFundAccount();
     }
   }
@@ -229,7 +228,6 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
   select(item?) {
     // this.getFundAccountList();
     if (item) {
-      this.selectedFundAccountItem = this.fundAccountItem;
       this.fundAccountItem = item;
       this.fundAccount = item.name;
       this.propagateChange(item.id);
@@ -237,6 +235,7 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
     } else {
       this.fundAccountItem = null;
       this.fundAccount = '';
+      this.propagateChange('');
     }
   }
 

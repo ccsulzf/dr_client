@@ -2,7 +2,7 @@
   <div class="form-item">
     <label class="form-label">{{title}}</label>
     <div class="has-icon-left" #addressListEle>
-      <input type="text" #addressInputEle class="form-input" placeholder="请选择地点" name="address" [(ngModel)]="address"
+      <input type="text" #addressInputEle class="form-input" placeholder="请选择地点" name="address" [(ngModel)]="address" (ngModelChange)="change($event)"
         autocomplete="off" id="address-list">
       <i class="form-icon icon icon-location" aria-hidden="true"></i>
     </div>

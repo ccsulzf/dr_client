@@ -15,8 +15,9 @@ export class AddressAddEditComponent implements OnInit {
     city: '',
     area: '',
     isCurrenLive: 0,
-    memo: ''
-  }
+    memo: '',
+    userId: this.system.user.id
+  };
 
   public cityList = [];
   public areaList = [];
@@ -63,13 +64,12 @@ export class AddressAddEditComponent implements OnInit {
   }
 
   async addOrEdit() {
-    const address = await this.http.post('/DR/addOrEditAddress',
+    const address = await this.http.post('/DR/Address',
       this.address
     );
     if (this.data) {
 
     } else {
-
       if (address) {
         this.baseData.addAddress(address);
         this.system.done({ model: 'address', data: address });

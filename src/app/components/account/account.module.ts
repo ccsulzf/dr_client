@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoreModule } from '../../core/core.module';
 import { AccountRoutingModule } from './account-routing.module';
 import { AccountComponent } from './account.component';
@@ -17,7 +17,8 @@ import { IncomeAddEditComponent } from './components/income/income-add-edit/inco
     CommonModule,
     CoreModule,
     AccountRoutingModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     AccountComponent, ExpenseComponent,

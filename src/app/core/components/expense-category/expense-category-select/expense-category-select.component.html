@@ -4,7 +4,7 @@
       <label class="form-label" for="input-example-1">{{title}}</label>
       <div class="has-icon-left" #expenseCategoryListEle>
         <input type="text" #expenseCategoryInputEle class="form-input" placeholder="请选择支出类别" name="expenseCategory"
-          [(ngModel)]="expenseCategory" autocomplete="off" id="expenseCategory-list">
+          [(ngModel)]="expenseCategory" (ngModelChange)="change($event)" autocomplete="off" id="expenseCategory-list">
         <i class="form-icon fa fa-th-large" aria-hidden="true"></i>
       </div>
       <ul class="menu" id="expenseCategory-ul" [style.display]="ulShow === true ? 'block':'none'">

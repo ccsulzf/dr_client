@@ -19,15 +19,29 @@ import { Subscription } from 'rxjs';
 export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('contentInputEle') contentInputEle: ElementRef;
   @ViewChild('amountInputEle') amountInputEle: ElementRef;
-  public addressId;
 
-  public expenseCategoryId;
+  formChanges: Subscription;
 
-  public fundPartyId;
+  expense: Expense = {
+    id: '',
+    userId: this.system.user.id,
+    expenseBookId: '',
+    expenseDate: moment().format('YYYY-MM-DD'),
+    totalAmount: 0
+  };
 
-  public fundChannelId;
-
-  public fundAccountId;
+  expenseDetail: ExpenseDetail = {
+    id: '',
+    expenseId: this.expense.id,
+    addressId: null,
+    expenseCategoryId: '',
+    fundPartyId: '',
+    fundChannelId: '',
+    fundAccountId: '',
+    content: '',
+    amount: '',
+    memo: ''
+  };
 
   public editEvent;
 
@@ -35,9 +49,6 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
 
   public editOrDelFlag = false;
 
-  public baseData;
-
-  public expenseDate;
 
   public expenseBook;
 
@@ -45,47 +56,52 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
 
   public labelList = [];
 
-  public content;
-  public amount;
   public memo = '';
 
-  public expenseId;
-  public expenseDetailId;
-  public expenseBookId;
-  public totalAmount;
-
-  // public expense: Expense;
-  // public expenseDetail: ExpenseDetail;
+  expenseForm = this.fb.group({
+    expenseDate: [this.expense.expenseDate],
+    address: [this.expenseDetail.addressId, Validators.required],
+    expenseCategory: [this.expenseDetail.expenseCategoryId, Validators.required],
+    fundParty: [this.expenseDetail.fundPartyId, Validators.required],
+    fundChannel: [this.expenseDetail.fundChannelId, Validators.required],
+    fundAccount: [this.expenseDetail.fundAccountId, Validators.required],
+    content: [this.expenseDetail.content, Validators.required],
+    amount: [this.expenseDetail.amount, Validators.required]
+  });
 
   public changeTabViewEvent: Subscription;
+
   constructor(
     public accountService: AccountService,
     public http: HttpClientService,
     public baseDataService: BaseDataService,
     public system: SystemService,
     public expenseService: ExpenseService,
-    public notifyService: NotifyService
+    public notifyService: NotifyService,
+    private fb: FormBuilder
   ) { }
 
   ngOnInit() {
-    this.baseData = BaseData;
-    this.expenseDate = moment().format('YYYY-MM-DD');
+    this.formChanges = this.expenseForm.get('expenseDate').valueChanges.subscribe((data) => {
+      if (data) {
+        this.expense.expenseDate = data.date;
+      }
+    });
   }
 
-  onSetDate(data) {
-    this.expenseDate = moment(data.date).format('YYYY-MM-DD');
-  }
+  // onSetDate(data) {
+  //   if (data) {
+  //     this.expense.expenseDate = data.date;
+  //   }
+  // }
 
   onSetExpenseBook(item) {
     if (item) {
       this.expenseBook = item;
-      this.expenseBookId = item.id;
+      this.expense.expenseBookId = item.id;
     }
   }
 
-  onSetFundAccount(fundAccountId) {
-    this.fundAccountId = fundAccountId;
-  }
 
   onSetParticipantList(participantList) {
     this.participantList = participantList;
@@ -93,34 +109,13 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
 
   ngAfterViewInit() {
     this.editEvent = this.expenseService.editEvent.subscribe(async (data: any) => {
-      this.expenseId = data.expense.id;
-      this.expenseBookId = data.expense.expenseBookId;
-      this.expenseDetailId = data.expenseDetail.id;
-      this.totalAmount = data.expense.totalAmount;
+      this.expense = data.expense;
+      this.expenseDetail = data.expenseDetail;
 
       this.addFlag = false;
       this.editOrDelFlag = true;
 
-      this.expenseDate = moment(data.expense.expenseDate).format('YYYY-MM-DD');
-
-      this.addressId = data.expenseDetail.addressId;
-
-      this.expenseCategoryId = data.expenseDetail.expenseCategoryId;
-
-      this.fundPartyId = data.expenseDetail.fundPartyId;
-
-      this.fundChannelId = data.expenseDetail.fundChannelId;
-
-      this.fundAccountId = data.expenseDetail.fundAccountId;
-
-      this.content = data.expenseDetail.content;
-
-      this.memo = data.expenseDetail.memo;
-
-      this.amount = Number(data.expenseDetail.amount);
-
       await this.getLableList();
-
       await this.getParticipantList();
     });
 
@@ -190,6 +185,10 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     if (this.changeTabViewEvent) {
       this.changeTabViewEvent.unsubscribe();
     }
+
+    if (this.formChanges) {
+      this.formChanges.unsubscribe();
+    }
     this.system.tabViewList = new Set();
   }
 
@@ -198,12 +197,12 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   onSetMemo(memo) {
-    this.memo = memo;
+    this.expenseDetail.memo = memo;
   }
 
   async getParticipantList() {
     this.participantList = [];
-    const data: any = await this.http.get('/DR/ExpenseDetailParticipant?expenseDetailId=' + this.expenseDetailId);
+    const data: any = await this.http.get('/DR/ExpenseDetailParticipant?expenseDetailId=' + this.expenseDetail.id);
     if (data && data.length) {
       for (const item of data) {
         this.participantList.push(this.baseDataService.getParticipant(item.participantId));
@@ -213,7 +212,7 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
 
   async getLableList() {
     this.labelList = [];
-    const data: any = await this.http.get('/DR/ExpenseDetailLabel?expenseDetailId=' + this.expenseDetailId);
+    const data: any = await this.http.get('/DR/ExpenseDetailLabel?expenseDetailId=' + this.expenseDetail.id);
     if (data && data.length) {
       for (const item of data) {
         this.labelList.push(this.baseDataService.getLabel(item.labelId));
@@ -223,23 +222,33 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
 
   // 添加账目的时候把内容和金额进行充值，免得重复选择其他东西
   init() {
-    this.content = '';
-    this.amount = '';
+    this.expenseForm.patchValue({
+      content: '',
+      amount: '',
+    });
     this.participantList = [];
     this.participantList.push(_.find(BaseData.participantList, { isMyself: true }));
     this.labelList = [];
     this.memo = '';
     this.system.selectedTabView = '支出内容';
     this.contentInputEle.nativeElement.focus();
+    this.expenseForm.markAsPristine();
   }
 
   reset() {
-    this.expenseBookId = '';
-    this.addressId = '';
-    this.fundAccountId = '';
-    this.fundPartyId = '';
+    this.expenseForm.patchValue({
+      address: '',
+      fundAccount: '',
+      fundParty: '',
+      expenseDate: moment().format('YYYY-MM-DD')
+    });
     this.init();
-    this.expenseDate = moment().format('YYYY-MM-DD');
+    // this.expense.expenseBookId = '';
+    // this.addressId = '';
+    // this.fundAccountId = '';
+    // this.fundPartyId = '';
+    // this.init();
+    // this.expenseDate = moment().format('YYYY-MM-DD');
   }
 
   goAdd() {
@@ -249,89 +258,87 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   async addExpense() {
-    try {
-      this.expenseService.expense = {
-        expenseDate: moment(this.expenseDate).format('YYYY-MM-DD'),
-        userId: this.system.user.id,
-        expenseBookId: this.expenseBook.id,
-        totalAmount: this.amount
-      };
-      this.expenseService.expenseDetail = {
-        content: this.content,
-        amount: this.amount,
-        memo: this.memo,
-        addressId: this.addressId,
-        expenseCategoryId: this.expenseCategoryId,
-        fundPartyId: this.fundPartyId,
-        fundChannelId: this.fundChannelId,
-        fundAccountId: this.fundAccountId
-      };
-      await this.expenseService.addExpense(this.participantList, this.labelList);
-      this.notifyService.notify('添加支出账目', 'success');
-      if ((this.expenseService.expneseListDate !==
-        moment(this.expenseDate).format('YYYY-MM-DD'))
-        || (this.expenseBookId !== this.expenseBook.id)) {
-        this.expenseService.expneseListDate = moment(this.expenseDate).format('YYYY-MM-DD'),
-          this.system.changeComponent({ component: 'expense-list' });
+    console.info('----add----');
+    // console.info(this.expense);
+    console.info(this.expenseDetail);
+    // console.info(this.expenseForm.value);
+    if (!this.expenseForm.valid) {
+      for (const item in this.expenseForm.controls) {
+        this.expenseForm.get(item).markAsTouched();
       }
-      this.init();
-    } catch (error) {
-      this.notifyService.notify('添加支出账目失败', 'error');
+      return;
     }
+    // try {
+    //   await this.expenseService.addExpense(this.expense, this.expenseDetail, this.participantList, this.labelList);
+    //   this.notifyService.notify('添加支出账目', 'success');
+    //   if ((this.expenseService.expneseListDate !==
+    //     moment(this.expense.expenseDate).format('YYYY-MM-DD'))
+    //     || (this.expense.expenseBookId !== this.expenseBook.id)) {
+    //     this.expenseService.expneseListDate = moment(this.expense.expenseDate).format('YYYY-MM-DD'),
+    //       this.system.changeComponent({ component: 'expense-list' });
+    //   }
+    //   this.init();
+    // } catch (error) {
+    //   this.notifyService.notify('添加支出账目失败', 'error');
+    // }
   }
 
   async editExpense() {
-    try {
-      this.expenseService.expense = {
-        id: this.expenseId,
-        expenseDate: moment(this.expenseDate).format('YYYY-MM-DD'),
-        userId: this.system.user.id,
-        expenseBookId: this.expenseBook.id,
-        totalAmount: this.totalAmount
-      };
+    console.info('----edit----');
+    console.info(this.expense);
 
-      this.expenseService.expenseDetail = {
-        id: this.expenseDetailId,
-        expenseId: this.expenseId,
-        content: this.content,
-        amount: this.amount,
-        memo: this.memo,
-        addressId: this.addressId,
-        expenseCategoryId: this.expenseCategoryId,
-        fundPartyId: this.fundPartyId,
-        fundChannelId: this.fundChannelId,
-        fundAccountId: this.fundAccountId
-      };
+    console.info(this.expenseDetail);
+    // try {
+    //   this.expenseService.expense = {
+    //     id: this.expenseId,
+    //     expenseDate: moment(this.expenseDate).format('YYYY-MM-DD'),
+    //     userId: this.system.user.id,
+    //     expenseBookId: this.expenseBook.id,
+    //     totalAmount: this.totalAmount
+    //   };
 
-      await this.expenseService.editExpense(this.participantList, this.labelList);
-      this.notifyService.notify('编辑支出账目', 'success');
-      this.expenseService.expneseListDate = moment(this.expenseDate).format('YYYY-MM-DD'),
-        this.system.changeComponent({ component: 'expense-list' });
+    //   this.expenseService.expenseDetail = {
+    //     id: this.expenseDetailId,
+    //     expenseId: this.expenseId,
+    //     content: this.content,
+    //     amount: this.amount,
+    //     memo: this.memo,
+    //     addressId: this.addressId,
+    //     expenseCategoryId: this.expenseCategoryId,
+    //     fundPartyId: this.fundPartyId,
+    //     fundChannelId: this.fundChannelId,
+    //     fundAccountId: this.fundAccountId
+    //   };
 
-      this.expenseService.init();
+    //   await this.expenseService.editExpense(this.participantList, this.labelList);
+    //   this.notifyService.notify('编辑支出账目', 'success');
+    //   this.expenseService.expneseListDate = moment(this.expenseDate).format('YYYY-MM-DD'),
+    //     this.system.changeComponent({ component: 'expense-list' });
 
-      this.reset();
-      this.goAdd();
-    } catch (error) {
-      this.notifyService.notify('编辑支出账目失败', 'error');
-    }
+    //   this.expenseService.init();
+
+    //   this.reset();
+    //   this.goAdd();
+    // } catch (error) {
+    //   this.notifyService.notify('编辑支出账目失败', 'error');
+    // }
   }
 
   async delExpense() {
-    try {
-      await this.expenseService.deleteExpenseDetail(this.expenseDetailId, this.amount);
-      this.reset();
-      this.goAdd();
-      _.remove(this.expenseService.expenseDetailList, { id: this.expenseDetailId });
-      if (this.expenseService.expenseDetailList.length) {
-        this.expenseService.groupDetailList();
-      } else {
-        _.remove(this.expenseService.expenseList, { id: this.expenseId });
-        this.system.changeComponent({ component: 'expense-list' });
-      }
-      this.notifyService.notify('删除支出账目', 'success');
-    } catch (error) {
-      this.notifyService.notify('删除支出账目失败', 'error');
-    }
+    // try {
+    //   await this.expenseService.deleteExpenseDetail(this.expenseDetailId, this.amount);
+    //   this.reset();
+    //   this.goAdd();
+    //   _.remove(this.expenseService.expenseDetailList, { id: this.expenseDetailId });
+    //   if (this.expenseService.expenseDetailList.length) {
+    //     this.expenseService.groupDetailList();
+    //   } else {
+    //     _.remove(this.expenseService.expenseList, { id: this.expenseId });
+    //     this.system.changeComponent({ component: 'expense-list' });
+    //   }
+    //   this.notifyService.notify('删除支出账目', 'success');
+    // } catch (error) {
+    //   this.notifyService.notify('删除支出账目失败', 'error');
+    // }
   }
 }

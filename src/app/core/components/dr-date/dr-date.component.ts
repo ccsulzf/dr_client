@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 
 import { monthsList, weekList } from './da-date.comfig';
 import * as _ from 'lodash';
-
+import * as moment from 'moment';
 
 export const EXPENSE_CATEGORY_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -39,7 +39,6 @@ export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor 
   get viewType() {
     return this.view_type;
   }
-
 
   @ViewChild('drDateLabelEle') drDateLabelEle: ElementRef;
   @ViewChild('dateInput') dateInput: ElementRef;
@@ -75,8 +74,12 @@ export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor 
   propagateChange = (temp: any) => { };
 
   writeValue(value: any) {
-    this.date = value;
+    if (value) {
+      this.date = value;
+      this.ngOnInit();
+    }
   }
+
 
   registerOnChange(fn: any) {
     this.propagateChange = fn;
@@ -328,7 +331,6 @@ export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor 
     this.viewType = 'month';
   }
 
-
   selectMonth(item, e) {
     e.stopPropagation();
     if (this.viewTypeList[this.viewTypeList.length - 1] === 'day') {
@@ -349,7 +351,6 @@ export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor 
       name: this.dateName,
       date: this.date
     });
-    // this.setDate.emit();
   }
 
   selectToday(e) {
@@ -366,16 +367,11 @@ export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor 
       this.dateInput.nativeElement.focus();
       this.system.selectedTabView = this.dateName;
     }
-    // this.setDate.emit({
-    //   name: this.name,
-    //   date: this.date
-    // });
     this.propagateChange({
       name: this.dateName,
       date: this.date
     });
   }
-
 
   selectYear(item, e) {
     e.stopPropagation();
@@ -391,10 +387,6 @@ export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor 
       this.dateInput.nativeElement.focus();
       this.system.selectedTabView = this.dateName;
     }
-    // this.setDate.emit({
-    //   name: this.name,
-    //   date: this.date
-    // });
     this.propagateChange({
       name: this.dateName,
       date: this.date

@@ -21,6 +21,7 @@ section {
   border: 1px solid #4b48d6;
 }
 
+
 main {
   height: 100%;
 
@@ -30,12 +31,11 @@ main {
     float: left;
     overflow-y: hidden;
   }
-
+  
   form {
     // flex-grow: 1;
     display: flex;
-    flex-direction: column;
-
+    flex-direction: column;    
     fieldset {
       border-top: 1px dashed #4b48d6;
       flex-grow: 1;

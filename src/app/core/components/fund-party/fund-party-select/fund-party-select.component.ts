@@ -30,7 +30,6 @@ export class FundPartySelectComponent implements OnInit, OnDestroy, ControlValue
   list = [];
 
   fundPartyItem;
-  selectedFundPartyItem;
   fundParty;
 
   resetEvent;
@@ -49,7 +48,9 @@ export class FundPartySelectComponent implements OnInit, OnDestroy, ControlValue
   propagateChange = (temp: any) => { };
 
   writeValue(value: any) {
-    this.select(_.find(BaseData.fundPartyList, { id: value }));
+    if (value) {
+      this.select(_.find(BaseData.fundPartyList, { id: value }));
+    }
   }
 
   registerOnChange(fn: any) {
@@ -57,7 +58,6 @@ export class FundPartySelectComponent implements OnInit, OnDestroy, ControlValue
   }
 
   registerOnTouched(fn: any) { }
-
 
   ngOnInit() {
     this.init();
@@ -102,7 +102,6 @@ export class FundPartySelectComponent implements OnInit, OnDestroy, ControlValue
         this.system.selectedTabView = value;
         this.showULFundParty();
       } else {
-        this.select(this.fundPartyItem);
         this.fundPartyInputEle.nativeElement.blur();
         this.ulShow = false;
       }
@@ -143,17 +142,19 @@ export class FundPartySelectComponent implements OnInit, OnDestroy, ControlValue
         case 38: // 上
           this.fundPartyItem = this.list[prevIndex];
           this.fundParty = this.fundPartyItem.name;
+          this.propagateChange(this.fundPartyItem.id);
           this.showULFundParty();
           break;
         case 40: // 下
           this.fundPartyItem = this.list[nextIndex];
           this.fundParty = this.fundPartyItem.name;
+          this.propagateChange(this.fundPartyItem.id);
           this.showULFundParty();
           break;
-        case 27: // esc
-          this.ulShow = false;
-          this.select(this.selectedFundPartyItem);
-          break;
+        // case 27: // esc
+        //   this.ulShow = false;
+        //   this.select(this.selectedFundPartyItem);
+        //   break;
         case 13:
           e.stopPropagation();
           this.select(this.fundPartyItem);
@@ -164,7 +165,6 @@ export class FundPartySelectComponent implements OnInit, OnDestroy, ControlValue
     } else if (!this.ulShow && e.keyCode === 13) {
       e.stopPropagation();
       this.ulShow = true;
-      this.selectedFundPartyItem = this.fundPartyItem;
       this.showULFundParty();
     }
   }
@@ -196,7 +196,6 @@ export class FundPartySelectComponent implements OnInit, OnDestroy, ControlValue
 
   select(item?) {
     if (item) {
-      this.selectedFundPartyItem = item;
       this.fundPartyItem = item;
       this.fundParty = item.name;
       this.propagateChange(item.id);
@@ -204,7 +203,13 @@ export class FundPartySelectComponent implements OnInit, OnDestroy, ControlValue
     } else {
       this.fundPartyItem = null;
       this.fundParty = '';
+      this.propagateChange('');
     }
+  }
+
+  change(data) {
+    const item = _.find(this.list, { name: data });
+    this.select(item);
   }
 
   add() {
@@ -222,12 +227,14 @@ export class FundPartySelectComponent implements OnInit, OnDestroy, ControlValue
   edit(e, item) {
     e.stopPropagation();
     this.ulShow = false;
-    this.system.changeComponent({ component: 'fundParty-add-edit', data: {
-      action: 'edit',
-      type: this.type,
-      value: item,
-      title: this.title
-    } });
+    this.system.changeComponent({
+      component: 'fundParty-add-edit', data: {
+        action: 'edit',
+        type: this.type,
+        value: item,
+        title: this.title
+      }
+    });
   }
 
 }
