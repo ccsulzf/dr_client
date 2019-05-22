@@ -39,7 +39,7 @@ export class ExpenseComponent implements OnDestroy, AfterViewInit, AfterViewChec
     this.changeComponent = this.system.changeComponentEvent.subscribe((value: any) => {
       switch (value.component) {
         case 'expenseBook-add-edit':
-          this.dynamicLoad(ExpenseBookAddEditComponent);
+          this.dynamicLoad(ExpenseBookAddEditComponent,value.data);
           break;
         case 'address-add-edit':
           this.dynamicLoad(AddressAddEditComponent, value.data);

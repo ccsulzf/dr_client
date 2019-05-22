@@ -15,6 +15,7 @@ import * as _ from 'lodash';
 export class ParticipantSelectComponent implements OnInit, OnDestroy {
   @ViewChild('participantListEle') participantListEle: ElementRef;
   @ViewChild('contentEle') contentEle: ElementRef;
+
   @Input() title;
   @Output() setParticipantList = new EventEmitter<any>();
   // 已选择的
@@ -23,12 +24,12 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
   @Input()
   set hasParticipantList(hasParticipantList) {
     this.selectedParticipantList = hasParticipantList;
-    this.participantList = _.differenceBy(BaseData.participantList, this.selectedParticipantList, 'name');
+    this.list = _.differenceBy(BaseData.participantList, this.selectedParticipantList, 'name');
   }
 
   get hasParticipantList(): string { return this.selectedParticipantList; }
 
-  participantList = [];
+  // participantList = [];
   list = [];
 
   top = 0;
@@ -43,7 +44,6 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.init();
-
     const searchBox = document.getElementById('participant-list');
     const typeahead = fromEvent(searchBox, 'input').pipe(
       map((e: any) => {
@@ -53,7 +53,7 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
         if (text.length >= 1) {
           return text.length >= 1;
         } else {
-          this.list = this.participantList;
+          this.list = _.clone(BaseData.participantList);
           this.ulShow = true;
           return false;
         }
@@ -61,15 +61,16 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
       distinctUntilChanged()
     );
     typeahead.subscribe(data => {
-      this.list = this.participantList.filter((item) => {
+      this.list = BaseData.participantList.filter((item) => {
         return item.name.indexOf(data) > -1;
       });
     });
+
     this.doneEvent = this.system.doneEvent.subscribe((value) => {
       if (value && value.model === 'participant') {
         value.data.selected = true;
         this.selectedParticipantList.push(value.data);
-        this.list.push(value.data);
+        this.list = _.cloneDeep(BaseData.participantList);
         this.top = this.contentEle.nativeElement.clientHeight;
       }
     });
@@ -83,9 +84,7 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
         this.ulShow = !this.ulShow;
       } else {
         this.ulShow = true;
-        this.list = this.participantList;
       }
-
       if (!this.ulShow) {
         const searchBox = document.getElementById('participant-list');
         searchBox.blur();
@@ -105,17 +104,15 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
   }
 
   init() {
-    this.participantList = BaseData.participantList;
-    for (const item of this.participantList) {
+    this.list = _.clone(BaseData.participantList);
+    for (const item of this.list) {
       item.selected = false;
     }
-    const mySelf = _.find(this.participantList, { isMyself: true });
+    const mySelf = _.find(this.list, { isMyself: true });
     mySelf.selected = true;
     this.selectedParticipantList.push(mySelf);
-    this.list = this.participantList;
     this.top = this.contentEle.nativeElement.clientHeight;
   }
-
 
   select(item) {
     this.ulShow = true;

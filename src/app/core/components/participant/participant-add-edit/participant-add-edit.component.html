@@ -1,37 +1,33 @@
 <main>
-  <p>添加参与人</p>
+  <div class="header-panel">
+    {{data?'编辑':'添加'}}参与人
+  </div>
   <form>
-    <div>
-      <label>
-        名字:
-      </label>
-      <input type="text" name="name" [(ngModel)]="participant.name">
+    <div class="form-group">
+      <label>名字:</label>
+      <input type="text" class="form-input" name="name" [(ngModel)]="participant.name">
     </div>
 
-    <div>
-      <label>
-        别名:
-      </label>
-      <input type="text" name="alias"  [(ngModel)]="participant.alias">
+    <div class="form-group">
+      <label>别名:</label>
+      <input type="text" class="form-input" name="alias" [(ngModel)]="participant.alias">
     </div>
 
-    <div class="inline">
-      <input type="checkbox" name="isMyself" [(ngModel)]="participant.isMyself" >
-      <label>
-        是否本人
+    <div class="form-group">
+      <label class="form-switch">
+        <input type="checkbox" name="isMyself" [(ngModel)]="participant.isCurrenLive">
+        <i class="form-icon"></i> 是否本人
       </label>
     </div>
 
-    <div>
-      <label>
-        备注:
-      </label>
-      <textarea name="memo" [(ngModel)]="participant.memo"></textarea>
+    <div class="form-group">
+      <label>备注:</label>
+      <textarea class="form-input" name="memo" [(ngModel)]="participant.memo"></textarea>
     </div>
 
-    <div class="btn-group">
-      <button (click)="add()">添加</button>
-      <button (click)="cancel()">取消</button>
+    <div class="form-group btn-group">
+      <button type="button" (click)="addOrEdit()" class="btn btn-primary">{{data?'编 辑':'添 加'}}</button>
+      <button type="button" (click)="cancel()" class="btn btn-link">取 消</button>
     </div>
   </form>
 </main>

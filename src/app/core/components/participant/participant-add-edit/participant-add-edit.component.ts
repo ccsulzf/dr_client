@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { SystemService, HttpClientService, BaseDataService } from '../../../providers';
 
 @Component({
   selector: 'app-participant-add-edit',
   templateUrl: './participant-add-edit.component.html',
-  styleUrls: ['./participant-add-edit.component.scss']
+  styleUrls: ['../../core-form.scss']
 })
 export class ParticipantAddEditComponent implements OnInit {
-
+  @Input() data;
   public participant = {
     name: '',
     alias: '',
@@ -22,9 +22,12 @@ export class ParticipantAddEditComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if (this.data) {
+      this.participant = this.data;
+    }
   }
 
-  async add() {
+  async addOrEdit() {
     const participant = await this.http.post('/DR/Participant', this.participant);
     if (participant) {
       this.baseData.addParticipant(participant);

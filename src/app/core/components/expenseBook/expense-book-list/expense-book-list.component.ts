@@ -92,7 +92,7 @@ export class ExpenseBookListComponent implements OnInit, OnDestroy, ControlValue
   }
 
   addExpenseBook() {
-    this.system.changeComponent({ component: 'expenseBook-add-edit' });
+    this.system.changeComponent({ component: 'expenseBook-add-edit', data: null });
   }
 
   ngOnDestroy() {
