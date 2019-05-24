@@ -59,11 +59,11 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
   propagateChange = (temp: any) => { };
 
   writeValue(value: any) {
-    setTimeout(() => {
-      if (value) {
-        this.select(_.find(BaseData.fundAccountList, { id: value }));
-      }
-    });
+    if (value) {
+      this.select(_.find(BaseData.fundAccountList, { id: value }));
+    } else {
+      this.select();
+    }
   }
 
   registerOnChange(fn: any) {
@@ -116,7 +116,7 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
         this.system.selectedTabView = value;
         this.showULFundAccount();
       } else {
-        this.select(this.fundAccountItem);
+        // this.select(this.fundAccountItem);
         this.fundAccountInputEle.nativeElement.blur();
         this.ulShow = false;
       }

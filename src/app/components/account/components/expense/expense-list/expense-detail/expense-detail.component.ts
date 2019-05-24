@@ -36,7 +36,7 @@ export class ExpenseDetailComponent implements OnInit {
 
   edit(item) {
     this.expenseService.edit({
-      expenseDetail: item,
+      expenseDetail: _.cloneDeep(item),
       expense: this.data
     });
   }

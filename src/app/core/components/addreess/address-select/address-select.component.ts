@@ -6,7 +6,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn, AbstractControl, 
 import { SystemService, BaseDataService, BaseData } from '../../../providers';
 
 import * as _ from 'lodash';
-import { fromEvent, Subscription,of, Observable } from 'rxjs';
+import { fromEvent, Subscription } from 'rxjs';
 import { map, filter, distinctUntilChanged } from 'rxjs/operators';
 
 export const ADDRESS_ACCESSOR: any = {

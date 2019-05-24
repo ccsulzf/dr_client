@@ -1,35 +1,51 @@
-import { Component, OnInit, Input, Output, EventEmitter, HostListener, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component, OnInit, Input, OnDestroy, Output, EventEmitter,
+  HostListener, ElementRef, Renderer, ViewContainerRef, ViewChild, forwardRef
+} from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn, AbstractControl, ValidationErrors, NG_VALIDATORS } from '@angular/forms';
 import { SystemService } from '../../providers';
 import { Subscription } from 'rxjs';
+
+export const MEMO_ACCESSOR: any = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => MemoComponent),
+  multi: true
+};
 @Component({
   selector: 'memo',
   templateUrl: './memo.component.html',
-  styleUrls: ['./memo.component.scss']
+  styleUrls: ['./memo.component.scss'],
+  providers: [MEMO_ACCESSOR]
 })
-export class MemoComponent implements OnInit {
+export class MemoComponent implements OnInit, ControlValueAccessor {
+
   @ViewChild('memoInputEle') memoInputEle: ElementRef;
 
   @Input() title;
   // 最多可以填写多少字
   @Input() maxNumber;
 
-  @Output() setMemo = new EventEmitter<any>();
-
   public memo;
-  @Input()
-  set hasMemo(memo) {
-    this.memo = memo;
-  }
-
-  get hasMemo() {
-    return this.memo;
-  }
 
   public memoLength = 0;
 
   constructor(
 
   ) { }
+
+  propagateChange = (temp: any) => { };
+
+  writeValue(value: any) {
+    setTimeout(() => {
+      this.getMemo(value);
+    });
+  }
+
+  registerOnChange(fn: any) {
+    this.propagateChange = fn;
+  }
+
+  registerOnTouched(fn: any) { }
 
   ngOnInit() {
   }
@@ -53,14 +69,16 @@ export class MemoComponent implements OnInit {
       this.memoLength = memo.length;
       if (this.memoLength <= this.maxNumber) {
         this.memo = memo;
-        this.setMemo.emit(memo);
+        this.propagateChange(this.memo);
+        // this.setMemo.emit(memo);
       } else {
         this.memoLength = this.maxNumber;
       }
     } else {
       this.memoLength = 0;
       this.memo = '';
-      this.setMemo.emit(memo);
+      this.propagateChange(this.memo);
+      // this.setMemo.emit(memo);
     }
   }
 

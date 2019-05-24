@@ -74,12 +74,13 @@ export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor 
   propagateChange = (temp: any) => { };
 
   writeValue(value: any) {
-    if (value) {
-      this.date = value;
-      this.ngOnInit();
-    }
+    setTimeout(() => {
+      if (value) {
+        this.date = value;
+        this.ngOnInit();
+      }
+    });
   }
-
 
   registerOnChange(fn: any) {
     this.propagateChange = fn;
@@ -136,6 +137,10 @@ export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor 
       default:
         break;
     }
+    this.propagateChange({
+      name: this.dateName,
+      date: this.date
+    });
   }
 
   @HostListener('keyup', ['$event'])

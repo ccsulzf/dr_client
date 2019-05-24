@@ -29,7 +29,6 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
 
   get hasParticipantList(): string { return this.selectedParticipantList; }
 
-  // participantList = [];
   list = [];
 
   top = 0;

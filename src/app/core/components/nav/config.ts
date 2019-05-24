@@ -30,6 +30,10 @@ export const NAV_CONFIG = [
                 name: '还款',
                 path: '',
                 selected: false
+            }, {
+                name: '借款',
+                path: '',
+                selected: false
             }
         ]
     }, {

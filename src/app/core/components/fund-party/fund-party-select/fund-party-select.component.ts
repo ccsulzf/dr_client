@@ -48,11 +48,11 @@ export class FundPartySelectComponent implements OnInit, OnDestroy, ControlValue
   propagateChange = (temp: any) => { };
 
   writeValue(value: any) {
-    setTimeout(() => {
-      if (value) {
-        this.select(_.find(BaseData.fundPartyList, { id: value }));
-      }
-    });
+    if (value) {
+      this.select(_.find(BaseData.fundPartyList, { id: value }));
+    } else {
+      this.select();
+    }
   }
 
   registerOnChange(fn: any) {

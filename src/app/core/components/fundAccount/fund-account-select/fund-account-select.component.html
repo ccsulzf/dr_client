@@ -9,7 +9,7 @@
       </div>
       <ul class="menu" id="fundAccount-ul" [style.display]="ulShow === true ? 'block':'none'">
         <li [id]="item.id" class="menu-item" *ngFor="let item of list" (click)="select(item)">
-          <a class="text-ellipsis" [class.li-selected]="fundAccount === item.name">{{item?.name}} -
+          <a class="text-ellipsis" [class.li-selected]="fundAccount === item.name">{{item?.name}} :
             {{item?.balance}}</a>
           <p class="add-edit">
             <i class="icon icon-edit"></i>

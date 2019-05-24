@@ -9,12 +9,12 @@
       <div class="columns">
         <div class="column col-6">
           <dr-date [type]="'input'" [dateName]="'日期'" [nameShow]="true" [size]="'middle'" [viewType]="'day'"
-            formControlName="expenseDate"></dr-date>
+            formControlName="expenseDate" ></dr-date>
         </div>
         <!-- <div class="column col-6 has-error"> -->
         <div class="column col-6"
           [class.has-error]="expenseForm.get('address').errors && (expenseForm.get('address').dirty || expenseForm.get('address').touched)">
-          <address-select formControlName="address" [(ngModel)]="expenseDetail.addressId"  [title]="'支出地点'">
+          <address-select formControlName="address" [(ngModel)]="expenseDetail.addressId" [title]="'支出地点'">
           </address-select>
           <p class="form-input-hint"
             *ngIf="expenseForm.get('address').errors && (expenseForm.get('address').dirty || expenseForm.get('address').touched)">
@@ -61,7 +61,8 @@
         <div class="column col-6"
           [class.has-error]="expenseForm.get('fundAccount').errors && (expenseForm.get('fundAccount').dirty || expenseForm.get('fundAccount').touched)">
           <fund-account-select formControlName="fundAccount" [title]="'账户'"
-            [fundChannelId]="expenseDetail.fundChannelId" [(ngModel)]="expenseDetail.fundAccountId" [filterCredit]="false">
+            [fundChannelId]="expenseDetail.fundChannelId" [(ngModel)]="expenseDetail.fundAccountId"
+            [filterCredit]="false">
           </fund-account-select>
           <p class="form-input-hint"
             *ngIf="expenseForm.get('fundAccount').errors && (expenseForm.get('fundAccount').dirty || expenseForm.get('fundAccount').touched)">
@@ -103,7 +104,7 @@
           </label-select>
         </div>
         <div class="columns detail">
-          <memo [title]="'备注'" [maxNumber]="500" [hasMemo]="memo" (setMemo)="onSetMemo($event)"></memo>
+          <memo [title]="'备注'" [maxNumber]="500" formControlName="memo" [(ngModel)]="expenseDetail.memo"></memo>
         </div>
       </fieldset>
     </form>

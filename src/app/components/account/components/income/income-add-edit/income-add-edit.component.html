@@ -44,13 +44,13 @@
 
     <div class="columns">
       <div class="column col-6">
-        <dr-date [type]="'input'" name="startDate" [dateName]="'开始日期'" [nameShow]="true" [size]="'middle'" [viewType]="'day'"
-          [ngModel]="startDate" (ngModelChange)="onSetDate($event)"></dr-date>
+        <dr-date [type]="'input'" name="startDate" [dateName]="'开始日期'" [nameShow]="true" [size]="'middle'"
+          [viewType]="'day'" [ngModel]="startDate" (ngModelChange)="onSetDate($event)"></dr-date>
       </div>
       <div class="column col-6">
         <!-- [initDate]="endDate" (setDate)="onSetDate($event)" -->
-        <dr-date [type]="'input'" name="endDate" [dateName]="'结束日期'" [nameShow]="true" [size]="'middle'" [viewType]="'day'"
-          [ngModel]="endDate" (ngModelChange)="onSetDate($event)">
+        <dr-date [type]="'input'" name="endDate" [dateName]="'结束日期'" [nameShow]="true" [size]="'middle'"
+          [viewType]="'day'" [ngModel]="endDate" (ngModelChange)="onSetDate($event)">
         </dr-date>
       </div>
       <!-- <div class="column col-4">
@@ -69,7 +69,8 @@
       </label-select>
     </div>
     <div class="columns detail">
-      <memo [title]="'备注'" [maxNumber]="500" [hasMemo]="memo" (setMemo)="onSetMemo($event)"></memo>
+      <memo [title]="'备注'" [maxNumber]="500" name="memo" [(ngModel)]="memo"></memo>
+      <!-- <memo [title]="'备注'" [maxNumber]="500" [hasMemo]="memo" (setMemo)="onSetMemo($event)"></memo> -->
     </div>
   </form>
 

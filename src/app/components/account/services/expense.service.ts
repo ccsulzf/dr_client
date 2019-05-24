@@ -70,18 +70,18 @@ export class ExpenseService {
                 participantList: participantList,
                 labelList: labelList
             };
-
             const data: any = await this.http.post('/DR/addExpense', expenseData);
 
+            // 将id改成到具体的name,添加到ExpenseDetailList
             this.changeExpenseDetail(data.expenseDetail);
 
+            // 将expenseDetailList进行分组
             this.groupDetailList();
 
             BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
 
-            const hasExpense = _.find(this.expenseList, { expenseBookId: expense.expenseBookId });
-
             this.totalDayAmount = (Number(this.totalDayAmount) * 100 + Number(expenseDetail.amount) * 100) / 100;
+            const hasExpense = _.find(this.expenseList, { expenseBookId: expense.expenseBookId });
             if (hasExpense) {
                 hasExpense.totalAmount = (Number(hasExpense.totalAmount) * 100 + Number(expenseDetail.amount) * 100) / 100;
             } else {
@@ -108,15 +108,19 @@ export class ExpenseService {
                 participantList: participantList,
                 labelList: labelList
             };
-            await this.http.post('/DR/editExpense', data);
+            const prevExpenseDetail: any = await this.http.post('/DR/editExpense', data);
 
             BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
+
             // const prevFundAccount = this.baseDataService.getFundAccount(prevExpenseDetail.fundAccountId);
-            // const nowFundAccount = this.baseDataService.getFundAccount(this.expenseDetail.fundAccountId);
+            // const nowFundAccount = this.baseDataService.getFundAccount(expenseDetail.fundAccountId);
 
             // prevFundAccount.balance = (Number(prevFundAccount.balance) * 100 + Number(prevExpenseDetail.amount) * 100) / 100;
 
-            // nowFundAccount.balance = (Number(nowFundAccount.balance) * 100 - Number(this.expenseDetail.amount) * 100) / 100;
+            // nowFundAccount.balance = (Number(nowFundAccount.balance) * 100 - Number(expenseDetail.amount) * 100) / 100;
+
+
+            // console.info(BaseData.fundAccountList);
 
         } catch (error) {
             throw error;

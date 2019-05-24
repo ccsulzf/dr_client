@@ -62,7 +62,6 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy, Contro
     public system: SystemService,
   ) { }
 
-
   propagateChange = (temp: any) => { };
 
   writeValue(value: any) {

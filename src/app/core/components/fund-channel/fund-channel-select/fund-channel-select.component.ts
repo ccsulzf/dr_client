@@ -46,11 +46,13 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy, ControlVal
   propagateChange = (temp: any) => { };
 
   writeValue(value: any) {
-    setTimeout(() => {
-      if (value) {
-        this.select(_.find(BaseData.fundChannelList, { id: value }));
-      }
-    });
+    console.info('--------------');
+    console.info(value);
+    if (value) {
+      this.select(_.find(BaseData.fundChannelList, { id: value }));
+    } else {
+      this.select();
+    }
   }
 
   registerOnChange(fn: any) {
@@ -101,9 +103,9 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy, ControlVal
         this.system.selectedTabView = value;
         this.showULFundChannel();
       } else {
-        this.select(this.fundChannelItem);
-        this.fundChannelInputEle.nativeElement.blur();
+        // this.select(this.fundChannelItem);
         this.ulShow = false;
+        this.fundChannelInputEle.nativeElement.blur();
       }
     });
   }
