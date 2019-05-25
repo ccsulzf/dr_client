@@ -19,7 +19,7 @@ export class ExpenseService {
         public baseDataService: BaseDataService,
         public system: SystemService
     ) { }
-
+    
     public expenseList = [];
 
     public expenseDetailList = [];
@@ -72,18 +72,22 @@ export class ExpenseService {
             };
             const data: any = await this.http.post('/DR/addExpense', expenseData);
 
-            // 将id改成到具体的name,添加到ExpenseDetailList
-            this.changeExpenseDetail(data.expenseDetail);
-
-            // 将expenseDetailList进行分组
-            this.groupDetailList();
-
+            expense.id = data.expenseId;
             BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
 
+            // // 将id改成到具体的name,添加到ExpenseDetailList
+            // this.changeExpenseDetail(data.expenseDetail);
+
+            // // 将expenseDetailList进行分组
+            // this.groupDetailList();
+
             this.totalDayAmount = (Number(this.totalDayAmount) * 100 + Number(expenseDetail.amount) * 100) / 100;
-            const hasExpense = _.find(this.expenseList, { expenseBookId: expense.expenseBookId });
+            const hasExpense = _.find(this.expenseList, (item) => {
+                return +item.expenseBookId === +expense.expenseBookId;
+            });
             if (hasExpense) {
                 hasExpense.totalAmount = (Number(hasExpense.totalAmount) * 100 + Number(expenseDetail.amount) * 100) / 100;
+                expense.totalAmount = hasExpense.totalAmount;
             } else {
                 const expenseBook = this.baseDataService.getExpenseBook(expense.expenseBookId);
                 this.expenseList.push({
@@ -102,16 +106,14 @@ export class ExpenseService {
 
     async editExpense(expense, expenseDetail, participantList, labelList) {
         try {
-            const data = {
+            const data: any = await this.http.post('/DR/editExpense', {
                 expense: expense,
                 expenseDetail: expenseDetail,
                 participantList: participantList,
                 labelList: labelList
-            };
-            const prevExpenseDetail: any = await this.http.post('/DR/editExpense', data);
-
+            });
             BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
-
+            expense.id = data.expenseId;
             // const prevFundAccount = this.baseDataService.getFundAccount(prevExpenseDetail.fundAccountId);
             // const nowFundAccount = this.baseDataService.getFundAccount(expenseDetail.fundAccountId);
 

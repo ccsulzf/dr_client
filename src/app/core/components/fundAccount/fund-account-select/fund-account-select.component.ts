@@ -44,7 +44,7 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
   fundChannel;
 
   doneEvent;
-  resetEvent;
+  updateEvent;
 
   ulShow = false;
 
@@ -74,7 +74,6 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
 
   ngOnInit() {
     this.init();
-    this.system.tabViewList.add(this.title);
     const searchBox = document.getElementById('fundAccount-list');
     const typeahead = fromEvent(searchBox, 'input').pipe(
       map((e: any) => {
@@ -105,7 +104,8 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
         }
       }
     });
-    this.resetEvent = this.system.resetEvent.subscribe(() => {
+
+    this.updateEvent = this.system.updateEvent.subscribe(() => {
       this.init();
     });
 
@@ -127,11 +127,11 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
     if (this.doneEvent) {
       this.doneEvent.unsubscribe();
     }
-    if (this.resetEvent) {
-      this.resetEvent.unsubscribe();
-    }
     if (this.changeTabViewEvent) {
       this.changeTabViewEvent.unsubscribe();
+    }
+    if (this.updateEvent) {
+      this.updateEvent.unsubscribe();
     }
   }
 
@@ -153,6 +153,8 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
       });
     }
     this.list = _.cloneDeep(this.fundAccountList);
+
+    // console.info(this.list);
   }
 
   showULFundAccount() {

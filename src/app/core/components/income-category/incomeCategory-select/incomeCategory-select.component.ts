@@ -34,7 +34,6 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
 
   get incomeCategoryId(): string { return this.incomeCategory; }
 
-  resetEvent;
   doneEvent;
 
   ulShow = false;
@@ -46,7 +45,7 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.init();
-    this.system.tabViewList.add(this.title);
+    // this.system.tabViewList.add(this.title);
     const searchBox = document.getElementById('incomeCategory-list');
     const typeahead = fromEvent(searchBox, 'input').pipe(
       map((e: any) => {
@@ -68,9 +67,7 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
         return item.name.indexOf(data) > -1 && this.system.filterByPY(item, 'name', data);
       });
     });
-    this.resetEvent = this.system.resetEvent.subscribe(() => {
-      this.init();
-    });
+
 
     this.doneEvent = this.system.doneEvent.subscribe((value) => {
       if (value && value.model === 'incomeCategory') {
@@ -153,9 +150,6 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.resetEvent) {
-      this.resetEvent.unsubscribe();
-    }
     if (this.doneEvent) {
       this.doneEvent.unsubscribe();
     }

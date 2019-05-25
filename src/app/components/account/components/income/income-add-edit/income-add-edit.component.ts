@@ -86,12 +86,12 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   ngAfterViewInit() {
-    const array = Array.from(this.system.tabViewList);
-    const index = _.findIndex(array, (value) => {
-      return value === '收入类别';
-    });
-    array.splice(index + 1, 0, '收款金额');
-    this.system.tabViewList = new Set(array);
+    // const array = Array.from(this.system.tabViewList);
+    // const index = _.findIndex(array, (value) => {
+    //   return value === '收入类别';
+    // });
+    // array.splice(index + 1, 0, '收款金额');
+    // this.system.tabViewList = new Set(array);
   }
 
   @HostListener('body:keyup', ['$event'])

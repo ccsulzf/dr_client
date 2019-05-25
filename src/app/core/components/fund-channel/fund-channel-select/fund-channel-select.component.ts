@@ -31,7 +31,6 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy, ControlVal
   fundChannelItem;
   fundChannel;
 
-  resetEvent;
   doneEvent;
 
   ulShow = false;
@@ -46,8 +45,6 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy, ControlVal
   propagateChange = (temp: any) => { };
 
   writeValue(value: any) {
-    console.info('--------------');
-    console.info(value);
     if (value) {
       this.select(_.find(BaseData.fundChannelList, { id: value }));
     } else {
@@ -63,7 +60,6 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy, ControlVal
 
   ngOnInit() {
     this.init();
-    this.system.tabViewList.add(this.title);
     const searchBox = document.getElementById('fundChannel-list');
     const typeahead = fromEvent(searchBox, 'input').pipe(
       map((e: any) => {
@@ -84,11 +80,6 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy, ControlVal
       this.list = this.fundChannelList.filter((item) => {
         return item.name.indexOf(data) > -1;
       });
-    });
-
-
-    this.resetEvent = this.system.resetEvent.subscribe(() => {
-      this.init();
     });
 
     this.doneEvent = this.system.doneEvent.subscribe((value) => {
@@ -183,9 +174,6 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy, ControlVal
   }
 
   ngOnDestroy() {
-    if (this.resetEvent) {
-      this.resetEvent.unsubscribe();
-    }
     if (this.doneEvent) {
       this.doneEvent.unsubscribe();
     }

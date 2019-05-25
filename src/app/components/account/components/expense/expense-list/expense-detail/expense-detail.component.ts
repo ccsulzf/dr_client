@@ -3,6 +3,7 @@ import { HttpClientService, BaseDataService, BaseData, SystemService } from '../
 import { AccountService, ExpenseService } from '../../../../services';
 
 import * as _ from 'lodash';
+import * as  moment from 'moment';
 @Component({
   selector: 'app-expense-detail',
   templateUrl: './expense-detail.component.html',
@@ -10,6 +11,9 @@ import * as _ from 'lodash';
 })
 export class ExpenseDetailComponent implements OnInit {
   @Input() data;
+
+  public expenseBook;
+
   constructor(
     public accountService: AccountService,
     public http: HttpClientService,
@@ -19,9 +23,11 @@ export class ExpenseDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.expenseService.expneseListDate = moment(this.data.expenseDate).format('YYYY-MM-DD');
+    this.expenseBook = this.baseDataService.getExpenseBook(this.data.expenseBookId);
     this.http.get('/DR/ExpenseDetail?expenseId=' + this.data.id).then((list: any) => {
-      this.expenseService.expenseDetailList = [];
       if (list && list.length) {
+        this.expenseService.expenseDetailList = [];
         for (const item of list) {
           this.expenseService.changeExpenseDetail(item);
         }

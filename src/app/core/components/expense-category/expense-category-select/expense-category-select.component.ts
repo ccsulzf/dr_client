@@ -47,7 +47,6 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy, Contro
   expenseCategoryItem;
   expenseCategory;
 
-  resetEvent;
   doneEvent;
 
   ulShow = false;
@@ -65,11 +64,13 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy, Contro
   propagateChange = (temp: any) => { };
 
   writeValue(value: any) {
-    if (value) {
-      this.selectItem(_.find(BaseData.expenseCategoryList, { id: value }));
-    } else {
-      this.init();
-    }
+    setTimeout(() => {
+      if (value) {
+        this.selectItem(_.find(BaseData.expenseCategoryList, { id: value }));
+      } else {
+        this.init();
+      }
+    });
   }
 
   registerOnChange(fn: any) {
@@ -80,7 +81,6 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy, Contro
 
   ngOnInit() {
     this.init();
-    this.system.tabViewList.add(this.title);
     const searchBox = document.getElementById('expenseCategory-list');
     const typeahead = fromEvent(searchBox, 'input').pipe(
       map((e: any) => {
@@ -101,10 +101,6 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy, Contro
       this.list = _.filter(BaseData.expenseCategoryList, { expenseBookId: this.expenseBookId }).filter((item) => {
         return item.name.indexOf(data) > -1 || this.system.filterByPY(item, 'name', data);
       });
-    });
-
-    this.resetEvent = this.system.resetEvent.subscribe(() => {
-      this.init();
     });
 
     this.doneEvent = this.system.doneEvent.subscribe((value) => {
@@ -203,9 +199,6 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy, Contro
   }
 
   ngOnDestroy() {
-    if (this.resetEvent) {
-      this.resetEvent.unsubscribe();
-    }
     if (this.doneEvent) {
       this.doneEvent.unsubscribe();
     }

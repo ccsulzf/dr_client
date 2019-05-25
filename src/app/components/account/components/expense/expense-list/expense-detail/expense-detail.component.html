@@ -1,27 +1,27 @@
 <main>
   <div class="day-expense">
     <span (click)="return()">
-      <i class="icon icon-back"></i>{{data.expenseBookName}}
+      <i class="icon icon-back"></i>{{expenseBook?.name}}
     </span>
     <span>
-      -{{data.totalAmount}}元
+      -{{data?.totalAmount}}元
     </span>
   </div>
   <ul class="expense-detail-list">
     <li *ngFor="let group of expenseService?.groupExpenseDetailList">
       <div class="expense-category text-ellipsis">
-        {{group.name}}
+        {{group?.name}}
       </div>
       <div class="expense-detail">
-        <ul *ngFor="let item of group.list" (click)="edit(item)">
+        <ul *ngFor="let item of group?.list" (click)="edit(item)">
           <li>
             <div>
-              <span class="text-ellipsis">{{item.content}}</span>
-              <span class="text-ellipsis">{{item.fundPartyName}}</span>
+              <span class="text-ellipsis">{{item?.content}}</span>
+              <span class="text-ellipsis">{{item?.fundPartyName}}</span>
             </div>
             <div>
-              <span class="text-ellipsis">-{{item.amount}}元</span>
-              <span class="text-ellipsis">{{item.fundChannelName}}</span>
+              <span class="text-ellipsis">-{{item?.amount}}元</span>
+              <span class="text-ellipsis">{{item?.fundChannelName}}</span>
             </div>
           </li>
         </ul>

@@ -15,11 +15,14 @@ li {
 }
 
 main>ul {
+  height: 200px;
   flex-grow: 1;
   border: 1px solid #dedede;
   border-radius: 0px 0 3px 3px;
   border-top: none;
   font-size: 14px;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 
@@ -40,7 +43,8 @@ main>ul {
   display: inline-flex;
   cursor: pointer;
   align-items: center;
-  i{
+
+  i {
     margin-right: 5px;
   }
 }
@@ -113,4 +117,10 @@ main>ul {
 .expense-detail li div span:last-of-type {
   text-align: right;
   width: 40%
+}
+
+
+
+ul::-webkit-scrollbar {
+  display: none;
 }

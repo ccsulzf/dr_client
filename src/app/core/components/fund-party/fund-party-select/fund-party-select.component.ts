@@ -32,7 +32,6 @@ export class FundPartySelectComponent implements OnInit, OnDestroy, ControlValue
   fundPartyItem;
   fundParty;
 
-  resetEvent;
   doneEvent;
 
   ulShow = false;
@@ -63,7 +62,6 @@ export class FundPartySelectComponent implements OnInit, OnDestroy, ControlValue
 
   ngOnInit() {
     this.init();
-    this.system.tabViewList.add(this.title);
     const searchBox = document.getElementById('fundParty-list');
     const typeahead = fromEvent(searchBox, 'input').pipe(
       map((e: any) => {
@@ -84,10 +82,6 @@ export class FundPartySelectComponent implements OnInit, OnDestroy, ControlValue
       this.list = BaseData.fundPartyList.filter((item) => {
         return item.name.indexOf(data) > -1 || this.system.filterByPY(item, 'name', data);
       });
-    });
-
-    this.resetEvent = this.system.resetEvent.subscribe(() => {
-      this.init();
     });
 
     this.doneEvent = this.system.doneEvent.subscribe((value) => {
@@ -185,9 +179,6 @@ export class FundPartySelectComponent implements OnInit, OnDestroy, ControlValue
   }
 
   ngOnDestroy() {
-    if (this.resetEvent) {
-      this.resetEvent.unsubscribe();
-    }
     if (this.doneEvent) {
       this.doneEvent.unsubscribe();
     }

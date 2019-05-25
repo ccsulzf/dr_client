@@ -58,10 +58,6 @@ export class ExpenseListComponent implements AfterViewInit, OnInit, OnDestroy, A
     });
   }
 
-  toDetailList() {
-    this.system.changeComponent({ component: 'expense-detail' });
-  }
-
   goDetail(item) {
     this.system.changeComponent({ component: 'expense-detail', data: item });
   }

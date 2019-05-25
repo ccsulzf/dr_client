@@ -37,7 +37,6 @@ export class ExpenseBookListComponent implements OnInit, OnDestroy, ControlValue
   public selectedExpenseBook;
 
   doneEvent;
-  resetEvent;
 
   constructor(
     public system: SystemService
@@ -96,9 +95,6 @@ export class ExpenseBookListComponent implements OnInit, OnDestroy, ControlValue
   }
 
   ngOnDestroy() {
-    if (this.resetEvent) {
-      this.resetEvent.unsubscribe();
-    }
     if (this.doneEvent) {
       this.doneEvent.unsubscribe();
     }

@@ -97,9 +97,6 @@ export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor 
     this.monthDays = this.getMonthDays();
     this.getViewTypeList(this.viewType);
     this.getList();
-    if (this.dateName) {
-      this.system.tabViewList.add(this.dateName);
-    }
     this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
       if (value === this.dateName) {
         this.system.selectedTabView = value;

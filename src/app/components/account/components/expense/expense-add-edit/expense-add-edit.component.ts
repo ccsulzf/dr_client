@@ -49,7 +49,6 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
 
   public editOrDelFlag = false;
 
-
   public expenseBook;
 
   public participantList = [];
@@ -81,6 +80,17 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
   ) { }
 
   ngOnInit() {
+    this.system.tabViewList = new Map([
+      ['expenseDate', '日期'],
+      ['address', '支出地点'],
+      ['expenseCategory', '类别'],
+      ['fundParty', '商家'],
+      ['fundChannel', '渠道'],
+      ['fundAccount', '账户'],
+      ['content', '支出内容'],
+      ['amount', '支出金额']
+    ]);
+
     this.formChanges = this.expenseForm.get('expenseDate').valueChanges.subscribe((data) => {
       if (data) {
         this.expense.expenseDate = data.date;
@@ -104,17 +114,11 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     this.editEvent = this.expenseService.editEvent.subscribe(async (data: any) => {
       this.expense = data.expense;
       this.expenseDetail = data.expenseDetail;
-
       this.addFlag = false;
       this.editOrDelFlag = true;
-
       await this.getLableList();
       await this.getParticipantList();
     });
-
-    this.system.tabViewList.add('支出内容');
-    this.system.tabViewList.add('支出金额');
-
     this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
       if (value === '支出内容') {
         this.system.selectedTabView = value;
@@ -141,15 +145,7 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
   hotKeyEvent(e) {
     switch (e.keyCode) {
       case 9:
-        const array = Array.from(this.system.tabViewList);
-        if (this.system.selectedTabView) {
-          const index = _.findIndex(array, (item) => {
-            return item === this.system.selectedTabView;
-          });
-          if ((index > -1) && (index <= array.length - 1)) {
-            this.system.changeTabView((e.shiftKey ? array[index - 1] : array[index + 1]) || array[0]);
-          }
-        }
+        this.tabCustomInput(e);
         break;
       // enter
       case 13:
@@ -171,6 +167,27 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
+  tabCustomInput(e?) {
+    const values = Array.from(this.system.tabViewList.values());
+    if (this.system.selectedTabView && e) {
+      const index = _.findIndex(values, (item) => {
+        return item === this.system.selectedTabView;
+      });
+      if ((index > -1) && (index <= values.length - 1)) {
+        this.system.changeTabView((e.shiftKey ? values[index - 1] : values[index + 1]) || values[0]);
+      }
+    } else {
+      const object = Object.assign(this.expenseForm.value);
+      for (const property in object) {
+        if (!this.expenseForm.value[property]) {
+          const tabView = this.system.tabViewList.get(property);
+          this.system.changeTabView(tabView);
+          break;
+        }
+      }
+    }
+  }
+
   ngOnDestroy() {
     if (this.editEvent) {
       this.editEvent.unsubscribe();
@@ -182,7 +199,7 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     if (this.formChanges) {
       this.formChanges.unsubscribe();
     }
-    this.system.tabViewList = new Set();
+    this.system.tabViewList = new Map();
   }
 
   onSetLabelList(labelList) {
@@ -219,21 +236,28 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     this.participantList = [];
     this.participantList.push(_.find(BaseData.participantList, { isMyself: true }));
     this.labelList = [];
-    // this.system.selectedTabView = '支出内容';
-    // this.contentInputEle.nativeElement.focus();
+    this.system.selectedTabView = '支出内容';
+    this.contentInputEle.nativeElement.focus();
     this.expenseForm.markAsPristine();
   }
 
   reset() {
     this.expenseForm.patchValue({
+      expenseDate: moment().format('YYYY-MM-DD'),
       address: '',
-      fundAccount: '',
+      expenseCategory: '',
       fundParty: '',
       fundChannel: '',
-      expenseCategory: '',
-      expenseDate: moment().format('YYYY-MM-DD')
+      fundAccount: '',
+      content: '',
+      amount: '',
+      memo: '',
     });
-    this.init();
+    this.system.selectedTabView = null;
+    this.participantList = [];
+    this.participantList.push(_.find(BaseData.participantList, { isMyself: true }));
+    this.labelList = [];
+    this.expenseForm.markAsPristine();
   }
 
   goAdd() {
@@ -250,16 +274,16 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
       return;
     }
     try {
+      delete this.expense.id;
+      delete this.expenseDetail.expenseId;
+      delete this.expenseDetail.id;
       this.expense.totalAmount = this.expenseDetail.amount;
       await this.expenseService.addExpense(this.expense, this.expenseDetail, this.participantList, this.labelList);
-      this.notifyService.notify('添加支出账目', 'success');
-      if ((this.expenseService.expneseListDate !==
-        moment(this.expense.expenseDate).format('YYYY-MM-DD'))
-        || (this.expense.expenseBookId !== this.expenseBook.id)) {
-        this.expenseService.expneseListDate = moment(this.expense.expenseDate).format('YYYY-MM-DD'),
-          this.system.changeComponent({ component: 'expense-list' });
-      }
       this.init();
+      this.system.update();
+      this.notifyService.notify('添加支出账目', 'success');
+      this.expenseService.expneseListDate = moment(this.expense.expenseDate).format('YYYY-MM-DD');
+      this.system.changeComponent({ component: 'expense-detail', data: this.expense });
     } catch (error) {
       this.notifyService.notify('添加支出账目失败', 'error');
     }
@@ -275,12 +299,12 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     try {
       this.expense.expenseDate = moment(this.expense.expenseDate).format('YYYY-MM-DD');
       await this.expenseService.editExpense(this.expense, this.expenseDetail, this.participantList, this.labelList);
-      this.notifyService.notify('编辑支出账目', 'success');
-      this.expenseService.expneseListDate = moment(this.expense.expenseDate).format('YYYY-MM-DD'),
-        this.system.changeComponent({ component: 'expense-list' });
-      this.expenseService.init();
-      this.reset();
       this.goAdd();
+      this.system.update();
+      this.notifyService.notify('编辑支出账目', 'success');
+      this.expenseService.expneseListDate = moment(this.expense.expenseDate).format('YYYY-MM-DD');
+      this.system.changeComponent({ component: 'expense-detail', data: this.expense });
+      this.expenseService.init();
     } catch (error) {
       this.notifyService.notify('编辑支出账目失败', 'error');
     }
@@ -289,7 +313,7 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
   async delExpense() {
     try {
       await this.expenseService.deleteExpenseDetail(this.expense, this.expenseDetail.id, this.expenseDetail.amount);
-      this.reset();
+      this.system.update();
       this.goAdd();
       _.remove(this.expenseService.expenseDetailList, { id: this.expenseDetail.id });
       if (this.expenseService.expenseDetailList.length) {

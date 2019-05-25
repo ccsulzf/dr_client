@@ -19,7 +19,10 @@ export class SystemService {
     // 重置
     public resetEvent = new Subject();
 
-    public tabViewList = new Set();
+    public updateEvent = new Subject();
+
+
+    public tabViewList = new Map();
 
     public changeTabViewEvent = new Subject<any>();
 
@@ -43,6 +46,10 @@ export class SystemService {
 
     reset() {
         this.resetEvent.next();
+    }
+
+    update() {
+        this.updateEvent.next();
     }
 
     set user(value) {

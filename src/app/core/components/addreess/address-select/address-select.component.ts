@@ -31,8 +31,6 @@ export class AddressSelectComponent implements OnInit, OnDestroy, ControlValueAc
   address;
 
   doneEvent;
-  resetEvent;
-
   ulShow = false;
   public changeTabViewEvent: Subscription;
   constructor(
@@ -62,7 +60,6 @@ export class AddressSelectComponent implements OnInit, OnDestroy, ControlValueAc
 
   ngOnInit() {
     this.init();
-    this.system.tabViewList.add(this.title);
     const searchBox = document.getElementById('address-list');
     const typeahead = fromEvent(searchBox, 'input').pipe(
       map((e: any) => {
@@ -119,6 +116,7 @@ export class AddressSelectComponent implements OnInit, OnDestroy, ControlValueAc
       })) {
         this.address = '';
       }
+      this.ulShow = false;
     }
   }
 
@@ -216,10 +214,6 @@ export class AddressSelectComponent implements OnInit, OnDestroy, ControlValueAc
   }
 
   ngOnDestroy() {
-    if (this.resetEvent) {
-      this.resetEvent.unsubscribe();
-    }
-
     if (this.doneEvent) {
       this.doneEvent.unsubscribe();
     }
