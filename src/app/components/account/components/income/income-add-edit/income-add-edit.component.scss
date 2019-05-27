@@ -27,15 +27,53 @@ form {
   button {
     margin-right: 20px;
     font-size: 14px;
-    // width: 100px;
   }
+}
+
+.group-date {
+  display: flex;
+  position: relative;
+}
+
+.income-select {
+  width: 59px;
+  font-size: 0.7rem;
+  padding: 0;
+  margin: 0;
+  height: auto;
+  padding-left: 0.2rem;
+  margin-top: .3rem;
+  border-radius: 0;
+  border: none;
+  margin-left: .2rem;
+}
+
+.income-divider {
+  display: block;
+  /* padding: .2rem; */
+  padding-left: .4rem;
+  padding-right: 0.1rem;
+}
+
+.income-divider::before {
+  border-left: .08rem solid #4b48d6;
+  content: "";
+  display: block;
+  position: absolute;
+  top: .5rem;
+  height: 0.8rem;
+}
+
+
+.income-select:focus {
+  box-shadow: none;
 }
 
 .edit-del {
   display: flex;
   align-items: center;
-  // margin: 0 20px;
   justify-content: center;
+  position: relative;
 
   .btn-group {
     margin: 10px 0px;

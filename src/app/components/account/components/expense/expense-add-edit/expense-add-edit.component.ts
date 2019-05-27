@@ -88,7 +88,10 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
       ['fundChannel', '渠道'],
       ['fundAccount', '账户'],
       ['content', '支出内容'],
-      ['amount', '支出金额']
+      ['amount', '支出金额'],
+      ['participant', '参与'],
+      ['label', '标签'],
+      ['memo', '备注']
     ]);
 
     this.formChanges = this.expenseForm.get('expenseDate').valueChanges.subscribe((data) => {

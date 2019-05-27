@@ -11,13 +11,14 @@ export const MEMO_ACCESSOR: any = {
   useExisting: forwardRef(() => MemoComponent),
   multi: true
 };
+
 @Component({
   selector: 'memo',
   templateUrl: './memo.component.html',
   styleUrls: ['./memo.component.scss'],
   providers: [MEMO_ACCESSOR]
 })
-export class MemoComponent implements OnInit, ControlValueAccessor {
+export class MemoComponent implements OnInit, ControlValueAccessor, OnDestroy {
 
   @ViewChild('memoInputEle') memoInputEle: ElementRef;
 
@@ -29,8 +30,10 @@ export class MemoComponent implements OnInit, ControlValueAccessor {
 
   public memoLength = 0;
 
-  constructor(
+  public changeTabViewEvent: Subscription;
 
+  constructor(
+    public system: SystemService
   ) { }
 
   propagateChange = (temp: any) => { };
@@ -48,6 +51,20 @@ export class MemoComponent implements OnInit, ControlValueAccessor {
   registerOnTouched(fn: any) { }
 
   ngOnInit() {
+    this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
+      if (value === this.title) {
+        this.memoInputEle.nativeElement.focus();
+        this.system.selectedTabView = value;
+      } else {
+        this.memoInputEle.nativeElement.blur();
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.changeTabViewEvent) {
+      this.changeTabViewEvent.unsubscribe();
+    }
   }
 
   @HostListener('keyup', ['$event'])

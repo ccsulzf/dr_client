@@ -5,11 +5,8 @@
         <address-select name="address-select" [title]="'收入地点'" [(ngModel)]="addressId"></address-select>
       </div>
       <div class="column col-6">
-        <fund-party-select name="fund-party" [title]="'付款方'" [type]="1" name="fund-party" [(ngModel)]="fundPartyId">
+        <fund-party-select name="fund-party" [title]="'付款方'" [type]="2" name="fund-party" [(ngModel)]="fundPartyId">
         </fund-party-select>
-        <!-- <fund-party-select [title]="'付款方'" [type]="2" (setFundParty)="onSetFundParty($event)"
-          [fundPartyId]="fundPartyId">
-        </fund-party-select> -->
       </div>
     </div>
 
@@ -41,22 +38,32 @@
       </div>
     </div>
 
+    <div>
+      <div class="group-date">
+        <label class="form-label">
+          收款周期
+        </label>
+        <div class="income-divider"></div>
+        <select class="form-select select-sm income-select" name="selectedDateType" [ngModel]="selectedDateType"
+          (ngModelChange)="selectDateType($event)">
+          <option *ngFor="let item of dateTypeList" [value]="item.viewType">{{item.name}}</option>
+          <!-- <option>日度</option>
+          <option>月度</option>
+          <option>年度</option> -->
+        </select>
+      </div>
 
-    <div class="columns">
-      <div class="column col-6">
-        <dr-date [type]="'input'" name="startDate" [dateName]="'开始日期'" [nameShow]="true" [size]="'middle'"
-          [viewType]="'day'" [ngModel]="startDate" (ngModelChange)="onSetDate($event)"></dr-date>
+      <div class="columns">
+        <div class="column col-6">
+          <dr-date [type]="'input'" name="startDate" [dateName]="'开始日期'" [nameShow]="false" [size]="'middle'"
+            [viewType]="selectedDateType" [ngModel]="startDate" (ngModelChange)="onSetDate($event)"></dr-date>
+        </div>
+        <div class="column col-6">
+          <dr-date [type]="'input'" name="endDate" [dateName]="'结束日期'" [nameShow]="false" [size]="'middle'"
+            [viewType]="selectedDateType" [ngModel]="endDate" (ngModelChange)="onSetDate($event)">
+          </dr-date>
+        </div>
       </div>
-      <div class="column col-6">
-        <!-- [initDate]="endDate" (setDate)="onSetDate($event)" -->
-        <dr-date [type]="'input'" name="endDate" [dateName]="'结束日期'" [nameShow]="true" [size]="'middle'"
-          [viewType]="'day'" [ngModel]="endDate" (ngModelChange)="onSetDate($event)">
-        </dr-date>
-      </div>
-      <!-- <div class="column col-4">
-        <dr-date [type]="'input'" [name]="'收款日期'" [viewType]="'day'" [initDate]="endDate" (setDate)="onSetDate($event)">
-        </dr-date>
-      </div> -->
     </div>
 
     <div class="columns detail">

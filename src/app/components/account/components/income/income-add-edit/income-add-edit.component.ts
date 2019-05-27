@@ -33,6 +33,14 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
   public editOrDelFlag = false;
 
   public changeTabViewEvent: Subscription;
+
+  public dateTypeList = [
+    { name: '日度', viewType: 'day' },
+    { name: '月度', viewType: 'month' },
+    { name: '年度', viewType: 'year' }
+  ];
+
+  public selectedDateType;
   constructor(
     public accountService: AccountService,
     public incomeService: IncomeService,
@@ -42,6 +50,9 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
   ) { }
 
   ngOnInit() {
+
+    this.selectDateType(this.dateTypeList[0].viewType);
+
     this.editEvent = this.incomeService.editEvent.subscribe(async (data: any) => {
       this.incomeId = data.id;
       this.addressId = data.addressId;
@@ -83,6 +94,27 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
         this.amountInputEle.nativeElement.blur();
       }
     });
+  }
+
+  selectDateType(viewType) {
+    this.selectedDateType = viewType;
+    switch (this.selectedDateType) {
+      case 'day':
+        this.startDate = moment().format('YYYY-MM-DD');
+        this.endDate = moment().format('YYYY-MM-DD');
+        break;
+      case 'month':
+        this.startDate = moment().format('YYYY-MM');
+        this.endDate = moment().format('YYYY-MM');
+        break;
+      case 'year':
+        this.startDate = moment().format('YYYY');
+        this.endDate = moment().format('YYYY');
+        break;
+      default:
+        break;
+    }
+
   }
 
   ngAfterViewInit() {
@@ -148,6 +180,7 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   onSetDate(data) {
+    // console.info(data);
     if (data.name === '开始日期') {
       this.startDate = data.date;
     }

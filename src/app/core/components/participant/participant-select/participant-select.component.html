@@ -10,18 +10,17 @@
       <input tabindex="-1" name="filterParticipant" id="participant-list" [(ngModel)]="filterParticipant"
         class="form-input input-sm" type="text" placeholder="添加参与人">
     </div>
-    <ul class="menu" [style.top]="top+'px'" *ngIf="ulShow">
-      <li class="menu-item" *ngFor="let item of list" (click)="select(item)">
-        <a>
+    <ul id="participant-ul" class="menu" [style.top]="top+'px'" [style.display]="ulShow?'block':'none'">
+      <li [id]="'participant_'+item.id" class="menu-item" *ngFor="let item of list" (click)="select(item)">
+        <a [class.choice]="choiceItem && (choiceItem.id === item.id)">
           <span>
             {{item?.name}}
           </span>
           <i *ngIf="item?.selected" class="icon icon-check"></i>
         </a>
-
       </li>
       <li class="add">
-        <button tabindex="-1" class="btn btn-primary btn-sm" (click)="add()"><i class="icon icon-plus"></i>
+        <button tabindex="-1" type="button" class="btn btn-primary btn-sm" (click)="add()"><i class="icon icon-plus"></i>
           添加参与人</button>
       </li>
     </ul>

@@ -1,5 +1,9 @@
-import { Component, OnInit, Input, OnDestroy, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
+import {
+  Component, OnInit, Input, OnDestroy, ElementRef, ViewChild,
+  Output, EventEmitter, HostListener, AfterViewInit, Renderer2
+} from '@angular/core';
 import { SystemService, HttpClientService } from '../../../providers';
+import { Subscription } from 'rxjs';
 import * as _ from 'lodash';
 @Component({
   selector: 'label-select',
@@ -10,8 +14,8 @@ export class LabelSelectComponent implements OnInit, OnDestroy {
   @Input() title;
   @Input() type;
   @Output() setLabelList = new EventEmitter<any>();
-  @ViewChild('inputText') inputText: ElementRef;
-
+  @ViewChild('inputLabel') inputLabel: ElementRef;
+  @ViewChild('contentLabel') contentLabel: ElementRef;
   @Input()
   set hasLabelList(hasLabelList) {
     this.labelList = hasLabelList;
@@ -24,21 +28,26 @@ export class LabelSelectComponent implements OnInit, OnDestroy {
   name;
 
   resetEvent;
+
+  public changeTabViewEvent: Subscription;
   constructor(
     public system: SystemService,
-    public http: HttpClientService
+    public http: HttpClientService,
+    public render: Renderer2
   ) { }
 
   ngOnInit() {
     this.resetEvent = this.system.resetEvent.subscribe(() => {
       this.labelList = [];
     });
-  }
 
-  showLabel() {
-    this.isInputShow = true;
-    setTimeout(() => {
-      this.inputText.nativeElement.focus();
+    this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
+      if (value === this.title) {
+        this.showLabel();
+        this.system.selectedTabView = value;
+      } else {
+        this.isInputShow = false;
+      }
     });
   }
 
@@ -46,16 +55,52 @@ export class LabelSelectComponent implements OnInit, OnDestroy {
     if (this.resetEvent) {
       this.resetEvent.unsubscribe();
     }
+    if (this.changeTabViewEvent) {
+      this.changeTabViewEvent.unsubscribe();
+    }
   }
 
-  async  keyUpEvent(key) {
-    switch (key.which) {
-      case 13:
-        await this.addLabel();
-        break;
-      default:
-        break;
+
+  @HostListener('document:click', ['$event'])
+  onClick() {
+    if (this.contentLabel.nativeElement.contains(event.target)) {
+      this.showLabel();
+    } else {
+      this.isInputShow = false;
     }
+  }
+
+  @HostListener('keyup', ['$event'])
+  async hotKeyEvent(e) {
+    if (this.isInputShow) {
+      switch (e.keyCode) {
+        case 13:
+          e.stopPropagation();
+          await this.addLabel();
+          break;
+        case 27:
+          e.stopPropagation();
+          this.isInputShow = false;
+          break;
+        default:
+          break;
+      }
+    } else if (!this.isInputShow && e.keyCode === 13) {
+      e.stopPropagation();
+      this.isInputShow = true;
+    }
+  }
+
+  showLabel() {
+    this.system.selectedTabView = this.title;
+    this.isInputShow = true;
+    setTimeout(() => {
+      this.inputLabel.nativeElement.focus();
+    });
+  }
+
+  blur() {
+    this.isInputShow = false;
   }
 
   async addLabel() {
@@ -68,20 +113,22 @@ export class LabelSelectComponent implements OnInit, OnDestroy {
       this.isInputShow = false;
       this.labelList.push(label);
       this.name = '';
+      this.showLabel();
       this.setLabelList.emit(this.labelList);
     } else {
-      this.isInputShow = false;
+      // this.isInputShow = false;
       this.name = '';
     }
   }
 
-  async blur() {
-    if (this.name) {
-      await this.addLabel();
-    } else {
-      this.isInputShow = false;
-    }
-  }
+  // async blur() {
+  //   console.info(123);
+  //   if (this.name) {
+  //     await this.addLabel();
+  //   } else {
+  //     this.isInputShow = false;
+  //   }
+  // }
 
   delete(item) {
     _.remove(this.labelList, item);

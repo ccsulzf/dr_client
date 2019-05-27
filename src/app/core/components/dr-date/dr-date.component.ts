@@ -33,7 +33,6 @@ export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor 
   @Input()
   set viewType(viewType) {
     this.view_type = viewType;
-    this.ngOnInit();
   }
 
   get viewType() {
@@ -77,7 +76,12 @@ export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor 
     setTimeout(() => {
       if (value) {
         this.date = value;
-        this.ngOnInit();
+        this.getMonth(new Date(this.date).getMonth() + 1);
+        this.getYear();
+        this.getDay(this.date);
+        this.getYearList(this.year);
+        this.monthDays = this.getMonthDays();
+        this.getViewTypeList(this.viewType);
       }
     });
   }
