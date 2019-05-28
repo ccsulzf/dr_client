@@ -33,6 +33,7 @@
       </div>
       <div class="column col-6"
         [class.has-error]="incomeForm.get('amount').errors && (incomeForm.get('amount').dirty || incomeForm.get('amount').touched)">
+        <label  class="form-label" >收入金额</label>
         <div class="input-group">
           <input class="form-input" formControlName="amount" [(ngModel)]="income.amount" type="number" step="0.01"
             placeholder="收入金额" #amountInputEle>
@@ -46,7 +47,6 @@
     </div>
 
     <div class="columns">
-
       <div class="column col-6"
         [class.has-error]="incomeForm.get('fundChannel').errors && (incomeForm.get('fundChannel').dirty || incomeForm.get('fundChannel').touched)">
         <fundChannel-select formControlName="fundChannel" [(ngModel)]="income.fundChannelId" [title]="'收款渠道'">
@@ -76,7 +76,7 @@
           收款周期
         </label>
         <div class="income-divider"></div>
-        <select class="form-select select-sm income-select" name="selectedDateType" [ngModel]="selectedDateType"
+        <select class="form-select select-sm income-select" formControlName="selectedDateType"  [ngModel]="selectedDateType"
           (ngModelChange)="selectDateType($event)">
           <option *ngFor="let item of dateTypeList" [value]="item.viewType">{{item.name}}</option>
         </select>
@@ -85,11 +85,11 @@
       <div class="columns">
         <div class="column col-6">
           <dr-date [type]="'input'"  [dateName]="'开始日期'" [nameShow]="false" [size]="'middle'"
-            [viewType]="selectedDateType" formControlName="startDate"></dr-date>
+            [viewType]="selectedDateType" formControlName="startDate" [(ngModel)]="income.startDate"></dr-date>
         </div>
         <div class="column col-6">
           <dr-date [type]="'input'"  [dateName]="'结束日期'" [nameShow]="false" [size]="'middle'"
-            [viewType]="selectedDateType" formControlName="endDate">
+            [viewType]="selectedDateType" formControlName="endDate" [(ngModel)]="income.endDate">
           </dr-date>
         </div>
       </div>

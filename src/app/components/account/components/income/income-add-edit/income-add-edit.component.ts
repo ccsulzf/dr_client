@@ -1,8 +1,10 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators, FormGroupDirective } from '@angular/forms';
-import { AccountService } from '../../../services/account.service';
-import { IncomeService } from '../../../services/income.service';
-import { SystemService, HttpClientService, BaseData, NotifyService, BaseDataService } from '../../../../../core/providers';
+import { AccountService } from '../../../services';
+import { BaseDataService, SystemService, NotifyService, HttpClientService } from '../../../../../core/providers';
+import { BaseData } from '../../../../../core/providers/base-data';
+
+import { IncomeService } from '../../../services';
 
 import { Subscription } from 'rxjs';
 import * as moment from 'moment';
@@ -27,8 +29,8 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
     fundPartyId: '',
     fundChannelId: '',
     fundAccountId: '',
-    startDate: '',
-    endDate: '',
+    startDate: moment().format('YYYY-MM-DD'),
+    endDate: moment().format('YYYY-MM-DD'),
     amount: '',
     memo: '',
   };
@@ -49,7 +51,7 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
     { name: '年度', viewType: 'year' }
   ];
 
-  public selectedDateType;
+  public selectedDateType = this.dateTypeList[0].viewType;
 
   incomeForm = this.fb.group({
     incomeCategory: [this.income.incomeCategoryId, Validators.required],
@@ -57,6 +59,7 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
     fundParty: [this.income.fundPartyId, Validators.required],
     fundChannel: [this.income.fundChannelId, Validators.required],
     fundAccount: [this.income.fundAccountId, Validators.required],
+    selectedDateType: [this.selectedDateType],
     startDate: [this.income.startDate],
     endDate: [this.income.endDate],
     amount: [this.income.amount, Validators.required],
@@ -73,6 +76,7 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
   ) { }
 
   ngOnInit() {
+
     this.system.tabViewList = new Map([
       ['address', '地点'],
       ['fundParty', '付款方'],
@@ -101,8 +105,6 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
 
   ngAfterViewInit() {
     this.reset();
-    this.selectDateType(this.dateTypeList[0].viewType);
-
     this.editEvent = this.incomeService.editEvent.subscribe(async (data: any) => {
       this.income = data.income;
       await this.getLableList();

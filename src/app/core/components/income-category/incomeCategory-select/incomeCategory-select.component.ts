@@ -44,7 +44,7 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
       if (value) {
         this.select(_.find(BaseData.incomeCategoryList, { id: value }));
       } else {
-        this.select(_.fist(BaseData.incomeCategoryList));
+        this.select(_.first(BaseData.incomeCategoryList));
       }
     });
   }

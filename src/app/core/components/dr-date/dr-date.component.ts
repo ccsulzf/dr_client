@@ -76,6 +76,7 @@ export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor 
     setTimeout(() => {
       if (value) {
         this.date = value;
+        console.info(this.date);
         this.getMonth(new Date(this.date).getMonth() + 1);
         this.getYear();
         this.getDay(this.date);
