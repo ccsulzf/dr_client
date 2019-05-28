@@ -63,10 +63,10 @@ export class IncomeService {
         }
     }
 
-    async add(participantList, labelList) {
+    async add(income, participantList, labelList) {
         try {
             const incomeData = {
-                income: this.income,
+                income: income,
                 participantList: participantList,
                 labelList: labelList
             };
@@ -85,10 +85,10 @@ export class IncomeService {
     }
 
 
-    async editIncome(participantList, labelList) {
+    async editIncome(income, participantList, labelList) {
         try {
             const incomeData = {
-                income: this.income,
+                income: income,
                 participantList: participantList,
                 labelList: labelList
             };

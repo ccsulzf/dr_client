@@ -78,7 +78,7 @@ export class FundChannelSelectComponent implements OnInit, OnDestroy, ControlVal
     );
     typeahead.subscribe(data => {
       this.list = this.fundChannelList.filter((item) => {
-        return item.name.indexOf(data) > -1;
+        return item.name.indexOf(data) > -1  && this.system.filterByPY(item, 'name', data);
       });
     });
 

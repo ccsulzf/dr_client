@@ -1,39 +1,33 @@
 import {
   Component, OnInit, Input, OnDestroy, Output, EventEmitter,
-  HostListener, ElementRef, Renderer, ViewContainerRef,
-  ViewChild
+  HostListener, ElementRef, Renderer, ViewContainerRef, ViewChild, forwardRef
 } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn, AbstractControl, ValidationErrors, NG_VALIDATORS } from '@angular/forms';
 import { SystemService, BaseData } from '../../../providers';
-
 import { fromEvent, Subscription } from 'rxjs';
 import { map, filter, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 import * as _ from 'lodash';
+
+export const INCOME_CATEGORY_ACCESSOR: any = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => IncomeCategorySelectComponent),
+  multi: true
+};
 @Component({
   selector: 'incomeCategory-select',
   templateUrl: './incomeCategory-select.component.html',
-  styleUrls: ['./incomeCategory-select.component.scss']
+  styleUrls: ['./incomeCategory-select.component.scss'],
+  providers: [INCOME_CATEGORY_ACCESSOR]
 })
 export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
   @ViewChild('incomeCategoryListEle') incomeCategoryListEle: ElementRef;
   @ViewChild('incomeCategoryInputEle') incomeCategoryInputEle: ElementRef;
+
   @Input() title;
-  @Output() setCategory = new EventEmitter<string>();
-
-  // incomeCategoryList = [];
-
   list = [];
   incomeCategoryItem;
-  selectedIncomeCategoryItem;
   incomeCategory;
-
-  @Input()
-  set incomeCategoryId(incomeCategoryId) {
-    this.select(_.find(BaseData.incomeCategoryList, { id: incomeCategoryId }));
-  }
-
-  get incomeCategoryId(): string { return this.incomeCategory; }
-
   doneEvent;
 
   ulShow = false;
@@ -43,9 +37,26 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
     public el: ElementRef,
   ) { }
 
+  propagateChange = (temp: any) => { };
+
+  writeValue(value: any) {
+    setTimeout(() => {
+      if (value) {
+        this.select(_.find(BaseData.incomeCategoryList, { id: value }));
+      } else {
+        this.select(_.fist(BaseData.incomeCategoryList));
+      }
+    });
+  }
+
+  registerOnChange(fn: any) {
+    this.propagateChange = fn;
+  }
+
+  registerOnTouched(fn: any) { }
+
   ngOnInit() {
     this.init();
-    // this.system.tabViewList.add(this.title);
     const searchBox = document.getElementById('incomeCategory-list');
     const typeahead = fromEvent(searchBox, 'input').pipe(
       map((e: any) => {
@@ -67,7 +78,6 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
         return item.name.indexOf(data) > -1 && this.system.filterByPY(item, 'name', data);
       });
     });
-
 
     this.doneEvent = this.system.doneEvent.subscribe((value) => {
       if (value && value.model === 'incomeCategory') {
@@ -100,16 +110,14 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
         case 38: // 上
           this.incomeCategoryItem = this.list[prevIndex];
           this.incomeCategory = this.incomeCategoryItem.name;
+          this.propagateChange(this.incomeCategory.id);
           this.showULIncomeCategory();
           break;
         case 40: // 下
           this.incomeCategoryItem = this.list[nextIndex];
           this.incomeCategory = this.incomeCategoryItem.name;
+          this.propagateChange(this.incomeCategory.id);
           this.showULIncomeCategory();
-          break;
-        case 27: // esc
-          this.ulShow = false;
-          this.select(this.selectedIncomeCategoryItem);
           break;
         case 13:
           e.stopPropagation();
@@ -121,17 +129,24 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
     } else if (!this.ulShow && e.keyCode === 13) {
       e.stopPropagation();
       this.ulShow = true;
-      this.selectedIncomeCategoryItem = this.incomeCategoryItem;
       this.showULIncomeCategory();
     }
   }
 
 
+  // 滚动条滚到相应的元素位置
+  showULIncomeCategory() {
+    const list = document.getElementById('incomeCategory-ul');
+    const targetLi = document.getElementById('incomeCategory_' + this.incomeCategoryItem.id);
+    list.scrollTop = (targetLi.offsetTop - 8);
+  }
 
   @HostListener('document:click', ['$event'])
   onClick() {
     if (this.incomeCategoryListEle.nativeElement.contains(event.target)) {
+      this.system.selectedTabView = this.title;
       this.ulShow = true;
+      this.list = _.cloneDeep(BaseData.incomeCategoryList);
     } else {
       if (!_.find(this.list, (item) => {
         return item.name === this.incomeCategory;
@@ -142,11 +157,15 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
     }
   }
 
-  // 滚动条滚到相应的元素位置
-  showULIncomeCategory() {
-    const list = document.getElementById('incomeCategory-ul');
-    const targetLi = document.getElementById('incomeCategory_' + this.incomeCategoryItem.id);
-    list.scrollTop = (targetLi.offsetTop - 8);
+
+  change(value) {
+    let incomeCategory = null;
+    if (value) {
+      incomeCategory = _.find(this.list, (item) => {
+        return item.name.indexOf(value) > -1;
+      });
+    }
+    this.select(incomeCategory);
   }
 
   ngOnDestroy() {
@@ -160,19 +179,18 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
 
   init() {
     this.list = _.cloneDeep(BaseData.incomeCategoryList);
-    this.select(_.first(this.list));
   }
 
   select(item?) {
     if (item) {
       this.incomeCategoryItem = item;
       this.incomeCategory = item.name;
-      this.selectedIncomeCategoryItem = item;
       this.ulShow = false;
-      this.setCategory.emit(this.incomeCategoryItem.id);
+      this.propagateChange(item.id);
     } else {
       this.incomeCategoryItem = null;
       this.incomeCategory = '';
+      this.propagateChange('');
     }
   }
 

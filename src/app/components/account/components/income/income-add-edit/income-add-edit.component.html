@@ -1,41 +1,73 @@
 <main>
-  <form #form="ngForm">
+  <form [formGroup]="incomeForm">
     <div class="columns">
-      <div class="column col-6">
-        <address-select name="address-select" [title]="'收入地点'" [(ngModel)]="addressId"></address-select>
+      <div class="column col-6"
+        [class.has-error]="incomeForm.get('address').errors && (incomeForm.get('address').dirty || incomeForm.get('address').touched)">
+        <address-select formControlName="address" [(ngModel)]="income.addressId" [title]="'地点'">
+        </address-select>
+        <p class="form-input-hint"
+          *ngIf="incomeForm.get('address').errors && (incomeForm.get('address').dirty || incomeForm.get('address').touched)">
+          收入地点不能为空</p>
       </div>
-      <div class="column col-6">
-        <fund-party-select name="fund-party" [title]="'付款方'" [type]="2" name="fund-party" [(ngModel)]="fundPartyId">
+
+      <div class="column col-6"
+        [class.has-error]="incomeForm.get('fundParty').errors && (incomeForm.get('fundParty').dirty || incomeForm.get('fundParty').touched)">
+        <fund-party-select formControlName="fundParty" [(ngModel)]="income.fundPartyId" [title]="'付款方'" [type]="2">
         </fund-party-select>
+        <p class="form-input-hint"
+          *ngIf="incomeForm.get('fundParty').errors && (incomeForm.get('fundParty').dirty || incomeForm.get('fundParty').touched)">
+          付款方不能为空
+        </p>
       </div>
     </div>
 
     <div class="columns">
-      <div class="column col-6">
-        <incomeCategory-select [title]="'收入类别'" (setCategory)="onSetCategory($event)"
-          [incomeCategoryId]="incomeCategoryId"></incomeCategory-select>
+      <div class="column col-6"
+        [class.has-error]="incomeForm.get('incomeCategory').errors && (incomeForm.get('incomeCategory').dirty || incomeForm.get('incomeCategory').touched)">
+        <incomeCategory-select [title]="'收入类别'" formControlName="incomeCategory" [(ngModel)]="income.incomeCategoryId">
+        </incomeCategory-select>
+        <p class="form-input-hint"
+          *ngIf="incomeForm.get('incomeCategory').errors && (incomeForm.get('incomeCategory').dirty || incomeForm.get('incomeCategory').touched)">
+          收入类别不能为空
+        </p>
       </div>
-      <div class="column col-6">
-        <label class="form-label">
-          收款金额:
-        </label>
+      <div class="column col-6"
+        [class.has-error]="incomeForm.get('amount').errors && (incomeForm.get('amount').dirty || incomeForm.get('amount').touched)">
         <div class="input-group">
-          <input class="form-input" #amountInputEle type="number" step="0.01" placeholder="收入金额" name="amount"
-            [(ngModel)]="amount">
+          <input class="form-input" formControlName="amount" [(ngModel)]="income.amount" type="number" step="0.01"
+            placeholder="收入金额" #amountInputEle>
           <span class="input-group-addon">元</span>
         </div>
+        <p class="form-input-hint"
+          *ngIf="incomeForm.get('amount').errors && (incomeForm.get('amount').dirty || incomeForm.get('amount').touched)">
+          收入金额不能为空
+        </p>
       </div>
     </div>
 
     <div class="columns">
-      <div class="column col-6">
-        <fundChannel-select name="fundChannel" [title]="'收款渠道'" [(ngModel)]="fundChannelId"></fundChannel-select>
+
+      <div class="column col-6"
+        [class.has-error]="incomeForm.get('fundChannel').errors && (incomeForm.get('fundChannel').dirty || incomeForm.get('fundChannel').touched)">
+        <fundChannel-select formControlName="fundChannel" [(ngModel)]="income.fundChannelId" [title]="'收款渠道'">
+        </fundChannel-select>
+        <p class="form-input-hint"
+          *ngIf="incomeForm.get('fundChannel').errors && (incomeForm.get('fundChannel').dirty || incomeForm.get('fundChannel').touched)">
+          收款渠道不能为空
+        </p>
       </div>
-      <div class="column col-6">
-        <fund-account-select [title]="'存入账户'" name="fund-account" [fundChannelId]="fundChannelId" [filterCredit]="true"
-          [(ngModel)]="fundAccountId">
+
+      <div class="column col-6"
+        [class.has-error]="incomeForm.get('fundAccount').errors && (incomeForm.get('fundAccount').dirty || incomeForm.get('fundAccount').touched)">
+        <fund-account-select formControlName="fundAccount" [title]="'存入账户'" [fundChannelId]="income.fundChannelId"
+          [(ngModel)]="income.fundAccountId" [filterCredit]="true">
         </fund-account-select>
+        <p class="form-input-hint"
+          *ngIf="incomeForm.get('fundAccount').errors && (incomeForm.get('fundAccount').dirty || incomeForm.get('fundAccount').touched)">
+          存入账户不能为空
+        </p>
       </div>
+
     </div>
 
     <div>
@@ -47,20 +79,17 @@
         <select class="form-select select-sm income-select" name="selectedDateType" [ngModel]="selectedDateType"
           (ngModelChange)="selectDateType($event)">
           <option *ngFor="let item of dateTypeList" [value]="item.viewType">{{item.name}}</option>
-          <!-- <option>日度</option>
-          <option>月度</option>
-          <option>年度</option> -->
         </select>
       </div>
 
       <div class="columns">
         <div class="column col-6">
-          <dr-date [type]="'input'" name="startDate" [dateName]="'开始日期'" [nameShow]="false" [size]="'middle'"
-            [viewType]="selectedDateType" [ngModel]="startDate" (ngModelChange)="onSetDate($event)"></dr-date>
+          <dr-date [type]="'input'"  [dateName]="'开始日期'" [nameShow]="false" [size]="'middle'"
+            [viewType]="selectedDateType" formControlName="startDate"></dr-date>
         </div>
         <div class="column col-6">
-          <dr-date [type]="'input'" name="endDate" [dateName]="'结束日期'" [nameShow]="false" [size]="'middle'"
-            [viewType]="selectedDateType" [ngModel]="endDate" (ngModelChange)="onSetDate($event)">
+          <dr-date [type]="'input'"  [dateName]="'结束日期'" [nameShow]="false" [size]="'middle'"
+            [viewType]="selectedDateType" formControlName="endDate">
           </dr-date>
         </div>
       </div>
@@ -76,7 +105,7 @@
       </label-select>
     </div>
     <div class="columns detail">
-      <memo [title]="'备注'" [maxNumber]="500" name="memo" [(ngModel)]="memo"></memo>
+      <memo [title]="'备注'" [maxNumber]="500" formControlName="memo" [(ngModel)]="income.memo"></memo>
       <!-- <memo [title]="'备注'" [maxNumber]="500" [hasMemo]="memo" (setMemo)="onSetMemo($event)"></memo> -->
     </div>
   </form>

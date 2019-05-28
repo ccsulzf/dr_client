@@ -122,6 +122,7 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
       await this.getLableList();
       await this.getParticipantList();
     });
+
     this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
       if (value === '支出内容') {
         this.system.selectedTabView = value;

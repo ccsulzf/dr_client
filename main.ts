@@ -17,7 +17,7 @@ function createWindow() {
     y: 0,
     minWidth: 930,
     minHeight: 650,
-    resizable: true,
+    resizable: false,
     autoHideMenuBar: true,
     movable: true,
     frame: false

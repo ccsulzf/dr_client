@@ -170,7 +170,7 @@ export class AddressSelectComponent implements OnInit, OnDestroy, ControlValueAc
 
   init() {
     this.list = _.cloneDeep(BaseData.addressList);
-    this.select(_.find(this.list, { isCurrenLive: 1 }));
+    // this.select(_.find(this.list, { isCurrenLive: 1 }));
   }
 
   change(value) {
