@@ -101,6 +101,10 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     });
   }
 
+  // onSetDate(data) {
+  //   // this.expense.expenseDate = data.date;
+  // }
+
   onSetExpenseBook(item) {
     if (item) {
       this.expenseBook = item;

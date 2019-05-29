@@ -12,8 +12,28 @@ import * as _ from 'lodash';
 export class FundAccountAddEditComponent implements OnInit {
   @Input() data;
   @ViewChild('divClick') divClick: ElementRef;
-
   @ViewChild('ulClick') ulClick: ElementRef;
+
+  public fundChannel;
+
+  public fundAccount = {
+    id: '',
+    name: '',
+    balance: 0,
+    isCredit: false,
+    userId: this.system.user.id
+  };
+
+  public creditAccount = {
+    id: '',
+    fundAccountId: '',
+    creditAmount: 0,
+    usedAmount: 0,
+    billDay: 1,
+    repaymentDay: 2,
+  };
+
+  public bindFundChannelList = [];
 
   public baseData;
 
@@ -21,24 +41,9 @@ export class FundAccountAddEditComponent implements OnInit {
 
   public fundChannelList;
 
-  public fundChannelName;
+  public fundChannelNames;
 
   public numbers;
-
-  public fundAccount = {
-    name: '',
-    balance: 0,
-    // 有信贷用户balance等于 abs(creditAmount) - abs(usedAmount)
-    isCredit: false,
-    userId: ''
-  };
-
-  public creditAccount = {
-    creditAmount: 0,
-    usedAmount: 0,
-    billDay: 1,
-    repaymentDay: 2,
-  };
 
   constructor(
     public system: SystemService,
@@ -47,7 +52,7 @@ export class FundAccountAddEditComponent implements OnInit {
     public el: ElementRef,
     public viewRef: ViewContainerRef
   ) {
-    this.fundChannelList = BaseData.fundChannelList;
+    this.fundChannelList = _.cloneDeep(BaseData.fundChannelList);
     for (const item of this.fundChannelList) {
       item.selected = false;
     }
@@ -55,7 +60,20 @@ export class FundAccountAddEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fundAccount.userId = this.system.user.id;
+    this.fundChannel = this.data.fundChannel;
+    if (this.data.value) {
+      this.fundAccount = this.data.value;
+      if (this.fundAccount.isCredit) {
+        this.creditAccount = this.data.value.creditAccount;
+      }
+      this.bindFundChannelList = this.data.value.fundChannelList;
+      for (const item of this.fundChannelList) {
+        item.selected = _.find(this.bindFundChannelList, (bindFundChannel) => {
+          return bindFundChannel.id === item.id;
+        }) ? true : false;
+      }
+      this.fundChannelNames = _.map(this.bindFundChannelList, 'name').join(',');
+    }
   }
 
   @HostListener('document:click', ['$event'])
@@ -69,9 +87,14 @@ export class FundAccountAddEditComponent implements OnInit {
     }
   }
 
+  @HostListener('keyup', ['$event'])
+  hotKeyEvent(e) {
+    e.stopPropagation();
+  }
+
   select(selected, item) {
     item.selected = selected;
-    this.fundChannelName = _.map(_.filter(this.fundChannelList, { selected: true }), 'name').join(',');
+    this.fundChannelNames = _.map(_.filter(this.fundChannelList, { selected: true }), 'name').join(',');
   }
 
   setUsedAmount(data) {
@@ -87,12 +110,12 @@ export class FundAccountAddEditComponent implements OnInit {
   setIsCredit(data) {
     this.fundAccount.isCredit = data;
     if (!data) {
-      this.creditAccount = {
+      this.creditAccount = Object.assign(this.creditAccount, {
         creditAmount: 0,
         usedAmount: 0,
         billDay: 1,
         repaymentDay: 2
-      };
+      });
     }
   }
 
@@ -106,7 +129,7 @@ export class FundAccountAddEditComponent implements OnInit {
     if (fundcount) {
       // 如果添加的账户中包含之前的渠道,发送事件,自动选择新增的账户
       BaseData.fundAccountList.push(fundcount);
-      this.system.done({ model: 'fundAccount', data: fundcount, fundChannel: this.data });
+      this.system.done({ model: 'fundAccount', data: fundcount, fundChannel: this.fundChannel });
     }
   }
 

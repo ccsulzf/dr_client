@@ -19,7 +19,7 @@ export class ExpenseService {
         public baseDataService: BaseDataService,
         public system: SystemService
     ) { }
-    
+
     public expenseList = [];
 
     public expenseDetailList = [];
@@ -113,7 +113,9 @@ export class ExpenseService {
                 labelList: labelList
             });
             BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
-            expense.id = data.expenseId;
+
+            expense = data.expense;
+
             // const prevFundAccount = this.baseDataService.getFundAccount(prevExpenseDetail.fundAccountId);
             // const nowFundAccount = this.baseDataService.getFundAccount(expenseDetail.fundAccountId);
 

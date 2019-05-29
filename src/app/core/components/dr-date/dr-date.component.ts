@@ -73,18 +73,13 @@ export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor 
   propagateChange = (temp: any) => { };
 
   writeValue(value: any) {
-    setTimeout(() => {
-      if (value) {
-        this.date = value;
-        console.info(this.date);
-        this.getMonth(new Date(this.date).getMonth() + 1);
-        this.getYear();
-        this.getDay(this.date);
-        this.getYearList(this.year);
-        this.monthDays = this.getMonthDays();
-        this.getViewTypeList(this.viewType);
-      }
-    });
+
+    // setTimeout(() => {
+    if (value) {
+      this.date = value;
+      this.ngOnInit();
+    }
+    // });
   }
 
   registerOnChange(fn: any) {

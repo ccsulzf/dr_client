@@ -251,6 +251,22 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
 
   add() {
     this.select();
-    this.system.changeComponent({ component: 'fundAccount-add-edit', data: this.fundChannel });
+    this.system.changeComponent({
+      component: 'fundAccount-add-edit', data: {
+        fundChannel: this.fundChannel,
+        value: null
+      }
+    });
+  }
+
+  edit(e, item) {
+    e.stopPropagation();
+    this.ulShow = false;
+    this.system.changeComponent({
+      component: 'fundAccount-add-edit', data: {
+        fundChannel: this.fundChannel,
+        value: item
+      }
+    });
   }
 }

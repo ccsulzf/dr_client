@@ -90,17 +90,17 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
       ['label', '标签'],
       ['memo', '备注']
     ]);
-    this.startDateChanges = this.incomeForm.get('startDate').valueChanges.subscribe((data) => {
-      if (data) {
-        this.income.startDate = data.date;
-      }
-    });
+    // this.startDateChanges = this.incomeForm.get('startDate').valueChanges.subscribe((data) => {
+    //   if (data) {
+    //     this.income.startDate = data.date;
+    //   }
+    // });
 
-    this.endDateChanges = this.incomeForm.get('endDate').valueChanges.subscribe((data) => {
-      if (data) {
-        this.income.endDate = data.date;
-      }
-    });
+    // this.endDateChanges = this.incomeForm.get('endDate').valueChanges.subscribe((data) => {
+    //   if (data) {
+    //     this.income.endDate = data.date;
+    //   }
+    // });
   }
 
   ngAfterViewInit() {
@@ -205,21 +205,22 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
     this.labelList = labelList;
   }
 
-  // onSetDate(data) {
-  //   // console.info(data);
-  //   if (data.name === '开始日期') {
-  //     this.startDate = data.date;
-  //   }
-  //   if (data.name === '结束日期') {
-  //     this.endDate = data.date;
-  //   }
-  // }
+  onSetDate(data) {
+    // console.info(data);
+    if (data.name === '开始日期') {
+      this.income.startDate = data.date;
+    }
+    if (data.name === '结束日期') {
+      this.income.endDate = data.date;
+    }
+  }
 
   async add() {
     try {
-      await this.incomeService.add(this.income, this.participantList, this.labelList);
-      this.notifyService.notify('添加收入', 'success');
-      this.reset();
+      console.info(this.income);
+      // await this.incomeService.add(this.income, this.participantList, this.labelList);
+      // this.notifyService.notify('添加收入', 'success');
+      // this.reset();
     } catch (error) {
       this.notifyService.notify('添加收入失败', 'error');
     }
@@ -228,9 +229,9 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
 
   async edit() {
     try {
-      await this.incomeService.editIncome(this.income, this.participantList, this.labelList);
-      this.reset();
-      this.notifyService.notify('编辑收入', 'success');
+      // await this.incomeService.editIncome(this.income, this.participantList, this.labelList);
+      // this.reset();
+      // this.notifyService.notify('编辑收入', 'success');
     } catch (error) {
       this.notifyService.notify('编辑收入失败', 'error');
     }

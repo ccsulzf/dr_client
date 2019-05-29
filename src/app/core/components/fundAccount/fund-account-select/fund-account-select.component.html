@@ -12,7 +12,7 @@
           <a class="text-ellipsis" [class.li-selected]="fundAccount === item.name">{{item?.name}} :
             {{item?.balance}}</a>
           <p class="add-edit">
-            <i class="icon icon-edit"></i>
+            <i class="icon icon-edit" (click)="edit($event,item)"></i>
             <i class="icon icon-delete"></i>
           </p>
         </li>

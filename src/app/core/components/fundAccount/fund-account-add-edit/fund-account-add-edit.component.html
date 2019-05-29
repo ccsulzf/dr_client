@@ -1,29 +1,8 @@
 <main>
   <div class="header-panel">
-    {{data?'编辑':'添加'}}资金账户
+    {{data?.value ? '编辑' : '添加'}}资金账户
   </div>
   <form>
-    <div class="form-item form-group">
-      <label>
-        资金来往渠道:
-      </label>
-      <div #divClick class="has-icon-right">
-        <input class="form-input text-ellipsis" placeholder="请绑定渠道" name="fundChannelName" [(ngModel)]="fundChannelName">
-        <i class="form-icon icon icon-arrow-down" aria-hidden="true"></i>
-      </div>
-      <ul class="menu" #ulClick [style.display]="isListShow?'block':'none'">
-        <li class="menu-item" *ngFor="let item of fundChannelList">
-          <div class="form-group">
-            <label class="form-checkbox">
-              <input type="checkbox" [ngModel]="item.selected" name="selected" (ngModelChange)="select($event,item)">
-              <i class="form-icon"></i> {{item?.name}}
-            </label>
-          </div>
-        </li>
-      </ul>
-
-    </div>
-
     <div class="form-group">
       <label>
         资金账户:
@@ -31,18 +10,41 @@
       <input type="text" class="form-input" name="name" [(ngModel)]="fundAccount.name">
     </div>
 
+    <div class="form-item form-group">
+      <label>
+        资金来往渠道:
+      </label>
+      <div #divClick class="has-icon-right">
+        <input class="form-input text-ellipsis" placeholder="请绑定渠道" name="fundChannelNames"
+          [(ngModel)]="fundChannelNames">
+        <i class="form-icon icon icon-arrow-down" aria-hidden="true"></i>
+      </div>
+      <ul class="menu" #ulClick [style.display]="isListShow?'block':'none'">
+        <li class="menu-item" *ngFor="let item of fundChannelList;let i = index">
+          <div class="form-group">
+            <label class="form-checkbox">
+              <input type="checkbox" [ngModel]="item.selected" [name]="'selected_'+i"
+                (ngModelChange)="select($event,item)">
+              <i class="form-icon"></i> {{item?.name}}
+            </label>
+          </div>
+        </li>
+      </ul>
+    </div>
+
     <div class="form-group">
       <label>
         账户余额:
       </label>
-      <input type="number" class="form-input" [disabled]="fundAccount.isCredit" name="balance"
+      <input type="number" class="form-input" [disabled]="fundAccount.isCredit || fundAccount.id" name="balance"
         [(ngModel)]="fundAccount.balance">
     </div>
 
     <div class="form-group">
       <label class="form-switch">
-        <input type="checkbox" name="isCredit" [ngModel]="fundAccount.isCredit" (ngModelChange)="setIsCredit($event)">
-        <i class="form-icon"></i> 账户是否信贷
+        <input type="checkbox" name="isCredit" [disabled]="fundAccount.id" [ngModel]="fundAccount.isCredit"
+          (ngModelChange)="setIsCredit($event)">
+        <i class="form-icon"></i> 是否信贷
       </label>
     </div>
 
@@ -65,8 +67,8 @@
         <label>
           已使用额度:
         </label>
-        <input type="number" class="form-input" name="usedAmount" [ngModel]="creditAccount.usedAmount"
-          (ngModelChange)="setUsedAmount($event)">
+        <input type="number" class="form-input" [disabled]="fundAccount.isCredit && fundAccount.id" name="usedAmount"
+          [ngModel]="creditAccount.usedAmount" (ngModelChange)="setUsedAmount($event)">
       </div>
 
       <div class="form-group">
@@ -90,8 +92,8 @@
     </fieldset>
 
     <div class="form-group btn-group">
-        <button type="button" (click)="addOrEdit()" class="btn btn-primary">{{data?'编 辑':'添 加'}}</button>
-        <button type="button" (click)="cancel()" class="btn btn-link">取 消</button>
-      </div>
+      <button type="button" (click)="addOrEdit()" class="btn btn-primary">{{data?.value?'编 辑':'添 加'}}</button>
+      <button type="button" (click)="cancel()" class="btn btn-link">取 消</button>
+    </div>
   </form>
 </main>

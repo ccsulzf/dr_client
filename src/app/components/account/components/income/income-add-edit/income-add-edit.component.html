@@ -85,11 +85,11 @@
       <div class="columns">
         <div class="column col-6">
           <dr-date [type]="'input'"  [dateName]="'开始日期'" [nameShow]="false" [size]="'middle'"
-            [viewType]="selectedDateType" formControlName="startDate" [(ngModel)]="income.startDate"></dr-date>
+            [viewType]="selectedDateType" formControlName="startDate" [ngModel]="income.startDate" (ngModelChange)="onSetDate($event)"></dr-date>
         </div>
         <div class="column col-6">
           <dr-date [type]="'input'"  [dateName]="'结束日期'" [nameShow]="false" [size]="'middle'"
-            [viewType]="selectedDateType" formControlName="endDate" [(ngModel)]="income.endDate">
+            [viewType]="selectedDateType" formControlName="endDate" [ngModel]="income.endDate">
           </dr-date>
         </div>
       </div>
