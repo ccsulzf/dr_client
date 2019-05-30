@@ -33,7 +33,7 @@
       </div>
       <div class="column col-6"
         [class.has-error]="incomeForm.get('amount').errors && (incomeForm.get('amount').dirty || incomeForm.get('amount').touched)">
-        <label  class="form-label" >收入金额</label>
+        <label class="form-label">收入金额</label>
         <div class="input-group">
           <input class="form-input" formControlName="amount" [(ngModel)]="income.amount" type="number" step="0.01"
             placeholder="收入金额" #amountInputEle>
@@ -76,7 +76,7 @@
           收款周期
         </label>
         <div class="income-divider"></div>
-        <select class="form-select select-sm income-select" formControlName="selectedDateType"  [ngModel]="selectedDateType"
+        <select class="form-select select-sm income-select" formControlName="dateCycle" [ngModel]="income.dateCycle"
           (ngModelChange)="selectDateType($event)">
           <option *ngFor="let item of dateTypeList" [value]="item.viewType">{{item.name}}</option>
         </select>
@@ -84,12 +84,13 @@
 
       <div class="columns">
         <div class="column col-6">
-          <dr-date [type]="'input'"  [dateName]="'开始日期'" [nameShow]="false" [size]="'middle'"
-            [viewType]="selectedDateType" formControlName="startDate" [ngModel]="income.startDate" (ngModelChange)="onSetDate($event)"></dr-date>
+          <dr-date [type]="'input'" [dateName]="'开始日期'" [nameShow]="false" [size]="'middle'"
+            [viewType]="income.dateCycle" formControlName="startDate" [ngModel]="income.startDate"
+            (ngModelChange)="onSetDate($event)"></dr-date>
         </div>
         <div class="column col-6">
-          <dr-date [type]="'input'"  [dateName]="'结束日期'" [nameShow]="false" [size]="'middle'"
-            [viewType]="selectedDateType" formControlName="endDate" [ngModel]="income.endDate">
+          <dr-date [type]="'input'" [dateName]="'结束日期'" [nameShow]="false" [size]="'middle'"
+            [viewType]="income.dateCycle" formControlName="endDate" [ngModel]="income.endDate">
           </dr-date>
         </div>
       </div>
@@ -111,7 +112,7 @@
   </form>
 
   <div class="dr-btn-group" *ngIf="!editOrDelFlag && addFlag">
-    <button class="btn btn-primary" (click)="add()">
+    <button class="btn btn-primary" (click)="addIncome()">
       <i class="icon icon-plus"></i> 添加
     </button>
     <button class="btn btn-Secondary" (click)="reset()">
@@ -120,10 +121,10 @@
   </div>
   <div class="edit-del" *ngIf="editOrDelFlag && !addFlag">
     <div class="dr-btn-group">
-      <button class="btn btn-primary" (click)="edit()">
+      <button class="btn btn-primary" (click)="editIncome()">
         <i class="icon icon-edit"></i> 编辑
       </button>
-      <button class="btn btn-error" (click)="del()">
+      <button class="btn btn-error" (click)="delIncome()">
         <i class="icon icon-delete"></i> 删除
       </button>
     </div>

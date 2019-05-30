@@ -46,8 +46,6 @@ main>ul {
   }
 }
 
-
-
 .income-list ul {
   border: 1px solid #dedede;
   border-bottom: none;
@@ -61,16 +59,33 @@ main>ul {
   border-bottom: none;
 }
 
-
 .income-list>li {
   display: flex;
   align-items: center;
+  border-bottom: 1px solid #dedede;
+}
+
+
+.income-detail ul>li {
+  border-bottom: 1px solid #dedede;
+}
+
+.income-detail ul>li:last-of-type {
+  border-bottom: none;
+}
+
+.income-detail ul {
   border: 1px solid #dedede;
-  border-left: none;
-  border-right: none;
+  border-bottom: none;
+}
+
+.income-detail ul:first-of-type {
   border-top: none;
 }
 
+.income-detail ul:last-of-type {
+  border-bottom: none;
+}
 
 .income-category {
   padding: 0 5px;

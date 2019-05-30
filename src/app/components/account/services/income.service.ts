@@ -1,5 +1,5 @@
 import { Injectable, Component } from '@angular/core';
-import { HttpClientService, BaseDataService, SystemService } from '../../../core/providers';
+import { HttpClientService, BaseDataService, SystemService, BaseData } from '../../../core/providers';
 
 import { Subject } from 'rxjs';
 import * as moment from 'moment';
@@ -70,15 +70,14 @@ export class IncomeService {
                 participantList: participantList,
                 labelList: labelList
             };
-            const data: any = await this.http.post('/DR/addIncome', incomeData);
+            const addIncome = await this.http.post('/DR/addIncome', incomeData);
 
-            const fundAccount = this.baseDataService.getFundAccount(this.income.fundAccountId);
+            BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
 
-            fundAccount.amount = (fundAccount.amount * 100 + this.income.amount * 100) / 100;
+            this.totalMonthAmount = (this.totalMonthAmount * 100 + income.amount * 100) / 100;
 
-            this.totalMonthAmount = (this.totalMonthAmount * 100 + this.income.amount * 100) / 100;
-
-            this.changeListBydate();
+            this.changeIncome(addIncome);
+            this.groupDetailList();
         } catch (error) {
             throw error;
         }
@@ -92,34 +91,33 @@ export class IncomeService {
                 participantList: participantList,
                 labelList: labelList
             };
-
             const incomeId: any = await this.http.post('/DR/editIncome', incomeData);
 
             this.incomeListDate = moment(this.income.endDate).format('YYYY-MM');
 
-            const oldIncome = _.find(this.incomeList, { id: this.income.id });
+            let oldIncome = _.find(this.incomeList, { id: this.income.id });
 
-            const diffAmount = (this.income.amount * 100 - oldIncome.amount * 100) / 100;
+            BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
 
-            const fundAccount = this.baseDataService.getFundAccount(this.income.fundAccountId);
+            this.totalMonthAmount = (this.totalMonthAmount * 100 + income.amount * 100 - oldIncome.amount * 100) / 100;
 
-            fundAccount.balance = (fundAccount.balance * 100 + diffAmount * 100) / 100;
+            oldIncome = Object.assign(oldIncome, income);
 
-            this.changeListBydate();
+            this.groupDetailList();
+
         } catch (error) {
             throw error;
         }
     }
 
 
-    async deleteIncome(incomeId, fundAccountId) {
+    async deleteIncome(incomeId) {
         try {
             await this.http.get('/DR/deleteIncome?id=' + incomeId);
-            const fundAccount = this.baseDataService.getFundAccount(fundAccountId);
 
-            fundAccount.amount = (fundAccount.amount * 100 - this.income.amount * 100) / 100;
-
-            this.changeListBydate();
+            BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
+            _.remove(this.incomeList, { id: incomeId });
+            this.groupDetailList();
         } catch (error) {
             throw error;
         }

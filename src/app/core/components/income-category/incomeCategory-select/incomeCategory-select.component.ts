@@ -110,13 +110,13 @@ export class IncomeCategorySelectComponent implements OnInit, OnDestroy {
         case 38: // 上
           this.incomeCategoryItem = this.list[prevIndex];
           this.incomeCategory = this.incomeCategoryItem.name;
-          this.propagateChange(this.incomeCategory.id);
+          this.propagateChange(this.incomeCategoryItem.id);
           this.showULIncomeCategory();
           break;
         case 40: // 下
           this.incomeCategoryItem = this.list[nextIndex];
           this.incomeCategory = this.incomeCategoryItem.name;
-          this.propagateChange(this.incomeCategory.id);
+          this.propagateChange(this.incomeCategoryItem.id);
           this.showULIncomeCategory();
           break;
         case 13:

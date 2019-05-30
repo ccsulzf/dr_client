@@ -16,7 +16,7 @@ import { AccountService } from '../../services';
   templateUrl: './income.component.html',
   styleUrls: ['./income.component.scss']
 })
-export class IncomeComponent implements OnInit, AfterViewInit, OnDestroy {
+export class IncomeComponent implements OnInit, AfterViewInit, OnDestroy, AfterViewChecked {
   @ViewChild(DynamicComponentDirective) dynamic: DynamicComponentDirective;
   public changeComponent;
   public done;
@@ -75,6 +75,9 @@ export class IncomeComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  ngAfterViewChecked() {
+    this.cd.detectChanges();
+  }
 
   dynamicLoad(component?, data?) {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);

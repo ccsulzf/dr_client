@@ -4,6 +4,7 @@ import { IncomeService } from '../../../services';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-income-list',
@@ -27,10 +28,11 @@ export class IncomeListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   edit(detail) {
     this.incomeService.income = detail;
-    this.incomeService.edit(detail);
+    this.incomeService.edit(_.cloneDeep(detail));
   }
 
   ngAfterViewInit() {
+    // this.cd.markForCheck();
     this.getListByDate(this.incomeService.incomeListDate);
   }
 
@@ -41,7 +43,6 @@ export class IncomeListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.date = data.date;
     this.getListByDate(data.date);
   }
-
 
   getListByDate(incomeListDate) {
     this.incomeService.incomeListDate = incomeListDate;

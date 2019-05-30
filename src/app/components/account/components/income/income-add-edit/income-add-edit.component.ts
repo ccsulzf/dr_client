@@ -21,6 +21,12 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
 
   startDateChanges: Subscription;
   endDateChanges: Subscription;
+  public dateTypeList = [
+    { name: '日度', viewType: 'day' },
+    { name: '月度', viewType: 'month' },
+    { name: '年度', viewType: 'year' }
+  ];
+
   income: Income = {
     id: '',
     userId: this.system.user.id,
@@ -29,6 +35,7 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
     fundPartyId: '',
     fundChannelId: '',
     fundAccountId: '',
+    dateCycle: this.dateTypeList[0].viewType,
     startDate: moment().format('YYYY-MM-DD'),
     endDate: moment().format('YYYY-MM-DD'),
     amount: '',
@@ -45,13 +52,8 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
 
   public changeTabViewEvent: Subscription;
 
-  public dateTypeList = [
-    { name: '日度', viewType: 'day' },
-    { name: '月度', viewType: 'month' },
-    { name: '年度', viewType: 'year' }
-  ];
 
-  public selectedDateType = this.dateTypeList[0].viewType;
+  // public selectedDateType = this.dateTypeList[0].viewType;
 
   incomeForm = this.fb.group({
     incomeCategory: [this.income.incomeCategoryId, Validators.required],
@@ -59,7 +61,7 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
     fundParty: [this.income.fundPartyId, Validators.required],
     fundChannel: [this.income.fundChannelId, Validators.required],
     fundAccount: [this.income.fundAccountId, Validators.required],
-    selectedDateType: [this.selectedDateType],
+    dateCycle: [this.income.dateCycle],
     startDate: [this.income.startDate],
     endDate: [this.income.endDate],
     amount: [this.income.amount, Validators.required],
@@ -76,7 +78,7 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
   ) { }
 
   ngOnInit() {
-
+    this.selectDateType(this.income.dateCycle);
     this.system.tabViewList = new Map([
       ['address', '地点'],
       ['fundParty', '付款方'],
@@ -95,18 +97,12 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
     //     this.income.startDate = data.date;
     //   }
     // });
-
-    // this.endDateChanges = this.incomeForm.get('endDate').valueChanges.subscribe((data) => {
-    //   if (data) {
-    //     this.income.endDate = data.date;
-    //   }
-    // });
   }
 
   ngAfterViewInit() {
     this.reset();
     this.editEvent = this.incomeService.editEvent.subscribe(async (data: any) => {
-      this.income = data.income;
+      this.income = data;
       await this.getLableList();
       await this.getParticipantList();
       this.addFlag = false;
@@ -114,7 +110,7 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
     });
 
     this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
-      if (value === '收款金额') {
+      if (value === '收入金额') {
         this.system.selectedTabView = value;
         this.amountInputEle.nativeElement.focus();
       } else {
@@ -122,7 +118,6 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
       }
     });
   }
-
 
   async getParticipantList() {
     this.participantList = [];
@@ -145,8 +140,8 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   selectDateType(viewType) {
-    this.selectedDateType = viewType;
-    switch (this.selectedDateType) {
+    this.income.dateCycle = viewType;
+    switch (viewType) {
       case 'day':
         this.income.startDate = moment().format('YYYY-MM-DD');
         this.income.endDate = moment().format('YYYY-MM-DD');
@@ -162,9 +157,7 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
       default:
         break;
     }
-
   }
-
 
   @HostListener('body:keyup', ['$event'])
   keyUp(e) {
@@ -181,9 +174,60 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
     }
   }
 
+  @HostListener('body:keyup', ['$event'])
+  hotKeyEvent(e) {
+    switch (e.keyCode) {
+      case 9:
+        this.tabCustomInput(e);
+        break;
+      // enter
+      case 13:
+        if (this.addFlag) {
+          this.addIncome();
+        }
+        if (this.editOrDelFlag) {
+          this.editIncome();
+        }
+        break;
+      // delete
+      case 46:
+        if (this.editOrDelFlag) {
+          this.delIncome();
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  tabCustomInput(e?) {
+    const values = Array.from(this.system.tabViewList.values());
+    if (this.system.selectedTabView && e) {
+      const index = _.findIndex(values, (item) => {
+        return item === this.system.selectedTabView;
+      });
+      if ((index > -1) && (index <= values.length - 1)) {
+        this.system.changeTabView((e.shiftKey ? values[index - 1] : values[index + 1]) || values[0]);
+      }
+    } else {
+      const object = Object.assign(this.incomeForm.value);
+      for (const property in object) {
+        if (!this.incomeForm.value[property]) {
+          const tabView = this.system.tabViewList.get(property);
+          this.system.changeTabView(tabView);
+          break;
+        }
+      }
+    }
+  }
+
   ngOnDestroy() {
     if (this.editEvent) {
       this.editEvent.unsubscribe();
+    }
+
+    if (this.changeTabViewEvent) {
+      this.changeTabViewEvent.unsubscribe();
     }
 
     if (this.startDateChanges) {
@@ -195,8 +239,6 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
     }
   }
 
-
-
   onSetParticipantList(participantList) {
     this.participantList = participantList;
   }
@@ -206,7 +248,6 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   onSetDate(data) {
-    // console.info(data);
     if (data.name === '开始日期') {
       this.income.startDate = data.date;
     }
@@ -215,32 +256,44 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
     }
   }
 
-  async add() {
+  async addIncome() {
     try {
-      console.info(this.income);
-      // await this.incomeService.add(this.income, this.participantList, this.labelList);
-      // this.notifyService.notify('添加收入', 'success');
-      // this.reset();
+      if (!this.incomeForm.valid) {
+        for (const item in this.incomeForm.controls) {
+          this.incomeForm.get(item).markAsTouched();
+        }
+        return;
+      }
+      await this.incomeService.add(this.income, this.participantList, this.labelList);
+      this.notifyService.notify('添加收入', 'success');
+      this.reset();
     } catch (error) {
       this.notifyService.notify('添加收入失败', 'error');
     }
-
   }
 
-  async edit() {
+  async editIncome() {
     try {
-      // await this.incomeService.editIncome(this.income, this.participantList, this.labelList);
-      // this.reset();
-      // this.notifyService.notify('编辑收入', 'success');
+      if (!this.incomeForm.valid) {
+        for (const item in this.incomeForm.controls) {
+          this.incomeForm.get(item).markAsTouched();
+        }
+        return;
+      }
+      await this.incomeService.editIncome(this.income, this.participantList, this.labelList);
+      this.reset();
+      this.goAdd();
+      this.notifyService.notify('编辑收入', 'success');
     } catch (error) {
       this.notifyService.notify('编辑收入失败', 'error');
     }
   }
 
-  async del() {
+  async delIncome() {
     try {
-      await this.incomeService.deleteIncome(this.income.id, this.income.fundAccountId);
+      await this.incomeService.deleteIncome(this.income.id);
       this.reset();
+      this.goAdd();
       this.notifyService.notify('删除收入', 'success');
     } catch (error) {
       this.notifyService.notify('删除收入失败', 'error');

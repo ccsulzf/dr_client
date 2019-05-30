@@ -6,6 +6,7 @@ export class Income {
     fundPartyId: any;
     fundChannelId: any;
     fundAccountId: any;
+    dateCycle: string;
     startDate: string;
     endDate: string;
     amount: any;
