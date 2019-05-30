@@ -6,11 +6,30 @@ main {
   display: flex;
   flex-direction: column;
 
+  .app-option {
+    position: absolute;
+    left: .2rem;
+    top: .2rem;
+
+    button {
+      background: #f7f8f9;
+      color: #4b48d6;
+      border: none;
+
+      &:hover {
+        background: #4b48d6;
+        color: #f7f8f9;
+      }
+    }
+
+
+  }
+
   .avatar-header {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 40px;
     flex-direction: column;
 
     p {

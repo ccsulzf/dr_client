@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SystemService } from '../../providers';
 import { Router, ActivatedRoute, Route } from '@angular/router';
 import { NAV_CONFIG } from './config';
+import { remote } from 'electron';
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
@@ -38,6 +39,16 @@ export class NavComponent implements OnInit {
         }
       }
     }
+  }
+
+  min() {
+    const window = remote.getCurrentWindow();
+    window.minimize();
+  }
+
+  close() {
+    const window = remote.getCurrentWindow();
+    window.close();
   }
 
   toExpense() {

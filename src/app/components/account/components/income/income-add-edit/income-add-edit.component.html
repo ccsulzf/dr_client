@@ -76,10 +76,25 @@
           收款周期
         </label>
         <div class="income-divider"></div>
-        <select class="form-select select-sm income-select" formControlName="dateCycle" [ngModel]="income.dateCycle"
+        <div class="form-group">
+          <label class="form-radio form-inline">
+            <input type="radio" name="day" [checked]="income.dateCycle === 'day'" (click)="selectDateType('day')"><i
+              class="form-icon"></i> 日度
+          </label>
+          <label class="form-radio form-inline">
+            <input type="radio" name="month" [checked]="income.dateCycle === 'month'"
+              (click)="selectDateType('month')"><i class="form-icon"></i> 月度
+          </label>
+          <label class="form-radio form-inline">
+            <input type="radio" name="year" [checked]="income.dateCycle === 'year'" (click)="selectDateType('year')"><i
+              class="form-icon"></i> 年度
+          </label>
+        </div>
+
+        <!-- <select class="form-select select-sm income-select" formControlName="dateCycle" [ngModel]="income.dateCycle"
           (ngModelChange)="selectDateType($event)">
           <option *ngFor="let item of dateTypeList" [value]="item.viewType">{{item.name}}</option>
-        </select>
+        </select> -->
       </div>
 
       <div class="columns">
