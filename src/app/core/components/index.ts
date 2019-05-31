@@ -9,3 +9,4 @@ export * from './participant';
 export * from './label';
 export * from './income-category';
 export * from './fund-channel';
+export * from './header';

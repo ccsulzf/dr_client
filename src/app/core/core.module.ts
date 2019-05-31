@@ -40,6 +40,7 @@ import { WebviewDirective } from './directives';
 import { ExpenseBookListComponent } from './components/expenseBook/expense-book-list/expense-book-list.component';
 import { DrDateComponent } from './components/dr-date/dr-date.component';
 import { MemoComponent } from './components/memo/memo.component';
+import { HeaderComponent } from './components/header/header.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -58,7 +59,7 @@ import { MemoComponent } from './components/memo/memo.component';
     FundPartySelectComponent,
     ExpenseCategorySelectComponent,
     FundChannelAddEditComponent,
-    FundChannelSelectComponent, ExpenseBookListComponent, DrDateComponent, MemoComponent
+    FundChannelSelectComponent, ExpenseBookListComponent, DrDateComponent, MemoComponent, HeaderComponent
   ],
   exports: [
     NavComponent,
@@ -79,7 +80,8 @@ import { MemoComponent } from './components/memo/memo.component';
     FilterNamePipe,
     ExpenseBookListComponent,
     DrDateComponent,
-    MemoComponent
+    MemoComponent,
+    HeaderComponent
   ],
   providers: [
     ElectronService,

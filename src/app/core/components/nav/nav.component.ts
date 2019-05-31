@@ -24,14 +24,14 @@ export class NavComponent implements OnInit {
   ngOnInit() {
     this.currentUrl = this.router.url;
     this.user = this.system.user;
-    for (let item of this.NAV_CONFIG) {
+    for (const item of this.NAV_CONFIG) {
       if (item.path) {
         if (item.path === this.currentUrl) {
           this.selectedItem = item;
           break;
         }
       }
-      for (let subItem of item.subList) {
+      for (const subItem of item.subList) {
         if (subItem.path === this.currentUrl) {
           this.selectedItem = item;
           this.selectedSubItem = subItem;

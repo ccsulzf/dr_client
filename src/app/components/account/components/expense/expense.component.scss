@@ -1,11 +1,10 @@
 main {
-  display: flex;
-  height: calc(100% - 12px);
+  display: grid;
+  grid-template-columns: 1fr 245px;
+  grid-column-gap: 5px;
+  height: 100%;
 
   .dynamic-component {
-    width: 245px;
-    margin: 10px 5px 0 0;
-    height: 100%;
     border: 1px solid #5755d9;
   }
 }

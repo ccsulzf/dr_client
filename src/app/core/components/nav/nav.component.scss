@@ -5,40 +5,39 @@ main {
   // -webkit-app-region: no-drag;
   display: flex;
   flex-direction: column;
-
-  .app-option {
-    position: absolute;
-    left: .2rem;
-    top: .2rem;
-
-    button {
-      background: #f7f8f9;
-      color: #4b48d6;
-      border: none;
-
-      &:hover {
-        background: #4b48d6;
-        color: #f7f8f9;
-      }
-    }
-
-
-  }
+  box-shadow: 2px 0px 6px 0 rgba(0, 0, 0, 0.12), inset 0 -1px 0 0 #fff;
+  z-index: 100;
+  position: relative;
+  left: -6px;
 
   .avatar-header {
     display: flex;
+    margin: 5px;
     align-items: center;
     justify-content: center;
-    margin-top: 40px;
+    margin-top: 20px;
     flex-direction: column;
 
-    p {
-      width: 100%;
-      align-items: center;
-      justify-content: space-evenly;
-      display: flex;
-      margin: 20px 0;
+    img {
+      width: 68px;
+      height: 68px;
     }
+
+    h5 {
+      color: #66758c;
+
+      span {
+        color: #4b48d6;
+      }
+    }
+
+    // p {
+    //   width: 100%;
+    //   align-items: center;
+    //   justify-content: space-evenly;
+    //   display: flex;
+    //   margin: 20px 0;
+    // }
   }
 
   li,

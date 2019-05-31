@@ -1,8 +1,25 @@
 main {
-  display: flex;
+  // display: flex;
   height: 100%;
+  display: grid;
+  grid-template-rows: 40px auto;
+  grid-template-columns: 160px auto;
+  grid-template-areas:
+    "app-nav app-header"
+    "app-nav app-section"
+  ;
+
+  .app-nav {
+    grid-area: app-nav;
+  }
+
+  .app-header {
+    grid-area: app-header;
+  }
 
   section {
-    flex-grow: 1;
+    grid-area: app-section;
+    padding: 10px 5px 2px 5px;
+    height: 100%;
   }
 }

@@ -1,0 +1,20 @@
+<main>
+  <div>
+    <figure class="avatar app-avatar avatar-lg mr-2">
+      <img src="assets/img/avatar.png" alt="Avatar XL">
+      <!-- 存在表示有消息,点击会有一个下来消息列表,暂时没做 -->
+      <i class="avatar-presence online"></i>
+    </figure>
+  </div>
+
+  <div class="has-icon-left">
+    <input type="text" class="form-input input-sm" placeholder="Search...">
+    <i class="form-icon icon icon-search"></i>
+  </div>
+
+  <div class="app-option">
+    <button class="btn btn-primary btn-action btn-sm" (click)="min()"> <i class="icon icon-minus"></i></button>
+    <button class="btn btn-primary btn-action btn-sm" (click)="logout()"> <i class="icon icon-shutdown"></i></button>
+    <button class="btn btn-primary btn-action btn-sm" (click)="close()"><i class="icon icon-cross"></i></button>
+  </div>
+</main>

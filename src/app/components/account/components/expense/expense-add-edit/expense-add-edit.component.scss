@@ -1,46 +1,23 @@
-:host {
-  flex-grow: 1;
-}
-
-main {
-  display: flex;
-  margin: 10px;
-  position: relative;
-  height: 100%;
-}
-
-
-section {
-  flex-grow: 1;
-  position: relative;
-  left: -1px;
-  padding: 10px;
-  width: 200px;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #4b48d6;
-}
-
-
 main {
   height: 100%;
+  display: grid;
+  grid-template-columns: 70px 1fr;
 
   .expense-book {
-    width: 70px;
-    height: 100%;
-    float: left;
     overflow-y: hidden;
   }
-  
+
+  section {
+    position: relative;
+    left: -1px;
+    border: 1px solid #4b48d6;
+  }
+
   form {
-    // flex-grow: 1;
-    display: flex;
-    flex-direction: column;    
+    padding: 0 5px;
     fieldset {
       border-top: 1px dashed #4b48d6;
-      flex-grow: 1;
-      margin-top: 10px;
-
+      margin-bottom: 0;
       legend {
         font-size: 14px;
         font-weight: normal;
