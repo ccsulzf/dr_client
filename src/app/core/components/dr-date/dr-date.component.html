@@ -44,7 +44,7 @@
           <div class="calendar-date" *ngFor="let item of daysList">
             <button type="button" class="date-item" tabindex="-1"
               [class.selected]="(item.day == day && item.month==month.number)"
-              (click)="selectDay(item.day,$event)">{{item.day}}</button>
+              (click)="selectDay(item,$event)">{{item.day}}</button>
           </div>
           <div>
             <button type="button" tabindex="-1" class="btn btn-link" (click)="selectToday($event)">今日</button>

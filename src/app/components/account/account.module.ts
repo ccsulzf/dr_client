@@ -12,6 +12,7 @@ import { AccountService, ExpenseService, IncomeService } from './services';
 import { IncomeComponent } from './components/income/income.component';
 import { IncomeListComponent } from './components/income/income-list/income-list.component';
 import { IncomeAddEditComponent } from './components/income/income-add-edit/income-add-edit.component';
+import { TransferComponent } from './components/transfer/transfer.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -24,7 +25,7 @@ import { IncomeAddEditComponent } from './components/income/income-add-edit/inco
     AccountComponent, ExpenseComponent,
     ExpenseAddEditComponent, ExpenseListComponent,
     ExpenseDetailComponent, IncomeComponent,
-    IncomeListComponent, IncomeAddEditComponent
+    IncomeListComponent, IncomeAddEditComponent, TransferComponent
   ],
   entryComponents: [
     ExpenseListComponent,

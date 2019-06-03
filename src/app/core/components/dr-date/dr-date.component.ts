@@ -292,6 +292,8 @@ export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor 
     }
 
     this.daysList = list;
+
+    // console.info(this.daysList);
   }
 
 
@@ -360,9 +362,11 @@ export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor 
   }
 
 
-  selectDay(day, e) {
+  selectDay(item, e) {
     e.stopPropagation();
-    this.day = day;
+    this.day = item.day;
+    this.year = item.year;
+    this.month = _.find(this.monthsList, { number: item.month });
     this.date = '' + this.year + '-' + this.month.value + '-' + (this.day < 10 ? '0' + this.day : this.day);
     this.show = false;
     if (this.viewType === 'input') {
