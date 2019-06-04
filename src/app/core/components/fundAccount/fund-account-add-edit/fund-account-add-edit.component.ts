@@ -60,7 +60,9 @@ export class FundAccountAddEditComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.info(this.data);
     this.fundChannel = this.data.fundChannel;
+
     if (this.data.value) {
       this.fundAccount = this.data.value;
       if (this.fundAccount.isCredit) {
@@ -74,6 +76,8 @@ export class FundAccountAddEditComponent implements OnInit {
       }
       this.fundChannelNames = _.map(this.bindFundChannelList, 'name').join(',');
     }
+
+    console.info(this.fundAccount);
   }
 
   @HostListener('document:click', ['$event'])

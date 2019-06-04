@@ -26,16 +26,23 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
 
   @Input()
   set hasParticipantList(hasParticipantList) {
+    this.list = _.cloneDeep(BaseData.participantList);
+    for (const item of this.list) {
+      if (_.find(hasParticipantList, { id: item.id })) {
+        item.selected = true;
+      } else {
+        item.selected = false;
+      }
+    }
     this.selectedParticipantList = hasParticipantList;
-    // this.list = _.differenceBy(BaseData.participantList, this.selectedParticipantList, 'name');
+    this.getSelectedParticipantNames();
   }
 
   get hasParticipantList(): string { return this.selectedParticipantList; }
 
   list = [];
 
-  top = 0;
-  filterParticipant = '';
+  selectedParticipantNames = '';
   ulShow = false;
 
   public doneEvent: Subscription;
@@ -47,34 +54,12 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.init();
-    const searchBox = document.getElementById('participant-list');
-    const typeahead = fromEvent(searchBox, 'input').pipe(
-      map((e: any) => {
-        return e.target.value;
-      }),
-      filter(text => {
-        if (text.length >= 1) {
-          return true;
-        } else {
-          this.list = _.clone(BaseData.participantList);
-          this.ulShow = true;
-          return false;
-        }
-      }),
-      distinctUntilChanged()
-    );
-    typeahead.subscribe(data => {
-      this.list = BaseData.participantList.filter((item) => {
-        return item.name.indexOf(data) > -1 || this.system.filterByPY(item, 'name', data) || this.system.filterByPY(item, 'alias', data);
-      });
-    });
-
     this.doneEvent = this.system.doneEvent.subscribe((value) => {
       if (value && value.model === 'participant') {
         value.data.selected = true;
         this.selectedParticipantList.push(value.data);
-        this.list = _.cloneDeep(BaseData.participantList);
-        this.top = this.contentEle.nativeElement.clientHeight;
+        this.getSelectedParticipantNames();
+        this.list.push(value.data);
       }
     });
 
@@ -108,18 +93,12 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
       } else {
         this.ulShow = true;
       }
-      if (!this.ulShow) {
-        const searchBox = document.getElementById('participant-list');
-        searchBox.blur();
-        this.filterParticipant = '';
-      }
     } else {
       this.ulShow = false;
-      this.filterParticipant = '';
     }
-    this.top = this.contentEle.nativeElement.clientHeight;
     this.choiceItem = null;
   }
+
 
   @HostListener('keyup', ['$event'])
   hotKeyEvent(e) {
@@ -164,6 +143,18 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
     list.scrollTop = (targetLi.offsetTop - 8);
   }
 
+  getSelectedParticipantNames() {
+    const namesList = [];
+    for (const item of this.selectedParticipantList) {
+      if (item.alias) {
+        namesList.push(item.alias);
+      } else {
+        namesList.push(item.name);
+      }
+    }
+    this.selectedParticipantNames = namesList.join(',');
+  }
+
 
   init() {
     this.list = _.cloneDeep(BaseData.participantList);
@@ -173,12 +164,11 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
     const mySelf = _.find(this.list, { isMyself: true });
     mySelf.selected = true;
     this.selectedParticipantList.push(mySelf);
-    this.top = this.contentEle.nativeElement.clientHeight;
+    this.getSelectedParticipantNames();
   }
 
   select(item) {
     this.ulShow = true;
-    this.filterParticipant = '';
     item.selected = !item.selected;
     if (item.selected) {
       this.selectedParticipantList.push(item);
@@ -186,7 +176,7 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
       _.remove(this.selectedParticipantList, { name: item.name });
     }
     this.setParticipantList.emit(this.selectedParticipantList);
-    this.top = this.contentEle.nativeElement.clientHeight;
+    this.getSelectedParticipantNames();
   }
 
   add() {
@@ -200,6 +190,6 @@ export class ParticipantSelectComponent implements OnInit, OnDestroy {
     item.selected = false;
     _.remove(this.selectedParticipantList, { name: item.name });
     this.setParticipantList.emit(this.selectedParticipantList);
-    this.top = this.contentEle.nativeElement.clientHeight;
+    this.getSelectedParticipantNames();
   }
 }

@@ -24,7 +24,7 @@ export const NAV_CONFIG = [
                 selected: false
             }, {
                 name: '转账',
-                path: '',
+                path: '/account/transfer',
                 selected: false
             }, {
                 name: '还款',

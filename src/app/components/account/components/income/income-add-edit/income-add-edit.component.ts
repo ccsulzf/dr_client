@@ -120,13 +120,15 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   async getParticipantList() {
-    this.participantList = [];
+    const list = [];
+    // this.participantList = [];
     const data: any = await this.http.get('/DR/IncomeParticipant?incomeId=' + this.income.id);
     if (data && data.length) {
       for (const item of data) {
-        this.participantList.push(this.baseDataService.getParticipant(item.participantId));
+        list.push(this.baseDataService.getParticipant(item.participantId));
       }
     }
+    this.participantList = list;
   }
 
   async getLableList() {

@@ -1,16 +1,12 @@
 <main>
   <label *ngIf="title">{{title}}:</label>
   <section #participantListEle>
-    <div class="content" #contentEle>
-      <div class="chip" *ngFor="let item of selectedParticipantList">
-        <i class="icon icon-people"></i>
-        {{item?.name}}
-        <a class="btn btn-clear" (click)="delete(item)" aria-label="Close" role="button"></a>
-      </div>
-      <input tabindex="-1" name="filterParticipant" id="participant-list" [(ngModel)]="filterParticipant"
-        class="form-input input-sm" type="text" placeholder="添加参与人">
+    <div #contentEle class="has-icon-right">
+      <input type="text" [style.border-color]="ulShow?'#5755d9':'#bcc3ce'" readonly name="selectedParticipantNames"
+        [ngModel]="selectedParticipantNames" id="participant-list" class="form-input" placeholder="添加参与人">
+      <i class="form-icon icon icon-arrow-down"></i>
     </div>
-    <ul id="participant-ul" class="menu" [style.top]="top+'px'" [style.display]="ulShow?'block':'none'">
+    <ul id="participant-ul" class="menu" [style.display]="ulShow?'block':'none'">
       <li [id]="'participant_'+item.id" class="menu-item" *ngFor="let item of list" (click)="select(item)">
         <a [class.choice]="choiceItem && (choiceItem.id === item.id)">
           <span>
@@ -20,7 +16,8 @@
         </a>
       </li>
       <li class="add">
-        <button tabindex="-1" type="button" class="btn btn-primary btn-sm" (click)="add()"><i class="icon icon-plus"></i>
+        <button tabindex="-1" type="button" class="btn btn-primary btn-sm" (click)="add()"><i
+            class="icon icon-plus"></i>
           添加参与人</button>
       </li>
     </ul>

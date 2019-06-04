@@ -20,7 +20,8 @@ function createWindow() {
     resizable: false,
     autoHideMenuBar: true,
     movable: true,
-    frame: false
+    frame: false,
+    icon: 'src/assets/img/logo.ico'
   });
 
   win.center();

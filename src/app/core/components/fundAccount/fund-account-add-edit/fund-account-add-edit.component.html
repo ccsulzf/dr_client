@@ -15,7 +15,7 @@
         资金来往渠道:
       </label>
       <div #divClick class="has-icon-right">
-        <input class="form-input text-ellipsis" placeholder="请绑定渠道" name="fundChannelNames"
+        <input class="form-input text-ellipsis" readonly placeholder="请绑定渠道" name="fundChannelNames"
           [(ngModel)]="fundChannelNames">
         <i class="form-icon icon icon-arrow-down" aria-hidden="true"></i>
       </div>
@@ -36,13 +36,13 @@
       <label>
         账户余额:
       </label>
-      <input type="number" class="form-input" [disabled]="fundAccount.isCredit || fundAccount.id" name="balance"
+      <input type="number" class="form-input" [disabled]="fundAccount.isCredit || (!!fundAccount.id)" name="balance"
         [(ngModel)]="fundAccount.balance">
     </div>
 
     <div class="form-group">
       <label class="form-switch">
-        <input type="checkbox" name="isCredit" [disabled]="fundAccount.id" [ngModel]="fundAccount.isCredit"
+        <input type="checkbox" name="isCredit" [disabled]="!!fundAccount.id" [ngModel]="fundAccount.isCredit"
           (ngModelChange)="setIsCredit($event)">
         <i class="form-icon"></i> 是否信贷
       </label>
@@ -67,8 +67,8 @@
         <label>
           已使用额度:
         </label>
-        <input type="number" class="form-input" [disabled]="fundAccount.isCredit && fundAccount.id" name="usedAmount"
-          [ngModel]="creditAccount.usedAmount" (ngModelChange)="setUsedAmount($event)">
+        <input type="number" class="form-input" [disabled]="fundAccount.isCredit && (!!fundAccount.id)"
+          name="usedAmount" [ngModel]="creditAccount.usedAmount" (ngModelChange)="setUsedAmount($event)">
       </div>
 
       <div class="form-group">

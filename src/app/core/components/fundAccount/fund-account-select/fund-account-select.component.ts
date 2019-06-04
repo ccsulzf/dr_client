@@ -157,7 +157,7 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
     }
     this.list = _.cloneDeep(this.fundAccountList);
 
-    console.info(this.list);
+    // console.info(this.list);
   }
 
   showULFundAccount() {

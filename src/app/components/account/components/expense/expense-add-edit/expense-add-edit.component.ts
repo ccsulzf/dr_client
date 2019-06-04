@@ -215,13 +215,14 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   async getParticipantList() {
-    this.participantList = [];
+    const list = [];
     const data: any = await this.http.get('/DR/ExpenseDetailParticipant?expenseDetailId=' + this.expenseDetail.id);
     if (data && data.length) {
       for (const item of data) {
-        this.participantList.push(this.baseDataService.getParticipant(item.participantId));
+        list.push(this.baseDataService.getParticipant(item.participantId));
       }
     }
+    this.participantList = list;
   }
 
   async getLableList() {
