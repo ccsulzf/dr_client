@@ -92,11 +92,6 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
       ['label', '标签'],
       ['memo', '备注']
     ]);
-    // this.startDateChanges = this.incomeForm.get('startDate').valueChanges.subscribe((data) => {
-    //   if (data) {
-    //     this.income.startDate = data.date;
-    //   }
-    // });
   }
 
   ngAfterViewInit() {
@@ -255,6 +250,12 @@ export class IncomeAddEditComponent implements OnInit, OnDestroy, AfterViewInit 
     }
     if (data.name === '结束日期') {
       this.income.endDate = data.date;
+    }
+  }
+
+  setFundAccount(data) {
+    if (data.title && data.value) {
+      this.income.fundAccountId = data.value;
     }
   }
 

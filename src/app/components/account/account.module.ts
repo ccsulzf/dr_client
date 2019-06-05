@@ -8,11 +8,13 @@ import { ExpenseComponent } from './components/expense/expense.component';
 import { ExpenseAddEditComponent } from './components/expense/expense-add-edit/expense-add-edit.component';
 import { ExpenseListComponent } from './components/expense/expense-list/expense-list.component';
 import { ExpenseDetailComponent } from './components/expense/expense-list/expense-detail/expense-detail.component';
-import { AccountService, ExpenseService, IncomeService } from './services';
+import { AccountService, ExpenseService, IncomeService, TransferService } from './services';
 import { IncomeComponent } from './components/income/income.component';
 import { IncomeListComponent } from './components/income/income-list/income-list.component';
 import { IncomeAddEditComponent } from './components/income/income-add-edit/income-add-edit.component';
 import { TransferComponent } from './components/transfer/transfer.component';
+import { TransferAddEditComponent } from './components/transfer/transfer-add-edit/transfer-add-edit.component';
+import { TransferListComponent } from './components/transfer/transfer-list/transfer-list.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -25,17 +27,19 @@ import { TransferComponent } from './components/transfer/transfer.component';
     AccountComponent, ExpenseComponent,
     ExpenseAddEditComponent, ExpenseListComponent,
     ExpenseDetailComponent, IncomeComponent,
-    IncomeListComponent, IncomeAddEditComponent, TransferComponent
+    IncomeListComponent, IncomeAddEditComponent, TransferComponent, TransferAddEditComponent, TransferListComponent
   ],
   entryComponents: [
     ExpenseListComponent,
     ExpenseDetailComponent,
-    IncomeListComponent
+    IncomeListComponent,
+    TransferListComponent
   ],
   providers: [
     AccountService,
     ExpenseService,
-    IncomeService
+    IncomeService,
+    TransferService
   ]
 })
 export class AccountModule { }

@@ -1,0 +1,103 @@
+<main>
+  <form [formGroup]="transferForm">
+
+    <div class="columns">
+      <div class="column col-6"
+        [class.has-error]="transferForm.get('outFundAccount').errors && (transferForm.get('outFundAccount').dirty || transferForm.get('outFundAccount').touched)">
+        <fund-account-select formControlName="outFundAccount" [title]="'转出账户'" [fundChannelId]="''"
+          [ngModel]="transfer.outFundAccountId" (ngModelChange)="setFundAccount($event)" [filterCredit]="true">
+        </fund-account-select>
+        <p class="form-input-hint"
+          *ngIf="transferForm.get('outFundAccount').errors && (transferForm.get('outFundAccount').dirty || transferForm.get('outFundAccount').touched)">
+          转出账户不能为空
+        </p>
+      </div>
+
+      <div class="column col-6"
+        [class.has-error]="transferForm.get('inFundAccount').errors && (transferForm.get('inFundAccount').dirty || transferForm.get('inFundAccount').touched)">
+        <fund-account-select formControlName="inFundAccount" [title]="'转入账户'" [fundChannelId]="''"
+          [ngModel]="transfer.inFundAccountId" (ngModelChange)="setFundAccount($event)" [filterCredit]="true">
+        </fund-account-select>
+        <p class="form-input-hint"
+          *ngIf="transferForm.get('outFundAccount').errors && (transferForm.get('outFundAccount').dirty || transferForm.get('outFundAccount').touched)">
+          转出账户不能为空
+        </p>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column col-6">
+        <dr-date [type]="'input'" [dateName]="'日期'" [nameShow]="true" [size]="'middle'" [viewType]="'day'"
+          formControlName="transferDate"></dr-date>
+      </div>
+
+      <div class="column col-6"
+        [class.has-error]="transferForm.get('amount').errors && (transferForm.get('amount').dirty || transferForm.get('amount').touched)">
+        <label class="form-label">转账金额</label>
+        <div class="input-group">
+          <input class="form-input" formControlName="amount" [(ngModel)]="transfer.amount" type="number" step="0.01"
+            placeholder="转账金额" #amountInputEle>
+          <span class="input-group-addon">元</span>
+        </div>
+        <p class="form-input-hint"
+          *ngIf="transferForm.get('amount').errors && (transferForm.get('amount').dirty || transferForm.get('amount').touched)">
+          转账金额不能为空
+        </p>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="handle">
+        <div class="form-group">
+          <label class="form-switch">
+            <input type="checkbox" #isHadleInputEle formControlName="isHandle">
+            <i class="form-icon"></i> 是否需要手续费
+          </label>
+        </div>
+
+        <div class="input-group handleFee">
+          <input class="form-input" #amountInputEle formControlName="amount" type="number" step="0.01"
+            placeholder="手续费">
+          <span class="input-group-addon">元</span>
+        </div>
+      </div>
+
+      <!-- <div class="column col-6">
+      
+      </div> -->
+    </div>
+
+    <div class="columns detail">
+      <label-select [title]="'标签'" [type]="'1'" (setLabelList)="onSetLabelList($event)" [hasLabelList]="labelList">
+      </label-select>
+    </div>
+
+    <div class="columns detail">
+      <memo [title]="'备注'" [maxNumber]="500" formControlName="memo" [(ngModel)]="transfer.memo"></memo>
+    </div>
+
+  </form>
+
+  <div class="dr-btn-group" *ngIf="!editOrDelFlag && addFlag">
+    <button class="btn btn-primary" (click)="addTransfer()">
+      <i class="icon icon-plus"></i> 转账
+    </button>
+    <button class="btn btn-Secondary" (click)="reset()">
+      <i class="icon icon-refresh"></i> 重置
+    </button>
+  </div>
+  <div class="edit-del" *ngIf="editOrDelFlag && !addFlag">
+    <div class="dr-btn-group">
+      <button class="btn btn-primary" (click)="editTransfer()">
+        <i class="icon icon-edit"></i> 编辑
+      </button>
+      <button class="btn btn-error" (click)="delTransfer()">
+        <i class="icon icon-delete"></i> 撤销
+      </button>
+    </div>
+    <button class="btn btn-link go-add" (click)="goAdd()">
+      <i class="icon icon-share"></i> 添加收入
+    </button>
+  </div>
+
+</main>

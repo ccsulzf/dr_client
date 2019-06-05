@@ -22,13 +22,13 @@ import { ExpenseCategoryAddEditComponent } from './components/expense-category/e
 import { FundPartyAddEditComponent } from './components/fund-party/fund-party-add-edit/fund-party-add-edit.component';
 import { FilterPipe, FilterListPipe, FilterNamePipe } from './pipes';
 // import { FundWayAddEditComponent } from './components/fund-way/fund-way-add-edit/fund-way-add-edit.component';
-import { FundAccountAddEditComponent } from './components/fundAccount/fund-account-add-edit/fund-account-add-edit.component';
+import { FundAccountAddEditComponent } from './components/fund-account/fund-account-add-edit/fund-account-add-edit.component';
 import { ParticipantAddEditComponent } from './components/participant/participant-add-edit/participant-add-edit.component';
 import { AddressSelectComponent } from './components/addreess/address-select/address-select.component';
 import { IncomeCategorySelectComponent } from './components/income-category/incomeCategory-select/incomeCategory-select.component';
 import { ParticipantSelectComponent } from './components/participant/participant-select/participant-select.component';
 import { LabelSelectComponent } from './components/label/label-select/label-select.component';
-import { FundAccountSelectComponent } from './components/fundAccount/fund-account-select/fund-account-select.component';
+import { FundAccountSelectComponent } from './components/fund-account/fund-account-select/fund-account-select.component';
 import { IncomeCategoryAddEditComponent } from './components/income-category/income-category-add-edit/income-category-add-edit.component';
 import { FundPartySelectComponent } from './components/fund-party/fund-party-select/fund-party-select.component';
 // import { FundwaySelectComponent } from './components/fund-way/fundway-select/fundway-select.component';

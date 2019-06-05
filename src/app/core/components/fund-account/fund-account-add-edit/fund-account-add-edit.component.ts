@@ -20,7 +20,7 @@ export class FundAccountAddEditComponent implements OnInit {
     id: '',
     name: '',
     balance: 0,
-    isCredit: false,
+    isCredit: 0,
     userId: this.system.user.id
   };
 
@@ -60,7 +60,6 @@ export class FundAccountAddEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.info(this.data);
     this.fundChannel = this.data.fundChannel;
 
     if (this.data.value) {
@@ -76,8 +75,6 @@ export class FundAccountAddEditComponent implements OnInit {
       }
       this.fundChannelNames = _.map(this.bindFundChannelList, 'name').join(',');
     }
-
-    console.info(this.fundAccount);
   }
 
   @HostListener('document:click', ['$event'])
@@ -132,8 +129,7 @@ export class FundAccountAddEditComponent implements OnInit {
       });
     if (fundcount) {
       // 如果添加的账户中包含之前的渠道,发送事件,自动选择新增的账户
-      BaseData.fundAccountList.push(fundcount);
-      this.system.done({ model: 'fundAccount', data: fundcount, fundChannel: this.fundChannel });
+      this.system.done({ model: 'fundAccount', title: this.data.title, data: fundcount, fundChannel: this.fundChannel });
     }
   }
 

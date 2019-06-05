@@ -60,7 +60,7 @@
       <div class="column col-6"
         [class.has-error]="incomeForm.get('fundAccount').errors && (incomeForm.get('fundAccount').dirty || incomeForm.get('fundAccount').touched)">
         <fund-account-select formControlName="fundAccount" [title]="'存入账户'" [fundChannelId]="income.fundChannelId"
-          [(ngModel)]="income.fundAccountId" [filterCredit]="true">
+          [ngModel]="income.fundAccountId" (ngModelChange)="setFundAccount($event)" [filterCredit]="true">
         </fund-account-select>
         <p class="form-input-hint"
           *ngIf="incomeForm.get('fundAccount').errors && (incomeForm.get('fundAccount').dirty || incomeForm.get('fundAccount').touched)">

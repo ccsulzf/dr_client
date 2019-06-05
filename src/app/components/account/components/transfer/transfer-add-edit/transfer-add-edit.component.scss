@@ -1,0 +1,82 @@
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}
+
+form {
+  padding: 5px 20px;
+
+  .detail {
+    margin: 10px 0;
+  }
+
+  .handle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-left: .4rem;
+    margin-right: .4rem;
+    /* margin: .4rem; */
+    margin-top: .5rem;
+    background: #efefef;
+    padding: .4rem;
+
+    .form-group {
+      margin-bottom: 0;
+    }
+  }
+
+  .handleFee {
+    flex-grow: 1;
+  }
+}
+
+.dr-btn-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  button {
+    margin-right: 20px;
+    font-size: 14px;
+  }
+}
+
+.group-date {
+  display: flex;
+  position: relative;
+}
+
+.income-divider {
+  display: block;
+  padding-left: .4rem;
+  padding-right: 0.5rem;
+}
+
+.income-divider::before {
+  border-left: .08rem solid #4b48d6;
+  content: "";
+  display: block;
+  position: absolute;
+  top: .5rem;
+  height: 0.8rem;
+}
+
+
+.edit-del {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  .btn-group {
+    margin: 10px 0px;
+  }
+}
+
+.go-add {
+  position: absolute;
+  right: 0;
+  font-size: 14px;
+}

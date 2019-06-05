@@ -101,9 +101,11 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     });
   }
 
-  // onSetDate(data) {
-  //   // this.expense.expenseDate = data.date;
-  // }
+  setFundAccount(data) {
+    if (data.title && data.value) {
+      this.expenseDetail.fundAccountId = data.value;
+    }
+  }
 
   onSetExpenseBook(item) {
     if (item) {

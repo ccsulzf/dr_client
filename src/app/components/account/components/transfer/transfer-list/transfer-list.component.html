@@ -1,0 +1,31 @@
+<main>
+  <form class="month-transfer">
+    <dr-date [type]="'text'" [viewType]="'month'" name="date" [nameShow]="false" [dateName]="" [ngModel]="date"
+      (ngModelChange)="changeDate($event)"></dr-date>
+    <span>
+      总计: {{transferService?.transferList.length}}笔
+    </span>
+  </form>
+
+  <ul class="transfer-list" *ngIf="transferService?.transferList && transferService?.transferList.length">
+    <li *ngFor="let item of transferService?.transferList">
+      <span class="fund-account">
+        {{item.outFundAccountName}}
+      </span>
+      <div class="amount-date">
+        <span>金额: {{item.amount}}元</span>
+        <div class="split">
+          <span></span>
+          <i class="icon icon-arrow-right"></i>
+        </div>
+        <span>日期: {{item.transferDate}}</span>
+      </div>
+      <span class="fund-account">
+        {{item.inFundAccountName}}
+      </span>
+    </li>
+  </ul>
+  <div class="no-transfer" *ngIf="!(transferService?.transferList && transferService?.transferList.length)">
+    当前没有转账记录
+  </div>
+</main>

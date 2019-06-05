@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn, AbstractControl, ValidationErrors, NG_VALIDATORS } from '@angular/forms';
 
-import { SystemService, BaseData } from '../../../providers';
+import { SystemService, BaseData, BaseDataService } from '../../../providers';
 import { fromEvent, Subscription } from 'rxjs';
 import { map, filter, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import * as _ from 'lodash';
@@ -35,7 +35,7 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
     }
     this.getFundAccountList();
   }
-  get fundChannelId(): string { return this.fundChannel.id; }
+  get fundChannelId(): string { return this.fundChannel ? this.fundChannel.id : ''; }
 
   list = [];
   fundAccountList = [];
@@ -55,7 +55,8 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
     public system: SystemService,
     public el: ElementRef,
     public renderer: Renderer,
-    public viewRef: ViewContainerRef
+    public viewRef: ViewContainerRef,
+    public baseDataService: BaseDataService
   ) { }
 
   propagateChange = (temp: any) => { };
@@ -98,10 +99,15 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
       });
     });
     this.doneEvent = this.system.doneEvent.subscribe((value) => {
-      if (value && value.model === 'fundAccount') {
+      if (value && value.model === 'fundAccount' && value.title === this.title) {
+        this.baseDataService.addFundAccount(value.data);
         this.fundChannel = value.fundChannel;
         this.getFundAccountList();
-        if (this.fundChannel && _.find(value.data.fundChannelList, { id: this.fundChannel.id })) {
+        if (this.fundChannel) {
+          if (_.find(value.data.fundChannelList, { id: this.fundChannel.id })) {
+            this.select(value.data);
+          }
+        } else {
           this.select(value.data);
         }
       }
@@ -118,7 +124,6 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
         this.system.selectedTabView = value;
         this.showULFundAccount();
       } else {
-        // this.select(this.fundAccountItem);
         this.fundAccountInputEle.nativeElement.blur();
         this.ulShow = false;
       }
@@ -149,15 +154,15 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
             return false;
           }
         }) || [];
+    } else {
+      this.fundAccountList = _.cloneDeep(BaseData.fundAccountList);
     }
     if (this.filterCredit && this.fundAccountList.length) {
       this.fundAccountList = _.filter(this.fundAccountList, (item) => {
-        return item.isCredit === 0;
+        return !item.isCredit;
       });
     }
     this.list = _.cloneDeep(this.fundAccountList);
-
-    // console.info(this.list);
   }
 
   showULFundAccount() {
@@ -204,13 +209,19 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
         case 38: // 上
           this.fundAccountItem = this.list[prevIndex];
           this.fundAccount = this.fundAccountItem.name;
-          this.propagateChange(this.fundAccountItem.id);
+          this.propagateChange({
+            title: this.title,
+            value: this.fundAccountItem.id
+          });
           this.showULFundAccount();
           break;
         case 40: // 下
           this.fundAccountItem = this.list[nextIndex];
           this.fundAccount = this.fundAccountItem.name;
-          this.propagateChange(this.fundAccountItem.id);
+          this.propagateChange({
+            title: this.title,
+            value: this.fundAccountItem.id
+          });
           this.showULFundAccount();
           break;
         case 13:
@@ -239,11 +250,13 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
 
 
   select(item?) {
-    // this.getFundAccountList();
     if (item) {
       this.fundAccountItem = item;
       this.fundAccount = item.name;
-      this.propagateChange(item.id);
+      this.propagateChange({
+        title: this.title,
+        value: item.id
+      });
       this.ulShow = false;
     } else {
       this.fundAccountItem = null;
@@ -257,7 +270,8 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
     this.system.changeComponent({
       component: 'fundAccount-add-edit', data: {
         fundChannel: this.fundChannel,
-        value: null
+        value: null,
+        title: this.title
       }
     });
   }

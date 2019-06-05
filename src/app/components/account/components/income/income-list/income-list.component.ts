@@ -17,8 +17,7 @@ export class IncomeListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(
     public incomeService: IncomeService,
-    public http: HttpClientService,
-    public cd: ChangeDetectorRef
+    public http: HttpClientService
   ) { }
 
   ngOnInit() {

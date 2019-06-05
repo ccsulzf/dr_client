@@ -1,0 +1,88 @@
+main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #fff;
+  -webkit-app-region: no-drag;
+}
+
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.month-transfer {
+  height: 44px;
+  display: flex;
+  background: #5755d9;
+  border: 1px solid #5755d9;
+  color: #fff;
+  font-size: 15px;
+  font-weight: bolder;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 7px;
+
+}
+
+.month-transfer>span:first-of-type {
+  display: inline-flex;
+  cursor: pointer;
+  align-items: center;
+
+  i {
+    margin-right: 5px;
+  }
+}
+
+.transfer-list {
+  li {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 50px 1fr 50px;
+    padding: 5px;
+    width: 100%;
+    grid-column-gap: 10px;
+  }
+
+  .fund-account {
+    text-align: center;
+  }
+
+  .amount-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    span {
+      font-size: .6rem;
+    }
+
+    .split {
+      display: flex;
+      align-items: center;
+      width: 100%;
+
+      span {
+        display: block;
+        width: 100%;
+        height: 1px;
+        border: 1px dashed #5755d9;
+      }
+
+      i {
+        color: #5755d9;
+      }
+
+    }
+  }
+}
+
+.no-transfer {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  margin-top: 20%;
+}

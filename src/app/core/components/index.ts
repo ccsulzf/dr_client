@@ -4,7 +4,7 @@ export * from './expenseBook';
 export * from './expense-category';
 export * from './fund-party';
 // export * from './fund-way';
-export * from './fundAccount';
+export * from './fund-account';
 export * from './participant';
 export * from './label';
 export * from './income-category';
