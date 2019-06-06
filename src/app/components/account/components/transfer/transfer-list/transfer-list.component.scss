@@ -6,11 +6,20 @@ main {
   -webkit-app-region: no-drag;
 }
 
+main>ul {
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
 ul,
 li {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+ul::-webkit-scrollbar {
+  display: none;
 }
 
 .month-transfer {
@@ -45,6 +54,22 @@ li {
     padding: 5px;
     width: 100%;
     grid-column-gap: 10px;
+    border-bottom: 1px solid #5755d9;
+    cursor: pointer;
+
+    i {
+      color: #5755d9;
+    }
+
+    &:hover {
+      background: #5755d9;
+      color: #fff;
+      opacity: 0.8;
+
+      i {
+        color: #fff;
+      }
+    }
   }
 
   .fund-account {
@@ -63,6 +88,9 @@ li {
     .split {
       display: flex;
       align-items: center;
+      justify-content: center;
+      font-size: .6rem;
+      margin: 2px 0;
       width: 100%;
 
       span {
@@ -72,10 +100,9 @@ li {
         border: 1px dashed #5755d9;
       }
 
-      i {
-        color: #5755d9;
-      }
-
+      // i {
+      //   color: #5755d9;
+      // }
     }
   }
 }

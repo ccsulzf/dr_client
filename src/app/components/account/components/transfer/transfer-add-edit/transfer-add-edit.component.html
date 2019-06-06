@@ -1,16 +1,17 @@
 <main>
   <form [formGroup]="transferForm">
-
     <div class="columns">
       <div class="column col-6"
         [class.has-error]="transferForm.get('outFundAccount').errors && (transferForm.get('outFundAccount').dirty || transferForm.get('outFundAccount').touched)">
         <fund-account-select formControlName="outFundAccount" [title]="'转出账户'" [fundChannelId]="''"
           [ngModel]="transfer.outFundAccountId" (ngModelChange)="setFundAccount($event)" [filterCredit]="true">
         </fund-account-select>
-        <p class="form-input-hint"
+        <div class="form-input-hint"
           *ngIf="transferForm.get('outFundAccount').errors && (transferForm.get('outFundAccount').dirty || transferForm.get('outFundAccount').touched)">
-          转出账户不能为空
-        </p>
+          <p *ngIf="transferForm.get('outFundAccount').errors.required">
+            转出账户不能为空
+          </p>
+        </div>
       </div>
 
       <div class="column col-6"

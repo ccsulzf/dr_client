@@ -6,12 +6,23 @@ main {
   -webkit-app-region: no-drag;
 }
 
+main>ul {
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
 ul,
 li {
   margin: 0;
   padding: 0;
   list-style: none;
 }
+
+
+ul::-webkit-scrollbar {
+  display: none;
+}
+
 
 main>ul {
   flex-grow: 1;
