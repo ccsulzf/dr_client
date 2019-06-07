@@ -1,9 +1,9 @@
 <main>
   <form [formGroup]="transferForm">
     <div class="columns">
-      <div class="column col-6"
+      <div class="column"
         [class.has-error]="transferForm.get('outFundAccount').errors && (transferForm.get('outFundAccount').dirty || transferForm.get('outFundAccount').touched)">
-        <fund-account-select formControlName="outFundAccount" [title]="'转出账户'" [fundChannelId]="''"
+        <fund-account-select formControlName="outFundAccount" [title]="'转出账户'" [fundChannelId]="''" [exceptId]="transfer.inFundAccountId"
           [ngModel]="transfer.outFundAccountId" (ngModelChange)="setFundAccount($event)" [filterCredit]="true">
         </fund-account-select>
         <div class="form-input-hint"
@@ -14,10 +14,21 @@
         </div>
       </div>
 
-      <div class="column col-6"
+      <div class="exchange-account">
+        <div>
+          <span></span>
+          <i class="icon icon-arrow-right"></i>
+        </div>
+        <div>
+          <i class="icon icon-arrow-left"></i>
+          <span></span>
+        </div>
+      </div>
+
+      <div class="column"
         [class.has-error]="transferForm.get('inFundAccount').errors && (transferForm.get('inFundAccount').dirty || transferForm.get('inFundAccount').touched)">
         <fund-account-select formControlName="inFundAccount" [title]="'转入账户'" [fundChannelId]="''"
-          [ngModel]="transfer.inFundAccountId" (ngModelChange)="setFundAccount($event)" [filterCredit]="true">
+          [ngModel]="transfer.inFundAccountId" (ngModelChange)="setFundAccount($event)" [filterCredit]="true" [exceptId]="transfer.outFundAccountId">
         </fund-account-select>
         <p class="form-input-hint"
           *ngIf="transferForm.get('outFundAccount').errors && (transferForm.get('outFundAccount').dirty || transferForm.get('outFundAccount').touched)">
