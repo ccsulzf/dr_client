@@ -157,7 +157,6 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
       case 9:
         this.tabCustomInput(e);
         break;
-      // enter
       case 13:
         if (this.addFlag) {
           this.addExpense();

@@ -1,13 +1,17 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { HttpClientService, BaseDataService } from '../../../../../core/providers';
 import { TransferService } from '../../../services';
+
+import * as _ from 'lodash';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'transfer-list',
   templateUrl: './transfer-list.component.html',
   styleUrls: ['./transfer-list.component.scss']
 })
-export class TransferListComponent implements OnInit, AfterViewInit {
+export class TransferListComponent implements OnInit, AfterViewInit, OnDestroy {
   public date;
+  changeListByDateEvent: Subscription;
   constructor(
     public transferService: TransferService,
     public http: HttpClientService,
@@ -19,7 +23,20 @@ export class TransferListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.changeListByDateEvent = this.transferService.changeListByDateEvent.subscribe((date) => {
+      this.getListByDate(date);
+    });
+  }
 
+  ngOnDestroy() {
+    if (this.changeListByDateEvent) {
+      this.changeListByDateEvent.unsubscribe();
+    }
+  }
+
+  edit(detail) {
+    this.transferService.transfer = detail;
+    this.transferService.edit(_.cloneDeep(detail));
   }
 
   changeDate(data) {
@@ -36,8 +53,6 @@ export class TransferListComponent implements OnInit, AfterViewInit {
           this.transferService.changeTransfer(item);
         }
       }
-
-      console.info(this.transferService.transferList);
     });
   }
 }

@@ -18,6 +18,7 @@ import * as _ from 'lodash';
 export class TransferAddEditComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('amountInputEle') amountInputEle: ElementRef;
   @ViewChild('isHadleInputEle') isHadleInputEle: ElementRef;
+  @ViewChild('handleFeeInputEle') handleFeeInputEle: ElementRef;
   transfer: Transfer = {
     id: '',
     userId: this.system.user.id,
@@ -38,7 +39,7 @@ export class TransferAddEditComponent implements OnInit, AfterViewInit, OnDestro
   public editOrDelFlag = false;
 
   public changeTabViewEvent: Subscription;
-
+  public isHandleChangeEvent: Subscription;
   constructor(
     public accountService: AccountService,
     public transferService: TransferService,
@@ -54,7 +55,7 @@ export class TransferAddEditComponent implements OnInit, AfterViewInit, OnDestro
     inFundAccount: [this.transfer.inFundAccountId, Validators.required],
     transferDate: [this.transfer.transferDate],
     isHandle: [this.transfer.isHandle],
-    handleFee: [this.transfer.handleFee],
+    handleFee: [{ value: this.transfer.handleFee, disabled: !this.transfer.isHandle }],
     amount: [this.transfer.amount, Validators.required],
     memo: [this.transfer.memo]
   });
@@ -63,11 +64,10 @@ export class TransferAddEditComponent implements OnInit, AfterViewInit, OnDestro
     this.system.tabViewList = new Map([
       ['outFundAccount', '转出账户'],
       ['inFundAccount', '转入账户'],
-      ['transferDate', '转账日期'],
+      ['transferDate', '日期'],
+      ['amout', '转账金额'],
       ['isHandle', '是否手续费'],
       ['handleFee', '手续费'],
-      ['amout', '转账金额'],
-      ['fundAccount', '存入账户'],
       ['label', '标签'],
       ['memo', '备注']
     ]);
@@ -75,23 +75,34 @@ export class TransferAddEditComponent implements OnInit, AfterViewInit, OnDestro
 
   ngAfterViewInit() {
     this.reset();
-    // this.editEvent = this.incomeService.editEvent.subscribe(async (data: any) => {
-    //   this.income = data;
-    //   await this.getLableList();
-    //   await this.getParticipantList();
-    //   this.addFlag = false;
-    //   this.editOrDelFlag = true;
-    // });
+    this.editEvent = this.transferService.editEvent.subscribe(async (data: any) => {
+      this.transfer = data;
+      await this.getLableList();
+      this.addFlag = false;
+      this.editOrDelFlag = true;
+    });
+
+    this.isHandleChangeEvent = this.transferForm.get('isHandle').valueChanges.subscribe((value: boolean) => {
+      if (value) {
+        this.transferForm.get('handleFee').enable();
+      } else {
+        this.transferForm.get('handleFee').disable();
+      }
+    });
 
     this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
+      // console.info(value);
       if (value === '转账金额') {
         this.system.selectedTabView = value;
         this.amountInputEle.nativeElement.focus();
       } else if (value === '是否手续费') {
         this.system.selectedTabView = value;
         this.isHadleInputEle.nativeElement.focus();
+      } else if (value === '手续费') {
+        this.system.selectedTabView = value;
+        this.handleFeeInputEle.nativeElement.focus();
       } else {
-        this.amountInputEle.nativeElement.blur();
+        // this.amountInputEle.nativeElement.blur();
       }
     });
   }
@@ -104,29 +115,28 @@ export class TransferAddEditComponent implements OnInit, AfterViewInit, OnDestro
     if (this.changeTabViewEvent) {
       this.changeTabViewEvent.unsubscribe();
     }
+
+    if (this.isHandleChangeEvent) {
+      this.isHandleChangeEvent.unsubscribe();
+    }
+  }
+
+
+  exchangeAccount() {
+    if (this.transfer.outFundAccountId && this.transfer.inFundAccountId) {
+      let outId = this.transfer.outFundAccountId;
+      let inId = this.transfer.inFundAccountId;
+      this.transfer.inFundAccountId = outId;
+      this.transfer.outFundAccountId = inId;
+    }
   }
 
   async getLableList() {
     this.labelList = [];
-    const data: any = await this.http.get('/DR/TransferLabel?incomeId=' + this.transfer.id);
+    const data: any = await this.http.get('/DR/TransferLabel?transferId=' + this.transfer.id);
     if (data && data.length) {
       for (const item of data) {
         this.labelList.push(this.baseDataService.getLabel(item.labelId));
-      }
-    }
-  }
-
-  @HostListener('body:keyup', ['$event'])
-  keyUp(e) {
-    if (e.keyCode === 9) {
-      const array = Array.from(this.system.tabViewList);
-      if (this.system.selectedTabView) {
-        const index = _.findIndex(array, (item) => {
-          return item === this.system.selectedTabView;
-        });
-        if ((index > -1) && (index <= array.length - 1)) {
-          this.system.changeTabView(array[index + 1] || array[0]);
-        }
       }
     }
   }
@@ -139,6 +149,10 @@ export class TransferAddEditComponent implements OnInit, AfterViewInit, OnDestro
         break;
       // enter
       case 13:
+        if (this.system.selectedTabView === '是否手续费') {
+          this.transfer.isHandle = !this.transfer.isHandle;
+          return;
+        }
         if (this.addFlag) {
           this.addTransfer();
         }
@@ -157,13 +171,36 @@ export class TransferAddEditComponent implements OnInit, AfterViewInit, OnDestro
     }
   }
 
+
+  @HostListener('click', ['$event'])
+  onClick() {
+    if (this.amountInputEle.nativeElement.contains(event.target)) {
+      this.system.selectedTabView = '转账金额';
+    }
+
+    if (this.isHadleInputEle.nativeElement.contains(event.target)) {
+      this.system.selectedTabView = '是否手续费';
+    }
+
+    if (this.handleFeeInputEle.nativeElement.contains(event.target)) {
+      this.system.selectedTabView = '手续费';
+    }
+  }
+
   tabCustomInput(e?) {
     const values = Array.from(this.system.tabViewList.values());
     if (this.system.selectedTabView && e) {
-      const index = _.findIndex(values, (item) => {
+      let index = _.findIndex(values, (item) => {
         return item === this.system.selectedTabView;
       });
       if ((index > -1) && (index <= values.length - 1)) {
+        if (this.system.selectedTabView === '是否手续费' && !this.transfer.isHandle) {
+          index = e.shiftKey ? index : index + 1;
+        }
+
+        if (this.system.selectedTabView === '标签' && !this.transfer.isHandle) {
+          index = e.shiftKey ? index - 1 : index;
+        }
         this.system.changeTabView((e.shiftKey ? values[index - 1] : values[index + 1]) || values[0]);
       }
     } else {
@@ -198,7 +235,7 @@ export class TransferAddEditComponent implements OnInit, AfterViewInit, OnDestro
       inFundAccount: '',
       transferDate: moment().format('YYYY-MM-DD'),
       isHandle: false,
-      handleFee: '',
+      handleFee: 0,
       amount: '',
       memo: ''
     });
@@ -224,7 +261,19 @@ export class TransferAddEditComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   async editTransfer() {
-
+    try {
+      if (!this.transferForm.valid) {
+        for (const item in this.transferForm.controls) {
+          this.transferForm.get(item).markAsTouched();
+        }
+        return;
+        await this.transferService.editTransfer(this.transfer, this.labelList);
+        this.notifyService.notify('编辑成功', 'success');
+        this.reset();
+      }
+    } catch (error) {
+      this.notifyService.notify('编辑失败', 'error');
+    }
   }
 
   async delTransfer() {

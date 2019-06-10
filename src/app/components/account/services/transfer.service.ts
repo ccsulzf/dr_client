@@ -13,11 +13,21 @@ export class TransferService {
     public transferListDate = moment().format('YYYY-MM');
 
     public transferList = [];
+
+    public transfer;
     constructor(
         public http: HttpClientService,
         public baseDataService: BaseDataService,
         public system: SystemService
     ) { }
+
+    edit(value: object) {
+        this.editEvent.next(value);
+    }
+
+    changeListByDate(date) {
+        this.changeListByDateEvent.next(date);
+    }
 
     changeTransfer(item) {
         const outFundAccount = this.baseDataService.getFundAccount(item.outFundAccountId);
@@ -38,7 +48,21 @@ export class TransferService {
             };
             const addTransfer = await this.http.post('/DR/addTransfer', transferData);
             BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
-            console.info(addTransfer);
+            this.changeListByDate(moment(transfer.transferDate).format('YYYY-MM'));
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async editTransfer(transfer, labelList) {
+        try {
+            const transferData = {
+                transfer: transfer,
+                labelList: labelList
+            };
+            const addTransfer = await this.http.post('/DR/editTransfer', transferData);
+            BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
+            this.changeListByDate(moment(transfer.transferDate).format('YYYY-MM'));
         } catch (error) {
             throw error;
         }

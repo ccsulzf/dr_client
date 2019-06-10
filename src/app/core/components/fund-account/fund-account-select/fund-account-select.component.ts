@@ -200,6 +200,7 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
   onClick() {
     if (this.fundAccountListEle.nativeElement.contains(event.target)) {
       // this.getFundAccountList();
+      this.system.selectedTabView = this.title;
       this.ulShow = true;
       // this.list = this.fundAccountList;
       // this.fundAccountItem = this.list[0] || null;

@@ -8,7 +8,7 @@
   </form>
 
   <ul class="transfer-list" *ngIf="transferService?.transferList && transferService?.transferList.length">
-    <li *ngFor="let item of transferService?.transferList">
+    <li *ngFor="let item of transferService?.transferList" (click)="edit(item)">
       <span class="fund-account">
         {{item.outFundAccountName}}
       </span>
