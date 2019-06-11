@@ -60,7 +60,7 @@ export class TransferService {
                 transfer: transfer,
                 labelList: labelList
             };
-            const addTransfer = await this.http.post('/DR/editTransfer', transferData);
+            await this.http.post('/DR/editTransfer', transferData);
             BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
             this.changeListByDate(moment(transfer.transferDate).format('YYYY-MM'));
         } catch (error) {

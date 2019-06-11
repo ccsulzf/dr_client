@@ -91,7 +91,6 @@ export class TransferAddEditComponent implements OnInit, AfterViewInit, OnDestro
     });
 
     this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
-      // console.info(value);
       if (value === '转账金额') {
         this.system.selectedTabView = value;
         this.amountInputEle.nativeElement.focus();
@@ -121,6 +120,19 @@ export class TransferAddEditComponent implements OnInit, AfterViewInit, OnDestro
     }
   }
 
+  init() {
+    this.transfer = {
+      id: '',
+      userId: this.system.user.id,
+      transferDate: moment().format('YYYY-MM-DD'),
+      outFundAccountId: '',
+      inFundAccountId: '',
+      isHandle: false,
+      handleFee: 0,
+      amount: '',
+      memo: ''
+    };
+  }
 
   exchangeAccount() {
     if (this.transfer.outFundAccountId && this.transfer.inFundAccountId) {
@@ -267,10 +279,10 @@ export class TransferAddEditComponent implements OnInit, AfterViewInit, OnDestro
           this.transferForm.get(item).markAsTouched();
         }
         return;
-        await this.transferService.editTransfer(this.transfer, this.labelList);
-        this.notifyService.notify('编辑成功', 'success');
-        this.reset();
       }
+      await this.transferService.editTransfer(this.transfer, this.labelList);
+      this.notifyService.notify('编辑成功', 'success');
+      this.reset();
     } catch (error) {
       this.notifyService.notify('编辑失败', 'error');
     }
