@@ -67,4 +67,14 @@ export class TransferService {
             throw error;
         }
     }
+
+    async delTransfer(transfer) {
+        try {
+            await this.http.get('/DR/deleteTransfer?id=' + transfer.id);
+            BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
+            this.changeListByDate(moment(transfer.transferDate).format('YYYY-MM'));
+        } catch (error) {
+            throw error;
+        }
+    }
 }

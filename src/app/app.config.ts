@@ -1,4 +1,5 @@
-const serviceHost = 'http://localhost:1501';
+import { AppConfig } from '../environments/environment';
+const serviceHost = AppConfig.serviceHost;
 // let serviceHost = 'http://localhost:1500';
 // if (window['require']) {
 //     const require = window['require'];

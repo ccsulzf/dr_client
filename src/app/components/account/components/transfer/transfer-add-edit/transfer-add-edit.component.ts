@@ -289,9 +289,12 @@ export class TransferAddEditComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   async delTransfer() {
-
+    try {
+      await this.transferService.delTransfer(this.transfer);
+      this.reset();
+      this.notifyService.notify('删除转账', 'success');
+    } catch (error) {
+      this.notifyService.notify('删除转账失败', 'error');
+    }
   }
-
-
-
 }
