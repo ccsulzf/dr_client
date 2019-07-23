@@ -38,7 +38,6 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
     return this.exceptAccount ? this.exceptAccount.id : '';
   }
 
-
   @Input()
   set fundChannelId(fundChannelId) {
     if (fundChannelId) {
@@ -79,7 +78,9 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
 
   writeValue(value: any) {
     if (value) {
-      this.select(_.find(BaseData.fundAccountList, { id: value }));
+      // this.select();
+      this.fundAccountItem = _.find(BaseData.fundAccountList, { id: value });
+      this.fundAccount = this.fundAccountItem.name || '';
     } else {
       this.select();
     }
@@ -173,9 +174,10 @@ export class FundAccountSelectComponent implements OnInit, OnDestroy, ControlVal
     } else {
       this.fundAccountList = _.cloneDeep(BaseData.fundAccountList);
     }
+    // console.info(_.cloneDeep(this.fundAccount));
     if (this.filterCredit && this.fundAccountList.length) {
       this.fundAccountList = _.filter(this.fundAccountList, (item) => {
-        return !item.isCredit;
+        return item.isCredit == 0;
       });
     }
 

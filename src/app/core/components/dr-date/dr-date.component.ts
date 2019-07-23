@@ -21,7 +21,7 @@ export const EXPENSE_CATEGORY_ACCESSOR: any = {
 export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor {
 
   @Input() dateName;
-
+  
   // input 和 text两种类型
   @Input() type;
 

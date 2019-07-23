@@ -43,9 +43,9 @@ export class ExpenseListComponent implements AfterViewInit, OnInit, OnDestroy, A
 
 
   getListByDate(expenseDate) {
-    this.expenseService.totalDayAmount = 0;
-    this.expenseService.expneseListDate = expenseDate;
     this.http.get('/DR/Expense?expenseDate=' + moment(expenseDate).format('YYYY-MM-DD')).then((data: any) => {
+      this.expenseService.totalDayAmount = 0;
+      this.expenseService.expneseListDate = expenseDate;
       this.expenseService.expenseList = [];
       if (data && data.length) {
         for (const item of data) {

@@ -94,13 +94,18 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
       ['memo', '备注']
     ]);
 
-    this.formChanges = this.expenseForm.get('expenseDate').valueChanges.subscribe((data) => {
-      if (data) {
-        this.expense.expenseDate = data.date;
-      }
-    });
+    // this.formChanges = this.expenseForm.get('expenseDate').valueChanges.subscribe((data) => {
+    //   if (data) {
+    //     this.expense.expenseDate = data.date;
+    //   }
+    // });
   }
 
+  onSetDate(data) {    
+    if (data && data.name === '日期') {
+      this.expense.expenseDate = data.date;
+    }
+  }
   setFundAccount(data) {
     if (data.title && data.value) {
       this.expenseDetail.fundAccountId = data.value;

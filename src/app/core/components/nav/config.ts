@@ -28,7 +28,7 @@ export const NAV_CONFIG = [
                 selected: false
             }, {
                 name: '还款',
-                path: '',
+                path: '/account/repay',
                 selected: false
             }, {
                 name: '借款',

@@ -1,0 +1,59 @@
+<main>
+  <aside>
+    <ul>
+      <li *ngFor="let item of creditAccountList" [class.li-selected]="selectedAccount.id === item.id">
+        <div class="amount-info">
+          <p class="name">
+            <span>
+              {{item?.name}}
+            </span>
+            <span>
+              {{item?.balance}}元
+            </span>
+          </p>
+          <p class="amount">
+            <span>
+              账单总额：
+            </span>
+            <span>
+              {{item?.creditAccount?.usedAmount}}元
+            </span>
+          </p>
+        </div>
+        <p class="account-date">
+          <span>
+            账单日:本月{{item?.creditAccount?.billDay}}号
+          </span>
+          <span>
+            还款日：本月{{item?.creditAccount?.repaymentDay}}号
+          </span>
+        </p>
+      </li>
+    </ul>
+  </aside>
+  <article>
+    <ul>
+      <li *ngFor="let item of temp">
+        <div class="exense-detail">
+          <!-- 支出内容, -->
+          <div class="content">
+
+          </div>
+          <!-- 时间地点 -->
+          <div class="date-address">
+
+          </div>
+          <!-- 金额渠道 -->
+          <div class="amount-channel">
+
+          </div>
+        </div>
+
+        <!-- 分期按钮遮罩 -->
+        <div class="repay-mask">
+
+        </div>
+      </li>
+    </ul>
+  </article>
+</main>

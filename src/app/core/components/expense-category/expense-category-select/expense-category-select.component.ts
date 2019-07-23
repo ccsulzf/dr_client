@@ -126,9 +126,20 @@ export class ExpenseCategorySelectComponent implements OnInit, OnDestroy, Contro
   @HostListener('keyup', ['$event'])
   hotKeyEvent(e) {
     if (this.ulShow) {
-      const index = _.findIndex(this.list, { id: this.expenseCategoryItem.id });
-      const nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
-      const prevIndex = (index === 0) ? this.list.length - 1 : index - 1;
+      // const index = _.findIndex(this.list, { id: this.expenseCategoryItem.id });
+      // const nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
+      // const prevIndex = (index === 0) ? this.list.length - 1 : index - 1;
+      let index = -1;
+      let nextIndex = 0;
+      let prevIndex = 0;
+      if (this.expenseCategoryItem) {
+        index = _.findIndex(this.list, { id: this.expenseCategoryItem.id });
+        nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
+        prevIndex = (index === 0) ? this.list.length - 1 : index - 1;
+      } else {
+        nextIndex = (index === this.list.length - 1) ? 0 : index + 1;
+        prevIndex = this.list.length - 1;
+      }
       switch (e.keyCode) {
         case 38: // 上
           this.expenseCategoryItem = this.list[prevIndex];

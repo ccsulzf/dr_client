@@ -70,7 +70,7 @@ export class TransferService {
 
     async delTransfer(transfer) {
         try {
-            await this.http.get('/DR/deleteTransfer?id=' + transfer.id);
+            await this.http.post('/DR/delTransfer', transfer);
             BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
             this.changeListByDate(moment(transfer.transferDate).format('YYYY-MM'));
         } catch (error) {
