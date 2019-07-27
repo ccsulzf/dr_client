@@ -8,16 +8,15 @@
       <!-- 日期&支出地点 -->
       <div class="columns">
         <div class="column col-6">
-          <dr-date [type]="'input'" [dateName]="'日期'" [nameShow]="true" [size]="'middle'" [viewType]="'day'"
-            formControlName="expenseDate" [ngModel]="expense.expenseDate"
-            (ngModelChange)="onSetDate($event)"
-            ></dr-date>
+          <dr-date [tabIndex]="2" [type]="'input'" [dateName]="'日期'" [nameShow]="true" [size]="'middle'"
+            [viewType]="'day'" formControlName="expenseDate" [ngModel]="expense.expenseDate"
+            (ngModelChange)="onSetDate($event)"></dr-date>
         </div>
-        <!-- <div class="column col-6 has-error"> -->
         <div class="column col-6"
           [class.has-error]="expenseForm.get('address').errors && (expenseForm.get('address').dirty || expenseForm.get('address').touched)">
-          <address-select formControlName="address" [(ngModel)]="expenseDetail.addressId" [title]="'支出地点'">
-          </address-select>
+          <dr-select formControlName="address" [(ngModel)]="expenseDetail.addressId" [list]="baseData.addressList"
+            [icon]="'form-icon icon icon-location'" [title]="'支出地点'" [tabIndex]="3"
+            [addEditComponentName]="'address-add-edit'" [addEditComponentData]="null"></dr-select>
           <p class="form-input-hint"
             *ngIf="expenseForm.get('address').errors && (expenseForm.get('address').dirty || expenseForm.get('address').touched)">
             支出地点不能为空</p>
@@ -28,10 +27,10 @@
       <div class="columns">
         <div class="column col-6"
           [class.has-error]="expenseForm.get('expenseCategory').errors && (expenseForm.get('expenseCategory').dirty || expenseForm.get('expenseCategory').touched)">
-          <expenseCategory-select [title]="'类别'" formControlName="expenseCategory" [expenseBook]="expenseBook"
-            [(ngModel)]="expenseDetail.expenseCategoryId">
-          </expenseCategory-select>
-
+          <dr-select formControlName="expenseCategory" [(ngModel)]="expenseDetail.expenseCategoryId"
+            [list]="expenseCategoryList" [icon]="'form-icon fa fa-th-large'" [title]="'支出类别'" [tabIndex]="3"
+            [addEditComponentName]="'expenseCategory-add-edit'" [addEditComponentData]="expenseCategoryAddEditData">
+          </dr-select>
           <p class="form-input-hint"
             *ngIf="expenseForm.get('expenseCategory').errors && (expenseForm.get('expenseCategory').dirty || expenseForm.get('expenseCategory').touched)">
             支出类别不能为空
@@ -39,9 +38,10 @@
         </div>
         <div class="column col-6"
           [class.has-error]="expenseForm.get('fundParty').errors && (expenseForm.get('fundParty').dirty || expenseForm.get('fundParty').touched)">
-          <fund-party-select formControlName="fundParty" [(ngModel)]="expenseDetail.fundPartyId" [title]="'商家'"
-            [type]="1">
-          </fund-party-select>
+          <dr-select formControlName="fundParty" [(ngModel)]="expenseDetail.fundPartyId" [list]="fundPartyList"
+            [icon]="'form-icon fa fa-share'" [title]="'商家'" [tabIndex]="4" [addEditComponentName]="'fundParty-add-edit'"
+            [addEditComponentData]="null">
+          </dr-select>
           <p class="form-input-hint"
             *ngIf="expenseForm.get('fundParty').errors && (expenseForm.get('fundParty').dirty || expenseForm.get('fundParty').touched)">
             商家不能为空
@@ -53,19 +53,22 @@
       <div class="columns">
         <div class="column col-6"
           [class.has-error]="expenseForm.get('fundChannel').errors && (expenseForm.get('fundChannel').dirty || expenseForm.get('fundChannel').touched)">
-          <fundChannel-select formControlName="fundChannel" [(ngModel)]="expenseDetail.fundChannelId" [title]="'渠道'">
-          </fundChannel-select>
+          <dr-select formControlName="fundChannel" [(ngModel)]="expenseDetail.fundChannelId"
+            (ngModelChange)="onSetFundChannel($event)" [list]="baseData.fundChannelList"
+            [icon]="'form-icon fa fa-map-signs'" [title]="'付款方式'" [tabIndex]="5"
+            [addEditComponentName]="'fundChannel-add-edit'" [addEditComponentData]="null">
+          </dr-select>
           <p class="form-input-hint"
             *ngIf="expenseForm.get('fundChannel').errors && (expenseForm.get('fundChannel').dirty || expenseForm.get('fundChannel').touched)">
-            支付渠道不能为空
+            付款方式不能为空
           </p>
         </div>
         <div class="column col-6"
           [class.has-error]="expenseForm.get('fundAccount').errors && (expenseForm.get('fundAccount').dirty || expenseForm.get('fundAccount').touched)">
-          <fund-account-select formControlName="fundAccount" [title]="'账户'"
-            [fundChannelId]="expenseDetail.fundChannelId" [ngModel]="expenseDetail.fundAccountId"
-            (ngModelChange)="setFundAccount($event)" [filterCredit]="false"  [exceptId]="''">
-          </fund-account-select>
+          <dr-select formControlName="fundAccount" [(ngModel)]="expenseDetail.fundAccountId" [list]="fundAccountList"
+            [icon]="'form-icon fa fa-folder-open'" [title]="'付款账户'" [tabIndex]="6"
+            [addEditComponentName]="'fundAccount-add-edit'" [addEditComponentData]="null">
+          </dr-select>
           <p class="form-input-hint"
             *ngIf="expenseForm.get('fundAccount').errors && (expenseForm.get('fundAccount').dirty || expenseForm.get('fundAccount').touched)">
             支付账户不能为空
@@ -77,8 +80,8 @@
         <div class="columns">
           <div class="form-group column col-6"
             [class.has-error]="expenseForm.get('content').errors && (expenseForm.get('content').dirty || expenseForm.get('content').touched)">
-            <input class="form-input" type="text" formControlName="content" [(ngModel)]="expenseDetail.content"
-              placeholder="支出内容" #contentInputEle>
+            <input class="form-input" [tabIndex]="7" type="text" formControlName="content"
+              [(ngModel)]="expenseDetail.content" placeholder="支出内容">
             <p class="form-input-hint"
               *ngIf="expenseForm.get('content').errors && (expenseForm.get('content').dirty || expenseForm.get('content').touched)">
               支出内容不能为空
@@ -87,8 +90,8 @@
           <div class="column col-6"
             [class.has-error]="expenseForm.get('amount').errors && (expenseForm.get('amount').dirty || expenseForm.get('amount').touched)">
             <div class="input-group">
-              <input class="form-input" formControlName="amount" [(ngModel)]="expenseDetail.amount" type="number"
-                step="0.01" placeholder="支出金额" #amountInputEle>
+              <input class="form-input" [tabIndex]="8" formControlName="amount" [(ngModel)]="expenseDetail.amount"
+                type="number" step="0.01" placeholder="支出金额">
               <span class="input-group-addon">元</span>
             </div>
             <p class="form-input-hint"

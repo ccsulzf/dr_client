@@ -3,8 +3,8 @@
     <ng-container *ngIf="type==='input'">
       <label [style.display]="nameShow?'block':'none'" class="form-label" #drDateLabelEle>{{dateName}}</label>
       <div class="input-group">
-        <input type="text" readonly #dateInput class="form-input" [class.input-sm]="size==='small'" id="date"
-          name="date" [(ngModel)]="date">
+        <input type="text" [attr.tabIndex]="tabIndex" readonly #dateInput class="form-input" (focus)="show=true"
+          [class.input-sm]="size==='small'" id="date" name="date" [(ngModel)]="date">
         <i class="input-group-addon form-icon fa fa-calendar" [class.icon-sm]="size==='small'"
           (click)="show = !show"></i>
       </div>

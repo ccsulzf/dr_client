@@ -72,3 +72,7 @@ ul::-webkit-scrollbar {
     margin: 0;
   }
 }
+
+::ng-deep .form-group:not(:last-child) {
+  margin-bottom: .2rem;
+}

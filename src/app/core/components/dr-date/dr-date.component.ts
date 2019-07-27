@@ -19,9 +19,9 @@ export const EXPENSE_CATEGORY_ACCESSOR: any = {
   providers: [EXPENSE_CATEGORY_ACCESSOR]
 })
 export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor {
-
+  @Input() tabIndex;
   @Input() dateName;
-  
+
   // input 和 text两种类型
   @Input() type;
 
@@ -73,13 +73,10 @@ export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor 
   propagateChange = (temp: any) => { };
 
   writeValue(value: any) {
-
-    // setTimeout(() => {
     if (value) {
       this.date = value;
       this.ngOnInit();
     }
-    // });
   }
 
   registerOnChange(fn: any) {
@@ -89,6 +86,7 @@ export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor 
   registerOnTouched(fn: any) { }
 
   ngOnInit() {
+    this.tabIndex = this.tabIndex || 0;
     // this.date = this.initDate || new Date();
     this.getMonth(new Date(this.date).getMonth() + 1);
     this.getYear();
@@ -97,18 +95,18 @@ export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor 
     this.monthDays = this.getMonthDays();
     this.getViewTypeList(this.viewType);
     this.getList();
-    this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
-      if (value === this.dateName) {
-        this.system.selectedTabView = value;
-        this.dateInput.nativeElement.focus();
-        this.show = true;
-      } else {
-        this.show = false;
-        if (this.dateInput && this.dateInput.nativeElement) {
-          this.dateInput.nativeElement.blur();
-        }
-      }
-    });
+    // this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
+    //   if (value === this.dateName) {
+    //     this.system.selectedTabView = value;
+    //     this.dateInput.nativeElement.focus();
+    //     this.show = true;
+    //   } else {
+    //     this.show = false;
+    //     if (this.dateInput && this.dateInput.nativeElement) {
+    //       this.dateInput.nativeElement.blur();
+    //     }
+    //   }
+    // });
   }
 
   ngOnDestroy() {
@@ -140,11 +138,20 @@ export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor 
     });
   }
 
-  @HostListener('keyup', ['$event'])
+  @HostListener('keydown', ['$event'])
   hotKeyEvent(e) {
-    if (e.keyCode === 13) {
+    if (this.show) {
+      switch (e.keyCode) {
+        case 9:
+          this.show = false;
+          break;
+        default:
+          break;
+      }
+    } else if (!this.show && e.keyCode === 13) {
       e.stopPropagation();
-      this.show = !this.show;
+      this.show = true;
+      // this.showULExpenseCategory();
     }
   }
 
@@ -159,10 +166,10 @@ export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor 
       } else {
         this.show = true;
         this.view_type = this.viewTypeList[this.viewTypeList.length - 1];
-        if (this.type === 'input') {
-          this.dateInput.nativeElement.focus();
-          this.system.selectedTabView = this.dateName;
-        }
+        // if (this.type === 'input') {
+        //   this.dateInput.nativeElement.focus();
+        //   this.system.selectedTabView = this.dateName;
+        // }
       }
     } else {
       this.show = false;

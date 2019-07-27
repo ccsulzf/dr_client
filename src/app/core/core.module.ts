@@ -41,6 +41,7 @@ import { ExpenseBookListComponent } from './components/expenseBook/expense-book-
 import { DrDateComponent } from './components/dr-date/dr-date.component';
 import { MemoComponent } from './components/memo/memo.component';
 import { HeaderComponent } from './components/header/header.component';
+import { DRSelectComponent } from './components/dr-select/dr-select.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -59,7 +60,7 @@ import { HeaderComponent } from './components/header/header.component';
     FundPartySelectComponent,
     ExpenseCategorySelectComponent,
     FundChannelAddEditComponent,
-    FundChannelSelectComponent, ExpenseBookListComponent, DrDateComponent, MemoComponent, HeaderComponent
+    FundChannelSelectComponent, ExpenseBookListComponent, DrDateComponent, MemoComponent, HeaderComponent, DRSelectComponent
   ],
   exports: [
     NavComponent,
@@ -81,7 +82,8 @@ import { HeaderComponent } from './components/header/header.component';
     ExpenseBookListComponent,
     DrDateComponent,
     MemoComponent,
-    HeaderComponent
+    HeaderComponent,
+    DRSelectComponent
   ],
   providers: [
     ElectronService,

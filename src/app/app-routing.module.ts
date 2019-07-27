@@ -6,9 +6,9 @@ const routes: Routes = [
         redirectTo: '/dashboard',
         pathMatch: 'full'
     },
-    { path: 'dashboard', loadChildren: './components/dashboard/dashboard.module#DashboardModule' },
-    { path: 'account', loadChildren: './components/account/account.module#AccountModule' },
-    { path: 'report', loadChildren: './components/report/report.module#ReportModule' }
+    { path: 'dashboard', loadChildren: './modules/dashboard/dashboard.module#DashboardModule' },
+    { path: 'account', loadChildren: './modules/account/account.module#AccountModule' },
+    { path: 'report', loadChildren: './modules/report/report.module#ReportModule' }
 ];
 
 @NgModule({
