@@ -37,7 +37,6 @@ export class ExpenseService {
         this.editEvent.next(value);
     }
 
-
     changeExpenseDetail(item) {
         const expenseCategory = this.baseDataService.getExpenseCategory(item.expenseCategoryId);
         item.expenseCategoryName = expenseCategory.name;
@@ -75,12 +74,6 @@ export class ExpenseService {
             expense.id = data.expenseId;
             BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
 
-            // // 将id改成到具体的name,添加到ExpenseDetailList
-            // this.changeExpenseDetail(data.expenseDetail);
-
-            // // 将expenseDetailList进行分组
-            // this.groupDetailList();
-
             this.totalDayAmount = (Number(this.totalDayAmount) * 100 + Number(expenseDetail.amount) * 100) / 100;
             const hasExpense = _.find(this.expenseList, (item) => {
                 return +item.expenseBookId === +expense.expenseBookId;
@@ -115,17 +108,6 @@ export class ExpenseService {
             BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
 
             expense = data.expense;
-
-            // const prevFundAccount = this.baseDataService.getFundAccount(prevExpenseDetail.fundAccountId);
-            // const nowFundAccount = this.baseDataService.getFundAccount(expenseDetail.fundAccountId);
-
-            // prevFundAccount.balance = (Number(prevFundAccount.balance) * 100 + Number(prevExpenseDetail.amount) * 100) / 100;
-
-            // nowFundAccount.balance = (Number(nowFundAccount.balance) * 100 - Number(expenseDetail.amount) * 100) / 100;
-
-
-            // console.info(BaseData.fundAccountList);
-
         } catch (error) {
             throw error;
         }
@@ -136,8 +118,6 @@ export class ExpenseService {
         try {
             await this.http.delete('/DR/delExpense?expenseDetailId=' + expenseDetailId);
             BaseData.fundAccountList = <any>await this.http.get('/DR/getFundCount?userId=' + this.system.user.id);
-            // const fundAccount = this.baseDataService.getFundAccount(this.expenseDetail.fundAccountId);
-            // fundAccount.balance = (Number(fundAccount.balance) * 100 + Number(this.expenseDetail.amount) * 100) / 100;
             this.totalDayAmount = (Number(this.totalDayAmount) * 100 - Number(amount) * 100) / 100;
             expense.totalAmount = (Number(expense.totalAmount) * 100 - Number(amount) * 100) / 100;
         } catch (error) {

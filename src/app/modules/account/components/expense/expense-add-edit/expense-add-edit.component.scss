@@ -15,9 +15,12 @@ main {
 
   form {
     padding: 0 5px;
+
     fieldset {
       border-top: 1px dashed #4b48d6;
       margin-bottom: 0;
+      margin-top: 10px;
+
       legend {
         font-size: 14px;
         font-weight: normal;

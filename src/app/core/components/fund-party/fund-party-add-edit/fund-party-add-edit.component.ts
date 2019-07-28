@@ -22,7 +22,7 @@ export class FundPartyAddEditComponent implements OnInit {
     this.type = this.data.type;
     this.title = this.data.title;
 
-    if (this.data.action === 'edit') {
+    if (this.data.value) {
       this.category = this.data.value.category;
       this.memo = this.data.value.memo;
       this.name = this.data.value.name;

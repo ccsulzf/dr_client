@@ -4,7 +4,7 @@
       <label class="form-label" for="input-example-1">{{title}}</label>
       <div class="has-icon-left" #selectListEle>
         <!-- (ngModelChange)="change($event)" -->
-        <input type="text" #selectInputEle [attr.tabIndex]="tabIndex" class="form-input" [placeholder]="'请选择'+title"
+        <input type="text" #selectInputEle tabindex="0" class="form-input" [placeholder]="'请选择'+title"
           [name]="title" [(ngModel)]="selectedName" (ngModelChange)="change($event)" autocomplete="off"
           (focus)="ulShow = true">
         <i [class]="icon" aria-hidden="true"></i>

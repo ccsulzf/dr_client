@@ -17,8 +17,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./expense-add-edit.component.scss']
 })
 export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy {
-  // @ViewChild('contentInputEle') contentInputEle: ElementRef;
-  // @ViewChild('amountInputEle') amountInputEle: ElementRef;
+  @ViewChild('contentInputEle') contentInputEle: ElementRef;
 
   formChanges: Subscription;
 
@@ -75,6 +74,11 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
   public expenseCategoryAddEditData = {
     expenseBook: null,
     value: null
+  };
+  public fundPartyAddEditData = {
+    title: '商家',
+    type: 1,
+    value:null
   }
   constructor(
     public accountService: AccountService,
@@ -115,6 +119,9 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     });
   }
 
+  valid(formElementName) {
+    return this.expenseForm.get(formElementName).errors && (this.expenseForm.get(formElementName).dirty || this.expenseForm.get(formElementName).touched)
+  }
 
   onSetDate(data) {
     if (data && data.name === '日期') {
@@ -176,27 +183,6 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
-  tabCustomInput(e?) {
-    const values = Array.from(this.system.tabViewList.values());
-    if (this.system.selectedTabView && e) {
-      const index = _.findIndex(values, (item) => {
-        return item === this.system.selectedTabView;
-      });
-      if ((index > -1) && (index <= values.length - 1)) {
-        this.system.changeTabView((e.shiftKey ? values[index - 1] : values[index + 1]) || values[0]);
-      }
-    } else {
-      const object = Object.assign(this.expenseForm.value);
-      for (const property in object) {
-        if (!this.expenseForm.value[property]) {
-          const tabView = this.system.tabViewList.get(property);
-          this.system.changeTabView(tabView);
-          break;
-        }
-      }
-    }
-  }
-
   ngOnDestroy() {
     if (this.editEvent) {
       this.editEvent.unsubscribe();
@@ -242,6 +228,7 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     this.participantList = [];
     this.participantList.push(_.find(BaseData.participantList, { isMyself: true }));
     this.labelList = [];
+    this.contentInputEle.nativeElement.focus();
     this.expenseForm.markAsPristine();
   }
 

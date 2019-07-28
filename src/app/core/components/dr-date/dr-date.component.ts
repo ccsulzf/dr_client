@@ -19,7 +19,6 @@ export const EXPENSE_CATEGORY_ACCESSOR: any = {
   providers: [EXPENSE_CATEGORY_ACCESSOR]
 })
 export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor {
-  @Input() tabIndex;
   @Input() dateName;
 
   // input 和 text两种类型
@@ -86,7 +85,6 @@ export class DrDateComponent implements OnInit, OnDestroy, ControlValueAccessor 
   registerOnTouched(fn: any) { }
 
   ngOnInit() {
-    this.tabIndex = this.tabIndex || 0;
     // this.date = this.initDate || new Date();
     this.getMonth(new Date(this.date).getMonth() + 1);
     this.getYear();

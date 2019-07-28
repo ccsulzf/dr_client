@@ -1,10 +1,10 @@
 <main>
   <div class="header-panel">
-    {{data?'编辑':'添加'}}{{title}}
+    {{data?.value?'编辑':'添加'}}{{title}}
   </div>
   <form>
     <div class="form-group">
-      <label>资金来往方</label>
+      <label>{{title}}</label>
       <input class="form-input" type="text" name="name" [(ngModel)]="name">
     </div>
 
@@ -23,7 +23,7 @@
     </div>
 
     <div class="form-group btn-group">
-      <button type="button" (click)="addOrEdit()" class="btn btn-primary">{{data?'编 辑':'添 加'}}</button>
+      <button type="button" (click)="addOrEdit()" class="btn btn-primary">{{data?.value?'编 辑':'添 加'}}</button>
       <button type="button" (click)="cancel()" class="btn btn-link">取 消</button>
     </div>
   </form>

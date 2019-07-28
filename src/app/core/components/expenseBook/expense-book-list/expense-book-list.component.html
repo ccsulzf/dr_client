@@ -1,5 +1,5 @@
 <main>
-  <ul>
+  <ul tabindex="0">
     <li (click)="select(item)" *ngFor="let item of expenseBookList;"
       [class.selected]="selectedExpenseBook?.id===item?.id"
       [style.background]="(selectedExpenseBook?.id===item?.id) ? '#fff':''"

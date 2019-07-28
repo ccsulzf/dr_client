@@ -6,7 +6,6 @@ import { fromEvent, Subscription } from 'rxjs';
 import { map, filter, distinctUntilChanged } from 'rxjs/operators';
 
 import * as _ from 'lodash';
-
 export const DRSELECT_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => DRSelectComponent),
@@ -32,10 +31,9 @@ export class DRSelectComponent implements OnInit, OnDestroy, ControlValueAccesso
   }
   @Input() icon;
   @Input() title;
-  @Input() tabIndex;
   @Input() addEditComponentName;
   @Input() addEditComponentData;
-
+  @Input() model;
   selectedName;
   selectedItem;
   selectList;
@@ -43,6 +41,7 @@ export class DRSelectComponent implements OnInit, OnDestroy, ControlValueAccesso
   ulShow: boolean = false;
 
   inputFilter: Subscription;
+  doneEvent: Subscription;
   propagateChange = (temp: any) => { };
 
   writeValue(value: any) {
@@ -54,10 +53,8 @@ export class DRSelectComponent implements OnInit, OnDestroy, ControlValueAccesso
       });
       this.selectItem(this.selectedItem);
     } else {
-      // this.selectedName = '';
       this.selectItem();
     }
-    // this.cd.detectChanges();
   }
 
   registerOnChange(fn: any) {
@@ -92,11 +89,22 @@ export class DRSelectComponent implements OnInit, OnDestroy, ControlValueAccesso
         return item.name.indexOf(data) > -1 || this.system.filterByPY(item, 'name', data);
       });
     });
+
+    this.doneEvent = this.system.doneEvent.subscribe((value) => {
+      if (value.model === this.model) {
+        this.selectItem(value.data);
+        this.selectList.push(value.data);
+        this.selectList = _.unionBy(this.selectList, 'id');
+      }
+    });
   }
 
   ngOnDestroy() {
     if (this.inputFilter) {
       this.inputFilter.unsubscribe();
+    }
+    if (this.doneEvent) {
+      this.doneEvent.unsubscribe();
     }
   }
 

@@ -27,7 +27,7 @@ export class ExpenseCategoryAddEditComponent implements OnInit {
   async addOrEdit() {
     const expenseCategory = await this.http.post('/DR/ExpenseCategory',
       {
-        expenseBookId: this.data.id, name: this.name, memo: this.memo,
+        expenseBookId: this.expenseBook.id, name: this.name, memo: this.memo,
         userId: this.system.user.id
       });
     if (expenseCategory) {
