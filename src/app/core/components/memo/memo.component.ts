@@ -67,7 +67,7 @@ export class MemoComponent implements OnInit, ControlValueAccessor, OnDestroy {
     }
   }
 
-  @HostListener('keyup', ['$event'])
+  // @HostListener('keyup', ['$event'])
   hotKeyEvent(e) {
     switch (e.keyCode) {
       case 13:

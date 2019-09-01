@@ -161,7 +161,7 @@ export class ExpenseAddEditComponent implements OnInit, AfterViewInit, OnDestroy
     this.participantList = participantList;
   }
 
-  @HostListener('body:keyup', ['$event'])
+  @HostListener('keydown', ['$event'])
   hotKeyEvent(e) {
     switch (e.keyCode) {
       case 13:

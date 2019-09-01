@@ -1,11 +1,11 @@
-<main>
+<main tabIndex="0" (focus)="focus()" (blur)="test()">
   <label *ngIf="title">{{title}}:</label>
   <div class="content">
     <ul class="selected-label" #contentLabel>
       <li class="label" *ngFor="let item of labelList">{{item.name}} <i (click)="delete(item)"></i></li>
       <li class="add-label" [style.display]="isInputShow ? 'none':'block'" (click)="showLabel()">+ 添加标签</li>
       <li [style.display]="isInputShow ? 'block':'none'">
-        <input #inputLabel name="name" [(ngModel)]="name" (blur)="blur()">
+        <input #inputLabel name="name" [(ngModel)]="name" (keydown)="hotKeyEvent($event)" (blur)="blur()">
       </li>
     </ul>
   </div>

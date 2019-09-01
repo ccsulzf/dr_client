@@ -3,8 +3,8 @@
     {{title}}: 
   </label>
   <div class="content">
-    <textarea tabindex="-1" #memoInputEle class="form-input" maxlength="{{maxNumber}}" placeholder="请填写备注信息" rows="3" name="memo"
-      [(ngModel)]="memo" (ngModelChange)="getMemo($event)"></textarea>
+    <textarea tabindex="0" #memoInputEle class="form-input" maxlength="{{maxNumber}}" placeholder="请填写备注信息" rows="3" name="memo"
+      [(ngModel)]="memo" (keydown)="hotKeyEvent($event)" (ngModelChange)="getMemo($event)"></textarea>
     <span *ngIf="maxNumber">{{memoLength}}/{{maxNumber}}</span>
   </div>
 </main>

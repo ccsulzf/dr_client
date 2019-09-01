@@ -29,7 +29,7 @@ export class LabelSelectComponent implements OnInit, OnDestroy {
 
   resetEvent;
 
-  public changeTabViewEvent: Subscription;
+  // public changeTabViewEvent: Subscription;
   constructor(
     public system: SystemService,
     public http: HttpClientService,
@@ -41,25 +41,29 @@ export class LabelSelectComponent implements OnInit, OnDestroy {
       this.labelList = [];
     });
 
-    this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
-      if (value === this.title) {
-        this.showLabel();
-        this.system.selectedTabView = value;
-      } else {
-        this.isInputShow = false;
-      }
-    });
+    // this.changeTabViewEvent = this.system.changeTabViewEvent.subscribe((value) => {
+    //   if (value === this.title) {
+    //     this.showLabel();
+    //     this.system.selectedTabView = value;
+    //   } else {
+    //     this.isInputShow = false;
+    //   }
+    // });
   }
 
   ngOnDestroy() {
     if (this.resetEvent) {
       this.resetEvent.unsubscribe();
     }
-    if (this.changeTabViewEvent) {
-      this.changeTabViewEvent.unsubscribe();
-    }
+    // if (this.changeTabViewEvent) {
+    //   this.changeTabViewEvent.unsubscribe();
+    // }
   }
 
+  // @HostListener('focus', ['$event'])
+  // foucs(){
+  //   console.log(123123);
+  // }
 
   @HostListener('document:click', ['$event'])
   onClick() {
@@ -70,39 +74,50 @@ export class LabelSelectComponent implements OnInit, OnDestroy {
     }
   }
 
-  @HostListener('keyup', ['$event'])
   async hotKeyEvent(e) {
     if (this.isInputShow) {
       switch (e.keyCode) {
         case 13:
-          e.stopPropagation();
           await this.addLabel();
           break;
         case 27:
-          e.stopPropagation();
+          // e.stopPropagation();
           this.isInputShow = false;
+          this.name = '';
           break;
         default:
           break;
       }
     } else if (!this.isInputShow && e.keyCode === 13) {
-      e.stopPropagation();
+      // e.stopPropagation();
       this.isInputShow = true;
     }
+    return true;
   }
 
   showLabel() {
-    this.system.selectedTabView = this.title;
     this.isInputShow = true;
     setTimeout(() => {
       this.inputLabel.nativeElement.focus();
     });
   }
 
-  blur() {
-    this.isInputShow = false;
+  focus() {
+    if (!this.isInputShow) {
+      this.showLabel();
+    } else {
+      // this.isInputShow = false;
+    }
   }
 
+  blur() {
+    this.isInputShow = false;
+    console.log('main blur');
+  }
+
+  test() {
+    console.log('input blur');
+  }
   async addLabel() {
     if (!_.find(this.labelList, { name: this.name })) {
       const label = await this.http.post('/DR/addLabel', {
